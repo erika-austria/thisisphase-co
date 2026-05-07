@@ -33,7 +33,7 @@ const nextConfig = {
     return [
       // Pretty URLs for affiliate routing
       { source: '/joi', destination: 'https://joiandblokes.com/?rid=003UI00000gvOFcYAM', permanent: false },
-      { source: '/stack', destination: 'https://www.amazon.com/shop/erikahanafin', permanent: false },
+      { source: '/stack', destination: 'https://www.amazon.com/shop/erikahanafin/list/2CW7UN8D55AN3?ref_=aip_sf_list_spv_ofs_mixed_d', permanent: false },
       // Common redirects
       { source: '/buy', destination: '/series', permanent: true },
       { source: '/all', destination: '/series', permanent: true },

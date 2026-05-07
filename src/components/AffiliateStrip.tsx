@@ -37,9 +37,9 @@ export function AffiliateStrip({ variant = 'home' }: AffiliateStripProps) {
             </div>
           </a>
 
-          {/* Amazon storefront */}
+          {/* Amazon Hormone Stack · direct list link */}
           <a
-            href={AFFILIATE_LINKS.amazonStorefront}
+            href={AFFILIATE_LINKS.amazonHormoneStack}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="group block bg-cream rounded-sm border border-navy/10 p-8 hover:border-pink/40 transition-all hover:shadow-md"

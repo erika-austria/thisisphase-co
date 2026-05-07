@@ -30,5 +30,5 @@ export function getStripeLinkForVolume(slug: string, tier: 'entry' | 'anchor' = 
 export const AFFILIATE_LINKS = {
   joiAndBlokes: 'https://joiandblokes.com/?rid=003UI00000gvOFcYAM',
   amazonStorefront: 'https://www.amazon.com/shop/erikahanafin',
-  amazonHormoneStack: 'https://www.amazon.com/shop/erikahanafin', // update once Idea List approved
+  amazonHormoneStack: 'https://www.amazon.com/shop/erikahanafin/list/2CW7UN8D55AN3?ref_=aip_sf_list_spv_ofs_mixed_d',
 };
