@@ -132,7 +132,7 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.5rem;
   padding: 1rem 1.75rem;
   background-color: var(--ink);
-  color: var(--bg-cream);
+  color: #ffffff;
   font-family: var(--font-geist), sans-serif;
   font-weight: 600;
   font-size: 0.875rem;
@@ -142,14 +142,13 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.2s ease;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 2px 8px rgba(26, 20, 16, 0.12);
 }
 
 .btn-primary:hover {
-  background-color: var(--ink);
-  border-color: var(--ink);
+  background-color: #2a2018;
+  border-color: #2a2018;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(26, 20, 16, 0.2);
+  box-shadow: 0 4px 14px rgba(26, 20, 16, 0.25);
 }
 
 .btn-secondary {
@@ -172,9 +171,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-secondary:hover {
   background-color: var(--ink);
-  color: var(--bg-cream);
+  color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(26, 20, 16, 0.15);
 }
 
 .btn-pink {

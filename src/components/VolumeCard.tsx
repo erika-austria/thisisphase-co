@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Volume } from '@/lib/volumes';
 
-// Brand color palette for each volume cover (matches PHASE acronym warmth)
+// Brand color palette for each volume cover
 const COVER_COLORS: Record<string, { bg: string; accent: string }> = {
   P: { bg: '#fff9f1', accent: '#f086dc' },
   H: { bg: '#fce7f7', accent: '#c95cb0' },
@@ -14,8 +14,8 @@ export function VolumeCard({ volume }: { volume: Volume }) {
   const colors = COVER_COLORS[volume.letter] ?? { bg: '#faf5ee', accent: '#1a1410' };
 
   return (
-    <article className="group relative bg-cream-alt rounded-sm border border-rule p-6 hover:border-pink/40 transition-all hover:shadow-md">
-      {/* CSS-rendered editorial cover · giant letter on warm cream */}
+    <article className="group h-full flex flex-col bg-cream-alt rounded-sm border border-rule p-6 hover:border-pink/40 transition-all hover:shadow-md">
+      {/* CSS-rendered editorial cover */}
       <Link
         href={`/vol/${volume.slug}`}
         className="block mb-5 aspect-[4/5] relative overflow-hidden border border-ink/10 group-hover:border-pink/30 transition-colors"
@@ -55,7 +55,7 @@ export function VolumeCard({ volume }: { volume: Volume }) {
           </p>
         </div>
 
-        {/* Subtle pink corner accent */}
+        {/* Subtle pink corner accents */}
         <div
           className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2"
           style={{ borderColor: colors.accent }}
@@ -80,19 +80,19 @@ export function VolumeCard({ volume }: { volume: Volume }) {
         </Link>
       </h3>
 
-      {/* Tagline */}
-      <p className="text-ink/70 text-sm leading-relaxed mb-5 italic font-serif">
+      {/* Tagline · flex-grow pushes price/CTA to bottom equally across cards */}
+      <p className="text-ink/70 text-sm leading-relaxed mb-5 italic font-serif flex-grow">
         {volume.tagline}
       </p>
 
-      {/* Price + CTA */}
-      <div className="flex items-center justify-between border-t border-rule pt-4">
+      {/* Price + CTA · pinned to bottom */}
+      <div className="flex items-center justify-between border-t border-rule pt-4 mt-auto">
         <span className="font-serif text-2xl text-ink">
           ${volume.price}
         </span>
         <Link
           href={`/vol/${volume.slug}`}
-          className="inline-flex items-center gap-1 px-4 py-2 bg-ink text-cream text-xs font-semibold tracking-[0.1em] uppercase hover:bg-pink-deep transition-colors"
+          className="inline-flex items-center gap-1 px-4 py-2 bg-ink text-white text-xs font-semibold tracking-[0.1em] uppercase hover:bg-pink-deep transition-colors"
           aria-label={`Read more about ${volume.fullTitle}`}
         >
           Read more <span aria-hidden>→</span>

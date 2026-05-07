@@ -277,14 +277,17 @@ export const SERIES = {
   ogImage: '/og/series.jpg',
 };
 
-export const LIFETIME = {
-  slug: 'lifetime',
-  title: 'The PHASE™ · Lifetime Pass',
-  tagline: 'All 5 Vols. Future updates. Founding cohort. One payment, kept forever.',
-  description: 'The PHASE™ Lifetime Pass. All five volumes plus every future update plus founding-cohort community access for life. From MOMumental Moments®.',
-  price: 197,
-  stripePriceId: 'price_lifetime_197',
-  ogImage: '/og/lifetime.jpg',
+export const JOURNAL = {
+  slug: 'journal',
+  title: 'The PHASE™ Reflections Journal',
+  fullTitle: 'Reflections Through the PHASEs · The Journal',
+  tagline: 'The 77-page journal that lives next to your morning coffee.',
+  description: 'The PHASE™ Reflections Journal. 77 pages of guided prompts, weekly resets, and pattern-tracking pages built around the P · H · A · S · E framework. The standalone deep-dive companion to the volumes. From MOMumental Moments®.',
+  longDescription: 'Some women read the volumes once. Some women live in them. The Reflections Journal is for the second kind. 77 pages of guided prompts mapped to all five PHASE letters: Perimenopause body-truth, Hormone tracking pages, Architecture overload inventories, Self-trust receipts, Execution reset rhythms. Use it daily. Use it weekly. Use it for the rest of the year.',
+  price: 19,
+  stripePriceId: 'price_journal_19',
+  pdfPages: 77,
+  ogImage: '/og/journal.jpg',
 };
 
 // Helpers

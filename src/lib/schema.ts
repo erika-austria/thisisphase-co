@@ -4,7 +4,7 @@
  * Renders into <script type="application/ld+json"> tags via metadata.
  */
 
-import { VOLUMES, SERIES, LIFETIME, type Volume } from './volumes';
+import { VOLUMES, SERIES, JOURNAL, type Volume } from './volumes';
 
 const SITE_URL = 'https://thisisphase.co';
 const ERIKA_URL = 'https://erikahanafin.com';
