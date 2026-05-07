@@ -112,20 +112,21 @@ export function bundleProductSchema() {
   };
 }
 
-export function lifetimeProductSchema() {
+export function journalProductSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    '@id': `${SITE_URL}/lifetime/#product`,
-    name: LIFETIME.title,
-    description: LIFETIME.description,
-    image: `${SITE_URL}${LIFETIME.ogImage}`,
+    '@id': `${SITE_URL}/journal/#product`,
+    name: JOURNAL.title,
+    description: JOURNAL.description,
+    image: `${SITE_URL}${JOURNAL.ogImage}`,
     brand: { '@type': 'Brand', name: 'The PHASE™' },
+    category: 'Digital Workbook · Journal · Women\'s Health',
     offers: {
       '@type': 'Offer',
-      url: `${SITE_URL}/lifetime`,
+      url: `${SITE_URL}/journal`,
       priceCurrency: 'USD',
-      price: LIFETIME.price.toString(),
+      price: JOURNAL.price.toString(),
       availability: 'https://schema.org/InStock',
       seller: { '@id': `${SITE_URL}/#organization` },
     },

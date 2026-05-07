@@ -279,15 +279,40 @@ export const SERIES = {
 
 export const JOURNAL = {
   slug: 'journal',
-  title: 'The PHASE™ Reflections Journal',
-  fullTitle: 'Reflections Through the PHASEs · The Journal',
-  tagline: 'The 77-page journal that lives next to your morning coffee.',
-  description: 'The PHASE™ Reflections Journal. 77 pages of guided prompts, weekly resets, and pattern-tracking pages built around the P · H · A · S · E framework. The standalone deep-dive companion to the volumes. From MOMumental Moments®.',
-  longDescription: 'Some women read the volumes once. Some women live in them. The Reflections Journal is for the second kind. 77 pages of guided prompts mapped to all five PHASE letters: Perimenopause body-truth, Hormone tracking pages, Architecture overload inventories, Self-trust receipts, Execution reset rhythms. Use it daily. Use it weekly. Use it for the rest of the year.',
+  title: 'Reflections Through the PHASEs · The Journal',
+  fullTitle: 'Reflections Through the PHASEs · A Guided Menopause Journal',
+  tagline: 'A space to feel it, not fix it.',
+  resetMantra: 'Grief is not linear. It ebbs and flows. This journal moves at my pace.',
+  description: 'Reflections Through the PHASEs · A 14-page guided journal for the emotional terrain underneath the hot flashes. Grief, identity shifts, and the part of menopause nobody warned you about. From MOMumental Moments®.',
+  longDescription: 'Menopause is a transition, not a problem. This journal is a companion for the emotional terrain underneath the hot flashes and brain fog. Prompts that pause you long enough to hear yourself. Space to process grief, identity shifts, and change. Move at your own pace. Skip what does not fit. Return when you are ready. Built for the woman who needs a place to feel it before she fixes it.',
   price: 19,
   stripePriceId: 'price_journal_19',
-  pdfPages: 77,
+  pdfPages: 14,
   ogImage: '/og/journal.jpg',
+};
+
+export const DECODE = {
+  slug: 'decode',
+  title: 'Decode Your Symptoms',
+  fullTitle: 'Decode Your Symptoms · A Science-Backed Reset',
+  tagline: 'Self-care is not soft. It is strategy.',
+  resetMantra: 'My body is not broken. It is asking for different inputs.',
+  description: 'Decode Your Symptoms · An 11-page science-backed companion workbook to understand what your body is saying, build a self-care plan that fits your life, and navigate menopause with science behind you. From MOMumental Moments®.',
+  longDescription: 'Menopause changes everything. The food that used to fuel you. The sleep that used to restore you. The pace that used to feel doable. Your body is not broken. It is asking for different inputs. This workbook is your action companion: nine chapters, real exercises, track-what-shifts framing. Adjust what does not work. Build a routine that fits the woman you are becoming.',
+  price: 19,
+  stripePriceId: 'price_decode_19',
+  pdfPages: 11,
+  ogImage: '/og/decode.jpg',
+};
+
+export const CLARITY_KIT = {
+  slug: 'clarity',
+  title: 'The Clarity Starter Kit',
+  fullTitle: 'The Clarity Starter Kit · A Free Reset for the Burned-Out Builder',
+  tagline: 'You are not broken. You are burned out.',
+  description: 'A 7-page free reset for the burned-out builder. 12 minutes. A gentle moment of clarity for moms who are doing it all and ready to come back to themselves. From MOMumental Moments®.',
+  pdfPages: 7,
+  isFree: true,
 };
 
 // Helpers

@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { VOLUMES, SERIES, LIFETIME } from '@/lib/volumes';
+import { VOLUMES, SERIES, JOURNAL, DECODE } from '@/lib/volumes';
 import { buildMetadata } from '@/lib/seo';
-import { allVolumesItemListSchema, bundleProductSchema, lifetimeProductSchema } from '@/lib/schema';
+import { allVolumesItemListSchema, bundleProductSchema, journalProductSchema } from '@/lib/schema';
 import { STRIPE_LINKS } from '@/lib/stripe';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
 import { PhaseAcronym } from '@/components/PhaseAcronym';
@@ -29,7 +29,7 @@ export default function HomePage() {
           __html: JSON.stringify([
             allVolumesItemListSchema(),
             bundleProductSchema(),
-            lifetimeProductSchema(),
+            journalProductSchema(),
           ]),
         }}
       />
@@ -125,33 +125,65 @@ export default function HomePage() {
       {/* Affiliate strip · MOVED UP per Erika's framework */}
       <AffiliateStrip />
 
-      {/* Bundle dual cards */}
-      <section className="max-w-content mx-auto px-6 py-16" aria-labelledby="bundles-heading">
-        <h2 id="bundles-heading" className="sr-only">Bundle options</h2>
+      {/* Series bundle · standalone hero card */}
+      <section className="max-w-content mx-auto px-6 py-16" aria-labelledby="series-heading">
+        <div className="relative bg-cream-alt rounded-sm border-2 border-pink p-10 md:p-14 text-center max-w-3xl mx-auto">
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-pink text-cream eyebrow text-xs px-3 py-1 whitespace-nowrap">
+            MOST POPULAR
+          </span>
+          <p className="eyebrow eyebrow-with-dot text-xs mb-3">ALL FIVE VOLUMES</p>
+          <h2 id="series-heading" className="font-serif text-4xl md:text-5xl mb-4">
+            The Series · <span className="italic text-pink">$97</span>
+          </h2>
+          <p className="text-navy/70 mb-2 text-lg">P + H + A + S + E.</p>
+          <p className="text-navy/70 mb-8">All five volumes. All daily templates. All frameworks. Saves $38.</p>
+          <StripeButton href={STRIPE_LINKS.series} label="Buy the Series" variant="primary" />
+        </div>
+      </section>
+
+      {/* Companion deep-dives · Journal + Decode */}
+      <section className="max-w-content mx-auto px-6 py-16" aria-labelledby="companions-heading">
+        <div className="text-center mb-12">
+          <p className="eyebrow text-xs mb-3">THE COMPANIONS</p>
+          <h2 id="companions-heading" className="font-serif text-4xl md:text-5xl">
+            Two deep-dives. <span className="italic text-pink">For when one volume is not enough.</span>
+          </h2>
+        </div>
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Series */}
-          <div className="relative bg-cream-alt rounded-sm border-2 border-pink p-10">
-            <span className="absolute -top-3 left-8 bg-pink text-cream eyebrow text-xs px-3 py-1">
-              MOST POPULAR
-            </span>
-            <p className="eyebrow eyebrow-with-dot text-xs mb-3">ALL FIVE VOLUMES</p>
+          {/* Reflections Journal · emotional companion */}
+          <div className="bg-cream-alt rounded-sm border border-rule p-10 flex flex-col">
+            <p className="eyebrow eyebrow-with-dot text-xs mb-3">EMOTIONAL COMPANION</p>
             <h3 className="font-serif text-3xl md:text-4xl mb-3">
-              The Series · <span className="italic text-pink">$97</span>
+              The Journal · <span className="italic text-pink">$19</span>
             </h3>
-            <p className="text-navy/70 mb-2">P + H + A + S + E.</p>
-            <p className="text-navy/70 mb-6">All five volumes. All daily templates. All frameworks. Saves $38.</p>
-            <StripeButton href={STRIPE_LINKS.series} label="Buy the Series" variant="primary" />
+            <p className="font-serif italic text-pink mb-4">A space to feel it, not fix it.</p>
+            <p className="text-ink/70 mb-6 flex-grow leading-relaxed">
+              Reflections Through the PHASEs. 14 pages of guided prompts for the grief, identity shifts, and emotional terrain underneath the hot flashes. Move at your own pace.
+            </p>
+            <div className="flex items-center justify-between mt-auto">
+              <Link href="/journal" className="text-sm text-pink-deep hover:underline font-semibold">
+                Read more →
+              </Link>
+              <StripeButton href={STRIPE_LINKS.journal} label="Buy · $19" variant="primary" />
+            </div>
           </div>
 
-          {/* Lifetime */}
-          <div className="bg-navy text-cream rounded-sm p-10 relative bracket-pink">
-            <p className="eyebrow eyebrow-pink text-xs mb-3">LIFETIME PASS</p>
+          {/* Decode Your Symptoms · action companion */}
+          <div className="bg-cream-alt rounded-sm border border-rule p-10 flex flex-col">
+            <p className="eyebrow eyebrow-with-dot text-xs mb-3">ACTION COMPANION</p>
             <h3 className="font-serif text-3xl md:text-4xl mb-3">
-              All in. Forever. <span className="italic text-pink">$197</span>
+              Decode Your Symptoms · <span className="italic text-pink">$19</span>
             </h3>
-            <p className="text-cream/80 mb-2">All 5 Volumes. Every future update.</p>
-            <p className="text-cream/80 mb-6">Founding-cohort community access for life. One payment, kept forever.</p>
-            <StripeButton href={STRIPE_LINKS.lifetime} label="Get Lifetime Access" variant="pink" />
+            <p className="font-serif italic text-pink mb-4">Self-care is not soft. It is strategy.</p>
+            <p className="text-ink/70 mb-6 flex-grow leading-relaxed">
+              An 11-page science-backed companion. Nine chapters. Real exercises. Track-what-shifts framing. Build a routine that fits the woman you are becoming.
+            </p>
+            <div className="flex items-center justify-between mt-auto">
+              <Link href="/decode" className="text-sm text-pink-deep hover:underline font-semibold">
+                Read more →
+              </Link>
+              <StripeButton href={STRIPE_LINKS.decode} label="Buy · $19" variant="primary" />
+            </div>
           </div>
         </div>
       </section>
