@@ -7,14 +7,14 @@
 const STRIPE_BASE = 'https://buy.stripe.com';
 
 export const STRIPE_LINKS = {
-  vol1: 'https://buy.stripe.com/REPLACE_WITH_VOL1_LINK',
-  vol2: 'https://buy.stripe.com/REPLACE_WITH_VOL2_LINK',
-  vol3: 'https://buy.stripe.com/REPLACE_WITH_VOL3_LINK',
-  vol4: 'https://buy.stripe.com/REPLACE_WITH_VOL4_LINK',
-  vol5: 'https://buy.stripe.com/REPLACE_WITH_VOL5_LINK',
-  series: 'https://buy.stripe.com/REPLACE_WITH_SERIES_LINK',
-  journal: 'https://buy.stripe.com/REPLACE_WITH_JOURNAL_LINK',
-  decode: 'https://buy.stripe.com/REPLACE_WITH_DECODE_LINK',
+  vol1: 'https://buy.stripe.com/6oU7sL0Lc3FE3DZd9DeEo01',
+  vol2: 'https://buy.stripe.com/3cI4gz1Pgb866Qb9XreEo02',
+  vol3: 'https://buy.stripe.com/eVqeVd8dE2BAb6rfhLeEo03',
+  vol4: 'https://buy.stripe.com/8x27sL3Xo7VUgqLb1veEo04',
+  vol5: 'https://buy.stripe.com/dRmdR965wdge8Yj3z3eEo05',
+  series: 'https://buy.stripe.com/cNibJ1fG6fom6Qb4D7eEo06',
+  journal: 'https://buy.stripe.com/8x2dR91Pg8ZYb6r7PjeEo07',
+  decode: 'https://buy.stripe.com/28EeVd51sfom8YjedHeEo08',
 } as const;
 
 export function getStripeLinkForVolume(slug: string): string {
