@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import type { Metadata } from 'next';
 import { VOLUMES, getVolume, getRelatedVolumes } from '@/lib/volumes';
 import { buildMetadata } from '@/lib/seo';
@@ -67,17 +66,39 @@ export default async function VolumePage({ params }: Params) {
 
       {/* Hero */}
       <section className="max-w-content mx-auto px-6 pt-16 md:pt-20 pb-16 grid md:grid-cols-5 gap-12 items-center">
-        {/* Cover */}
+        {/* Cover · CSS-rendered editorial */}
         <div className="md:col-span-2">
-          <div className="aspect-[4/5] relative bg-navy/5 rounded-sm overflow-hidden border border-navy/10">
-            <Image
-              src={volume.coverImage}
-              alt={`${volume.fullTitle} cover`}
-              fill
-              priority
-              sizes="(min-width: 768px) 40vw, 100vw"
-              className="object-cover"
-            />
+          <div
+            className="aspect-[4/5] relative overflow-hidden border border-ink/10"
+            style={{
+              backgroundColor:
+                volume.letter === 'P' ? '#fff9f1'
+                : volume.letter === 'H' ? '#fce7f7'
+                : volume.letter === 'A' ? '#f1e8da'
+                : volume.letter === 'S' ? '#fbd7f1'
+                : '#e8dec9',
+            }}
+          >
+            <div className="absolute top-6 left-6 right-6 flex items-center justify-between">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-ink/50">The PHASE™</span>
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-ink/50">VOL. {volume.numeral}</span>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span
+                className="font-serif italic leading-none"
+                style={{
+                  fontSize: 'clamp(10rem, 22vw, 18rem)',
+                  color: volume.letter === 'A' ? '#1a1410' : volume.letter === 'S' ? '#1d2f3d' : '#c95cb0',
+                  fontWeight: 500,
+                  letterSpacing: '-0.04em',
+                }}
+              >
+                {volume.letter}
+              </span>
+            </div>
+            <div className="absolute bottom-6 left-6 right-6 text-center">
+              <p className="font-serif text-xl text-ink/80 italic">{volume.title}</p>
+            </div>
           </div>
         </div>
 

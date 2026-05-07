@@ -115,7 +115,7 @@ export const VOLUMES: Volume[] = [
       'Women considering HRT and unsure where to start',
       'Women who have been dismissed by multiple providers',
       'Women who want the actual lab list to bring to an appointment',
-      'Anyone navigating the JOi + Blokes Health telehealth route or local provider search',
+      'Anyone navigating the Joi + Blokes Health telehealth route or local provider search',
     ],
     whoNotFor: [
       'Women already on a protocol they trust (you can still use the tracker)',

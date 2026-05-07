@@ -88,7 +88,7 @@ export default function DisclaimerPage() {
 
           <h2 className="font-serif text-3xl mt-12 mb-4">Affiliate disclosure</h2>
           <p>
-            Some links on this site are affiliate links, including links to JOi + Blokes Health (telehealth hormone optimization) and Amazon Associates. When you click and purchase, we may receive a commission at no additional cost to you. We only recommend products and services we personally use or have personal experience with. Affiliate relationships do not influence the editorial content of The PHASE™.
+            Some links on this site are affiliate links, including links to Joi + Blokes Health (telehealth hormone optimization) and Amazon Associates. When you click and purchase, we may receive a commission at no additional cost to you. We only recommend products and services we personally use or have personal experience with. Affiliate relationships do not influence the editorial content of The PHASE™.
           </p>
 
           <p className="border-t border-navy/20 pt-6 mt-12 italic">

@@ -1,52 +1,101 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import type { Volume } from '@/lib/volumes';
 
+// Brand color palette for each volume cover (matches PHASE acronym warmth)
+const COVER_COLORS: Record<string, { bg: string; accent: string }> = {
+  P: { bg: '#fff9f1', accent: '#f086dc' },
+  H: { bg: '#fce7f7', accent: '#c95cb0' },
+  A: { bg: '#f1e8da', accent: '#1a1410' },
+  S: { bg: '#fbd7f1', accent: '#1d2f3d' },
+  E: { bg: '#e8dec9', accent: '#c95cb0' },
+};
+
 export function VolumeCard({ volume }: { volume: Volume }) {
+  const colors = COVER_COLORS[volume.letter] ?? { bg: '#faf5ee', accent: '#1a1410' };
+
   return (
-    <article className="group relative bg-cream-alt rounded-sm border border-navy/10 p-6 hover:border-pink/40 transition-all hover:shadow-md">
-      {/* Cover image */}
-      <Link href={`/vol/${volume.slug}`} className="block mb-5 aspect-[4/5] relative overflow-hidden bg-navy/5">
-        <Image
-          src={volume.coverImage}
-          alt={`${volume.fullTitle} cover`}
-          fill
-          sizes="(min-width: 768px) 22vw, 90vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          priority={volume.number <= 2}
+    <article className="group relative bg-cream-alt rounded-sm border border-rule p-6 hover:border-pink/40 transition-all hover:shadow-md">
+      {/* CSS-rendered editorial cover · giant letter on warm cream */}
+      <Link
+        href={`/vol/${volume.slug}`}
+        className="block mb-5 aspect-[4/5] relative overflow-hidden border border-ink/10 group-hover:border-pink/30 transition-colors"
+        style={{ backgroundColor: colors.bg }}
+        aria-label={`Open ${volume.fullTitle}`}
+      >
+        {/* Top eyebrow */}
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
+            The PHASE™
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
+            VOL. {volume.numeral}
+          </span>
+        </div>
+
+        {/* Giant typographic letter */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span
+            className="font-serif italic leading-none"
+            style={{
+              fontSize: 'clamp(7rem, 18vw, 12rem)',
+              color: colors.accent,
+              fontWeight: 500,
+              letterSpacing: '-0.04em',
+              transform: 'translateY(-0.05em)',
+            }}
+          >
+            {volume.letter}
+          </span>
+        </div>
+
+        {/* Bottom title */}
+        <div className="absolute bottom-4 left-4 right-4 text-center">
+          <p className="font-serif text-base text-ink/80 italic leading-tight">
+            {volume.title}
+          </p>
+        </div>
+
+        {/* Subtle pink corner accent */}
+        <div
+          className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2"
+          style={{ borderColor: colors.accent }}
+        />
+        <div
+          className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2"
+          style={{ borderColor: colors.accent }}
         />
       </Link>
 
       {/* Volume number eyebrow */}
       <div className="eyebrow text-xs flex items-center gap-2 mb-2">
-        <span className="text-pink font-bold">{volume.letter}</span>
-        <span className="text-navy/40">·</span>
+        <span className="text-pink-deep font-bold">{volume.letter}</span>
+        <span className="text-ink/40">·</span>
         <span>VOL. {volume.numeral}</span>
       </div>
 
       {/* Title */}
       <h3 className="font-serif text-2xl mb-2">
-        <Link href={`/vol/${volume.slug}`} className="hover:text-pink transition">
+        <Link href={`/vol/${volume.slug}`} className="hover:text-pink-deep transition">
           {volume.title}
         </Link>
       </h3>
 
       {/* Tagline */}
-      <p className="text-navy/70 text-sm leading-relaxed mb-5 italic font-serif">
+      <p className="text-ink/70 text-sm leading-relaxed mb-5 italic font-serif">
         {volume.tagline}
       </p>
 
       {/* Price + CTA */}
-      <div className="flex items-center justify-between border-t border-navy/10 pt-4">
-        <span className="font-serif text-xl">
+      <div className="flex items-center justify-between border-t border-rule pt-4">
+        <span className="font-serif text-2xl text-ink">
           ${volume.price}
         </span>
         <Link
           href={`/vol/${volume.slug}`}
-          className="eyebrow text-xs text-navy hover:text-pink transition"
+          className="inline-flex items-center gap-1 px-4 py-2 bg-ink text-cream text-xs font-semibold tracking-[0.1em] uppercase hover:bg-pink-deep transition-colors"
           aria-label={`Read more about ${volume.fullTitle}`}
         >
-          Read more →
+          Read more <span aria-hidden>→</span>
         </Link>
       </div>
     </article>

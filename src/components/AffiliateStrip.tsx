@@ -19,7 +19,7 @@ export function AffiliateStrip({ variant = 'home' }: AffiliateStripProps) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* JOi + Blokes Health */}
+          {/* Joi + Blokes Health */}
           <a
             href={AFFILIATE_LINKS.joiAndBlokes}
             target="_blank"
@@ -27,7 +27,7 @@ export function AffiliateStrip({ variant = 'home' }: AffiliateStripProps) {
             className="group block bg-cream rounded-sm border border-navy/10 p-8 hover:border-pink/40 transition-all hover:shadow-md"
           >
             <div className="eyebrow text-xs text-pink mb-3">TELEHEALTH HRT</div>
-            <h3 className="font-serif text-2xl mb-3">JOi + Blokes Health</h3>
+            <h3 className="font-serif text-2xl mb-3">Joi + Blokes Health</h3>
             <p className="text-navy/70 leading-relaxed mb-4">
               National telehealth platform for hormone optimization. Board-certified providers, full panels, customizable HRT delivered. Best when you cannot find a local provider who partners.
             </p>

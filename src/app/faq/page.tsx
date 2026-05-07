@@ -49,11 +49,11 @@ const SECTIONS: FAQSection[] = [
     items: [
       {
         question: 'Are there affiliate links on this site?',
-        answer: 'Yes. The PHASE™ uses affiliate links for two partners: JOi + Blokes Health (telehealth hormone optimization) and Amazon Associates (the My Hormone Stack idea list at amazon.com/shop/erikahanafin). When you click an affiliate link and purchase, Erika may earn a commission at no additional cost to you. In some cases (JOi + Blokes Health), you receive a discount when using her referral link.',
+        answer: 'Yes. The PHASE™ uses affiliate links for two partners: Joi + Blokes Health (telehealth hormone optimization) and Amazon Associates (the My Hormone Stack idea list at amazon.com/shop/erikahanafin). When you click an affiliate link and purchase, Erika may earn a commission at no additional cost to you. In some cases (Joi + Blokes Health), you receive a discount when using her referral link.',
       },
       {
-        question: 'Why does The PHASE™ recommend JOi + Blokes Health?',
-        answer: 'Erika personally uses telehealth as one path to hormone care. JOi + Blokes Health is featured because it is a national platform with board-certified providers, full panels, and customizable HRT protocols. Her referral code (003UI00000gvOFcYAM) gives readers $50 off their first order. The recommendation is editorial, not paid placement. She would recommend it whether the affiliate program existed or not.',
+        question: 'Why does The PHASE™ recommend Joi + Blokes Health?',
+        answer: 'Erika personally uses telehealth as one path to hormone care. Joi + Blokes Health is featured because it is a national platform with board-certified providers, full panels, and customizable HRT protocols. Her referral code (003UI00000gvOFcYAM) gives readers $50 off their first order. The recommendation is editorial, not paid placement. She would recommend it whether the affiliate program existed or not.',
       },
       {
         question: 'Why does The PHASE™ link to an Amazon storefront?',

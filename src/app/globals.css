@@ -130,55 +130,85 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.875rem 1.5rem;
-  background-color: var(--bg-navy);
-  color: var(--text-cream);
-  font-family: var(--font-inter-tight), sans-serif;
-  font-weight: 500;
+  padding: 1rem 1.75rem;
+  background-color: var(--ink);
+  color: var(--bg-cream);
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
   font-size: 0.875rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  border: 1px solid var(--bg-navy);
+  border: 1.5px solid var(--ink);
   transition: all 0.2s ease;
   cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(26, 20, 16, 0.12);
 }
 
 .btn-primary:hover {
-  background-color: var(--bg-navy-deep);
-  border-color: var(--bg-navy-deep);
+  background-color: var(--ink);
+  border-color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(26, 20, 16, 0.2);
 }
 
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.875rem 1.5rem;
+  padding: 1rem 1.75rem;
   background-color: transparent;
-  color: var(--text-primary);
-  font-family: var(--font-inter-tight), sans-serif;
-  font-weight: 500;
+  color: var(--ink);
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
   font-size: 0.875rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  border: 1px solid var(--text-primary);
+  border: 1.5px solid var(--ink);
   transition: all 0.2s ease;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .btn-secondary:hover {
-  background-color: var(--text-primary);
+  background-color: var(--ink);
   color: var(--bg-cream);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(26, 20, 16, 0.15);
 }
 
 .btn-pink {
-  background-color: var(--pink);
-  color: var(--bg-cream);
-  border-color: var(--pink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.75rem;
+  background-color: var(--pink-deep);
+  color: #ffffff;
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--pink-deep);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(201, 92, 176, 0.35);
 }
 
 .btn-pink:hover {
-  background-color: var(--pink-deep);
-  border-color: var(--pink-deep);
+  background-color: #b04893;
+  border-color: #b04893;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201, 92, 176, 0.5);
+}
+
+/* Override price label inside buttons so it stays readable */
+.btn-pink .price-label,
+.btn-primary .price-label {
+  color: #ffffff;
+  opacity: 0.9;
+  font-weight: 500;
 }
 
 /* Pull quote block */

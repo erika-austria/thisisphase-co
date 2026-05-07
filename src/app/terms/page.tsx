@@ -73,7 +73,7 @@ export default function TermsPage() {
 
           <h2 className="font-serif text-3xl mt-12 mb-4">6. Affiliate links</h2>
           <p>
-            This site contains affiliate links. As an Amazon Associate we earn from qualifying purchases. JOi + Blokes referrals may result in compensation. We only recommend products and services we personally use.
+            This site contains affiliate links. As an Amazon Associate we earn from qualifying purchases. Joi + Blokes referrals may result in compensation. We only recommend products and services we personally use.
           </p>
 
           <h2 className="font-serif text-3xl mt-12 mb-4">7. Changes</h2>
