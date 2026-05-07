@@ -4,6 +4,7 @@ import { ROOT_METADATA } from '@/lib/seo';
 import { ORGANIZATION_SCHEMA, PERSON_SCHEMA, WEBSITE_SCHEMA } from '@/lib/schema';
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
+import { AnalyticsScripts } from '@/components/AnalyticsScripts';
 import './globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main id="main">{children}</main>
         <Footer />
+        <AnalyticsScripts />
       </body>
     </html>
   );
