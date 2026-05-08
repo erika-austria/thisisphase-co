@@ -8,18 +8,30 @@ export function Nav() {
           <span className="text-pink font-serif italic text-3xl leading-none group-hover:text-pink-deep transition">
             ⌐
           </span>
-          <span className="font-serif text-xl tracking-tightest">
-            The <span className="italic text-pink">PHASE</span>
+          <span className="font-serif text-xl tracking-tightest text-navy">
+            The <span className="italic">
+              <span className="text-pink font-bold">P</span><span className="text-pink font-bold">H</span><span className="text-pink font-bold">A</span><span className="text-pink font-bold">S</span><span className="text-pink font-bold">E</span>
+            </span>
             <sup className="text-xs ml-0.5">™</sup>
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8 eyebrow text-sm">
-          <Link href="/vol/perimenopause" className="hover:text-pink transition">Perimenopause</Link>
-          <Link href="/vol/hormones" className="hover:text-pink transition">Hormones</Link>
-          <Link href="/vol/architecture" className="hover:text-pink transition">Architecture</Link>
-          <Link href="/vol/self-trust" className="hover:text-pink transition">Self-trust</Link>
-          <Link href="/vol/execution" className="hover:text-pink transition">Execution</Link>
+        <div className="hidden md:flex items-center gap-8 eyebrow text-sm text-navy">
+          <Link href="/vol/perimenopause" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">P</span>erimenopause
+          </Link>
+          <Link href="/vol/hormones" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">H</span>ormones
+          </Link>
+          <Link href="/vol/architecture" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">A</span>rchitecture
+          </Link>
+          <Link href="/vol/self-trust" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">S</span>elf-trust
+          </Link>
+          <Link href="/vol/execution" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">E</span>xecution
+          </Link>
           <Link href="/about" className="hover:text-pink transition">About</Link>
         </div>
 

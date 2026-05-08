@@ -73,26 +73,26 @@ export function VolumeCard({ volume }: { volume: Volume }) {
         <span>VOL. {volume.numeral}</span>
       </div>
 
-      {/* Title */}
-      <h3 className="font-serif text-2xl mb-2">
+      {/* Title · navy to match brand system across erikahanafin.com + momumentalmoments.co */}
+      <h3 className="font-serif text-2xl mb-2 text-navy">
         <Link href={`/vol/${volume.slug}`} className="hover:text-pink-deep transition">
           {volume.title}
         </Link>
       </h3>
 
       {/* Tagline · flex-grow pushes price/CTA to bottom equally across cards */}
-      <p className="text-ink/70 text-sm leading-relaxed mb-5 italic font-serif flex-grow">
+      <p className="text-navy/70 text-sm leading-relaxed mb-5 italic font-serif flex-grow">
         {volume.tagline}
       </p>
 
-      {/* Price + CTA · pinned to bottom */}
+      {/* Price + CTA · pinned to bottom · navy text + pink CTA button matches brand */}
       <div className="flex items-center justify-between border-t border-rule pt-4 mt-auto">
-        <span className="font-serif text-2xl text-ink">
+        <span className="font-serif text-2xl text-navy">
           ${volume.price}
         </span>
         <Link
           href={`/vol/${volume.slug}`}
-          className="inline-flex items-center gap-1 px-4 py-2 bg-ink text-white text-xs font-semibold tracking-[0.1em] uppercase hover:bg-pink-deep transition-colors"
+          className="inline-flex items-center gap-1 px-4 py-2 bg-navy text-white text-xs font-semibold tracking-[0.1em] uppercase hover:bg-pink-deep transition-colors"
           aria-label={`Read more about ${volume.fullTitle}`}
         >
           Read more <span aria-hidden>→</span>
