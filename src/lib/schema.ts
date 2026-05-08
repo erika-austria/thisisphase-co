@@ -8,6 +8,7 @@ import { VOLUMES, SERIES, JOURNAL, type Volume } from './volumes';
 
 const SITE_URL = 'https://thisisphase.co';
 const ERIKA_URL = 'https://erikahanafin.com';
+const MOMUMENTAL_URL = 'https://momumentalmoments.co';
 
 export const ORGANIZATION_SCHEMA = {
   '@context': 'https://schema.org',
@@ -20,8 +21,9 @@ export const ORGANIZATION_SCHEMA = {
   description: 'A five-volume women\'s reinvention series mapping perimenopause, hormones, daily architecture, self-trust, and execution. From MOMumental Moments®.',
   parentOrganization: {
     '@type': 'Organization',
+    '@id': `${MOMUMENTAL_URL}/#org`,
     name: 'MOMumental Moments®',
-    url: ERIKA_URL,
+    url: MOMUMENTAL_URL,
   },
   founder: {
     '@type': 'Person',
@@ -29,8 +31,9 @@ export const ORGANIZATION_SCHEMA = {
     name: 'Erika Hanafin Austria',
   },
   sameAs: [
+    MOMUMENTAL_URL,
     'https://www.instagram.com/thisisphaseco',
-    'https://www.instagram.com/erikahanafinaustria',
+    'https://www.instagram.com/erikahanafin',
     'https://www.momumentalreinvention.com',
     ERIKA_URL,
   ],
@@ -46,8 +49,9 @@ export const PERSON_SCHEMA = {
   url: ERIKA_URL,
   image: `${ERIKA_URL}/images/erika-portrait.jpg`,
   sameAs: [
-    'https://www.linkedin.com/in/erikahanafinaustria',
-    'https://www.instagram.com/erikahanafinaustria',
+    MOMUMENTAL_URL,
+    'https://www.linkedin.com/in/erikahanafin',
+    'https://www.instagram.com/erikahanafin',
     'https://www.instagram.com/thisisphaseco',
     'https://www.momumentalreinvention.com',
   ],

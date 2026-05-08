@@ -13,7 +13,7 @@ export function Footer() {
             Five volumes. One body-truth. Built for the woman who walked out of her fourth doctor&apos;s office with no answers.
           </p>
           <p className="mt-6 text-cream/60 text-sm">
-            From <Link href="https://erikahanafin.com" className="text-pink hover:underline">MOMumental Moments®</Link>
+            From <Link href="https://momumentalmoments.co" className="text-pink hover:underline">MOMumental Moments®</Link>
           </p>
         </div>
 
@@ -37,6 +37,7 @@ export function Footer() {
             <li><Link href="/about" className="hover:text-pink transition">About</Link></li>
             <li><Link href="/community" className="hover:text-pink transition">Community</Link></li>
             <li><Link href="/faq" className="hover:text-pink transition">FAQ</Link></li>
+            <li><Link href="https://momumentalmoments.co" className="hover:text-pink transition">MOMumental Moments® →</Link></li>
             <li><Link href="https://erikahanafin.com" className="hover:text-pink transition">erikahanafin.com →</Link></li>
           </ul>
         </div>
