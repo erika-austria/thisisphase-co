@@ -22,12 +22,12 @@ export function VolumeCard({ volume }: { volume: Volume }) {
         style={{ backgroundColor: colors.bg }}
         aria-label={`Open ${volume.fullTitle}`}
       >
-        {/* Top eyebrow */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
+        {/* Top eyebrow · whitespace-nowrap prevents VOL. II from wrapping */}
+        <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink/50 whitespace-nowrap">
             The PHASE™
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
+          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink/50 whitespace-nowrap">
             VOL. {volume.numeral}
           </span>
         </div>
