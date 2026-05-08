@@ -34,11 +34,11 @@ export type Product = {
 };
 
 // ────────────────────────────────────────────────────────────────────────────
-// PDF URLs · UPDATE THESE after uploading to Vercel Blob
-// Pattern: https://blob.vercel-storage.com/[hash]/[filename].pdf
+// PDF URLs · Vercel Blob (public) · store thisisphase-co-blob · IAD1 region
+// Updated Friday May 8 · all 8 PDFs uploaded · canonical URLs locked
 // ────────────────────────────────────────────────────────────────────────────
 
-const PDF_BASE = "https://thisisphase.co/pdfs"; // placeholder · move to Vercel Blob in production
+const PDF_BASE = "https://dpo02ztmhn6nty5u.public.blob.vercel-storage.com";
 
 export const PRODUCTS: Record<ProductKey, Product> = {
   vol1: {
@@ -107,7 +107,7 @@ export const PRODUCTS: Record<ProductKey, Product> = {
     fullTitle: "The PHASE™ · The Series · All Five Volumes",
     pillar: "body-truth",
     price: 97,
-    pdfUrl: `${PDF_BASE}/the-phase-series-bundle.zip`, // bundles all 5 vols
+    pdfUrl: `${PDF_BASE}/the-phase-series-all-five.zip`,
     pdfFilename: "The-PHASE-Series-All-Five-Volumes.zip",
     crossSellKey: "journal",
     crossSellPitch:
