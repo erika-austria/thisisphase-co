@@ -88,9 +88,9 @@ export default function AboutPage() {
             <li className="flex gap-3"><span className="text-pink">●</span> IIN Certified Holistic Health Coach</li>
             <li className="flex gap-3"><span className="text-pink">●</span> Founder of The PHASE™</li>
             <li className="flex gap-3"><span className="text-pink">●</span> Founder of MOMumental Moments®</li>
+            <li className="flex gap-3"><span className="text-pink">●</span> Publisher of MOMumental Reinvention</li>
             <li className="flex gap-3"><span className="text-pink">●</span> 5x Acquisition CEO</li>
             <li className="flex gap-3"><span className="text-pink">●</span> 2x Top 50 Women Leaders Virginia</li>
-            <li className="flex gap-3"><span className="text-pink">●</span> Publisher · MOMumental Reinvention (57K+ readers)</li>
             <li className="flex gap-3"><span className="text-pink">●</span> Pepperdine SEC Advisory Board</li>
           </ul>
         </div>
@@ -109,16 +109,22 @@ export default function AboutPage() {
       </section>
 
       <section className="bg-cream-alt py-20 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="eyebrow text-xs mb-3">KEEP GOING</p>
-          <h2 className="font-serif text-4xl md:text-5xl mb-8">
-            More from the empire.
-          </h2>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="https://erikahanafin.com" className="btn-primary">erikahanafin.com →</Link>
-            <Link href="https://www.momumentalreinvention.com" className="btn-secondary">MOMumental Reinvention Substack →</Link>
-            <Link href="/series" className="btn-pink">Get the PHASE™ Series →</Link>
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="eyebrow text-xs mb-6">STAY CLOSE</p>
+          <p className="font-serif italic text-2xl md:text-3xl text-navy/80 leading-relaxed mb-10">
+            If The PHASE™ is for you, I write every Tuesday on Substack. That is where I keep going.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center text-sm">
+            <Link href="https://www.momumentalreinvention.com" className="text-pink-deep hover:text-pink underline-offset-4 hover:underline transition">
+              MOMumental Reinvention Substack →
+            </Link>
+            <Link href="https://erikahanafin.com" className="text-navy/70 hover:text-navy underline-offset-4 hover:underline transition">
+              erikahanafin.com →
+            </Link>
           </div>
+          <p className="font-serif italic text-pink mt-12">
+            MOMumentally, Erika
+          </p>
         </div>
       </section>
     </>

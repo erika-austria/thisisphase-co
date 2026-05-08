@@ -23,7 +23,7 @@ const FAQS = [
   { question: 'How is the Series different from buying volumes individually?', answer: 'You save $38. Five volumes at $27 each is $135. The Series is $97. Same volumes, same digital format, just bundled.' },
   { question: 'Is this medical advice?', answer: 'No. The PHASE™ is educational content from a certified holistic health coach. Always consult your healthcare provider before making changes to medications, supplements, or treatment protocols.' },
   { question: 'How long do I have access?', answer: 'Forever. The PDFs are yours to keep, print, and reference whenever you need them.' },
-  { question: 'What if I want updates and community access too?', answer: 'Upgrade to the Lifetime Pass at $197. Includes all 5 volumes plus every future update plus founding-cohort community access for life.' },
+  { question: 'Are there companion products?', answer: 'Yes. The Reflections Journal ($19) is the emotional companion. Decode Your Symptoms ($19) is the action companion with worksheets. Both pair beautifully with The Series.' },
   { question: 'Can I share with my sister or friend?', answer: 'Each purchase is for personal use. If you want to gift it, please buy a second copy.' },
 ];
 
@@ -120,7 +120,7 @@ export default function SeriesPage() {
         <p className="text-cream/80 mb-8 max-w-md mx-auto">Saves $38. Most popular. Yours forever.</p>
         <StripeButton href={STRIPE_LINKS.series} label="Get the Series" variant="pink" />
         <p className="mt-6 text-sm text-cream/60">
-          Want updates and community for life? <Link href="/lifetime" className="text-pink hover:underline">See the Lifetime Pass →</Link>
+          Want a deeper companion? <Link href="/journal" className="text-pink hover:underline">The Journal</Link> or <Link href="/decode" className="text-pink hover:underline">Decode Your Symptoms</Link>, $19 each.
         </p>
       </section>
     </>

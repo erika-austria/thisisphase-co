@@ -37,7 +37,7 @@ export default function ThanksPage() {
             </li>
             <li className="flex gap-3">
               <span className="font-serif text-pink text-2xl flex-shrink-0">02</span>
-              <span>If you bought The Series or Lifetime Pass, all volumes arrive in one welcome email.</span>
+              <span>If you bought The Series, all five volumes arrive in one welcome email.</span>
             </li>
             <li className="flex gap-3">
               <span className="font-serif text-pink text-2xl flex-shrink-0">03</span>

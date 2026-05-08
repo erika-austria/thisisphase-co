@@ -67,7 +67,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="text-sm text-navy/50 mt-6 italic">
-              Or buy any volume individually for $27. Lifetime pass $197.
+              Or buy any volume individually for $27. Companions $19 each.
             </p>
           </div>
 

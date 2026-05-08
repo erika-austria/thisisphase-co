@@ -76,7 +76,7 @@ const SECTIONS: FAQSection[] = [
       },
       {
         question: 'How long do I have access to my volume(s)?',
-        answer: 'Forever. Once delivered, the PDF is yours to keep. There is no subscription, no expiration, and no recurring charge. The PHASE™ Lifetime Pass adds future updates and community access.',
+        answer: 'Forever. Once delivered, the PDF is yours to keep. There is no subscription, no expiration, and no recurring charge.',
       },
       {
         question: 'I did not receive my email. What do I do?',
@@ -92,26 +92,11 @@ const SECTIONS: FAQSection[] = [
       },
       {
         question: 'What happens if I bought The Series and a new volume is published later?',
-        answer: 'The Series ($97) includes the five current volumes only. The Lifetime Pass ($197) includes all current volumes plus every future volume Erika ever releases. To upgrade from Series to Lifetime, email erika@erikahanafin.com.',
-      },
-    ],
-  },
-  {
-    id: 'community',
-    title: 'Community + Lifetime Pass',
-    eyebrow: 'FOUNDING COHORT',
-    items: [
-      {
-        question: 'What is the founding cohort?',
-        answer: 'The founding cohort is the first community of Lifetime Pass holders. It includes a private community space, monthly Lives with Erika, and direct access to ask questions about the PHASE™ frameworks. Specific platform and cadence will be announced to Lifetime Pass holders before launch.',
+        answer: 'The Series ($97) includes the five current volumes. If a new volume is added in the future, existing Series holders will receive an email with the option to add it to their library.',
       },
       {
-        question: 'When does the community open?',
-        answer: 'Date to be announced. Lifetime Pass holders will receive email updates as community details are finalized. Your Lifetime Pass purchase reserves your founding-cohort spot regardless of when the community formally launches.',
-      },
-      {
-        question: 'Is there a refund on the Lifetime Pass?',
-        answer: 'Same policy as individual volumes. All digital sales are final. The Lifetime Pass includes immediate access to all current volumes plus locked-in community access.',
+        question: 'Are there companion products to the Series?',
+        answer: 'Yes. The Reflections Journal ($19) is the emotional companion for processing what comes up. Decode Your Symptoms ($19) is the action companion with worksheets and a tracking system. Both are sold separately and can be added to any volume or Series purchase.',
       },
     ],
   },
