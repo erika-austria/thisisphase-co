@@ -17,7 +17,16 @@ export const STRIPE_LINKS = {
   decode: 'https://buy.stripe.com/28EeVd51sfom8YjedHeEo08',
 } as const;
 
-export function getStripeLinkForVolume(slug: string): string {
+/**
+ * Get the Stripe checkout link for a volume.
+ * @param slug · the volume slug (perimenopause, hormones, architecture, self-trust, execution)
+ * @param tier · 'entry' returns the individual $27 volume link · 'anchor' returns the $97 Series upsell link
+ */
+export function getStripeLinkForVolume(
+  slug: string,
+  tier: 'entry' | 'anchor' = 'entry'
+): string {
+  if (tier === 'anchor') return STRIPE_LINKS.series;
   const key = `vol${slug === 'perimenopause' ? '1' : slug === 'hormones' ? '2' : slug === 'architecture' ? '3' : slug === 'self-trust' ? '4' : '5'}` as keyof typeof STRIPE_LINKS;
   return STRIPE_LINKS[key] ?? '#';
 }

@@ -21,22 +21,29 @@ export const HAS_TIKTOK = Boolean(TIKTOK_PIXEL_ID);
  * Track a custom event across all configured platforms.
  * Useful for Buy button clicks, scroll-depth, video plays, etc.
  */
+type WindowWithPixels = Window & {
+  gtag?: (...args: unknown[]) => void;
+  fbq?: (...args: unknown[]) => void;
+  ttq?: { track: (...args: unknown[]) => void };
+};
+
 export function trackEvent(name: string, params?: Record<string, unknown>) {
   if (typeof window === 'undefined') return;
+  const w = window as WindowWithPixels;
 
   // GA4
-  if (HAS_GA4 && (window as { gtag?: (...args: unknown[]) => void }).gtag) {
-    (window as { gtag: (...args: unknown[]) => void }).gtag('event', name, params ?? {});
+  if (HAS_GA4 && w.gtag) {
+    w.gtag('event', name, params ?? {});
   }
 
   // Meta Pixel
-  if (HAS_META && (window as { fbq?: (...args: unknown[]) => void }).fbq) {
-    (window as { fbq: (...args: unknown[]) => void }).fbq('trackCustom', name, params ?? {});
+  if (HAS_META && w.fbq) {
+    w.fbq('trackCustom', name, params ?? {});
   }
 
   // TikTok Pixel
-  if (HAS_TIKTOK && (window as { ttq?: { track: (...args: unknown[]) => void } }).ttq) {
-    (window as { ttq: { track: (...args: unknown[]) => void } }).ttq.track(name, params ?? {});
+  if (HAS_TIKTOK && w.ttq) {
+    w.ttq.track(name, params ?? {});
   }
 }
 
