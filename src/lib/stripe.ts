@@ -1,4 +1,4 @@
-/**
+·/**
  * STRIPE CHECKOUT INTEGRATION
  * Direct Stripe Checkout links via Payment Links (no server needed for v1).
  * Replace placeholder URLs once products are created in Stripe dashboard.
