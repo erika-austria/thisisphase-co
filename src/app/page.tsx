@@ -13,8 +13,8 @@ import { EmailCapture } from '@/components/EmailCapture';
 import { StripeButton } from '@/components/StripeButton';
 
 export const metadata: Metadata = buildMetadata({
-  title: 'The PHASE™ · Five-Volume Women\'s Reinvention Series',
-  description: 'Five volumes. One body-truth. The map of perimenopause, hormones, daily architecture, self-trust, and execution. Built for women who walked out of their fourth doctor\'s office with no answers. From MOMumental Moments®.',
+  title: 'The PHASE™ · Five-Volume Women's Reinvention Series',
+  description: 'Five volumes. One body-truth. The map of perimenopause, hormones, daily architecture, self-trust, and execution. Built for women who walked out of their fourth doctor's office with no answers. From MOMumental Moments®.',
   path: '/',
   ogImage: '/og/home.jpg',
 });
@@ -59,7 +59,6 @@ export default function HomePage() {
               <StripeButton
                 href={STRIPE_LINKS.series}
                 label="Buy the Series"
-                price={97}
                 variant="primary"
               />
               <Link href="/series" className="btn-secondary">
@@ -67,7 +66,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="text-sm text-navy/50 mt-6 italic">
-              Or buy any volume individually for $27. Companions $19 each.
+              Or read each volume on its own page.
             </p>
           </div>
 
@@ -112,11 +111,10 @@ export default function HomePage() {
           <p className="font-serif italic text-2xl text-navy/70 mb-2">
             Or take all five.
           </p>
-          <p className="text-sm text-navy/60 mb-6">P + H + A + S + E. Saves $38.</p>
+          <p className="text-sm text-navy/60 mb-6">P + H + A + S + E. The full kit.</p>
           <StripeButton
             href={STRIPE_LINKS.series}
             label="Get the Series"
-            price={SERIES.price}
             variant="pink"
           />
         </div>
@@ -133,10 +131,10 @@ export default function HomePage() {
           </span>
           <p className="eyebrow eyebrow-with-dot text-xs mb-3">ALL FIVE VOLUMES</p>
           <h2 id="series-heading" className="font-serif text-4xl md:text-5xl mb-4">
-            The Series · <span className="italic text-pink">$97</span>
+            The <span className="italic text-pink">Series</span>
           </h2>
           <p className="text-navy/70 mb-2 text-lg">P + H + A + S + E.</p>
-          <p className="text-navy/70 mb-8">All five volumes. All daily templates. All frameworks. Saves $38.</p>
+          <p className="text-navy/70 mb-8">All five volumes. All daily templates. All frameworks. One drop.</p>
           <StripeButton href={STRIPE_LINKS.series} label="Buy the Series" variant="primary" />
         </div>
       </section>
@@ -154,7 +152,7 @@ export default function HomePage() {
           <div className="bg-cream-alt rounded-sm border border-rule p-10 flex flex-col">
             <p className="eyebrow eyebrow-with-dot text-xs mb-3">EMOTIONAL COMPANION</p>
             <h3 className="font-serif text-3xl md:text-4xl mb-3">
-              The Journal · <span className="italic text-pink">$19</span>
+              The Journal
             </h3>
             <p className="font-serif italic text-pink mb-4">A space to feel it, not fix it.</p>
             <p className="text-ink/70 mb-6 flex-grow leading-relaxed">
@@ -164,7 +162,7 @@ export default function HomePage() {
               <Link href="/journal" className="text-sm text-pink-deep hover:underline font-semibold">
                 Read more →
               </Link>
-              <StripeButton href={STRIPE_LINKS.journal} label="Buy · $19" variant="primary" />
+              <StripeButton href={STRIPE_LINKS.journal} label="Buy" variant="primary" />
             </div>
           </div>
 
@@ -172,7 +170,7 @@ export default function HomePage() {
           <div className="bg-cream-alt rounded-sm border border-rule p-10 flex flex-col">
             <p className="eyebrow eyebrow-with-dot text-xs mb-3">ACTION COMPANION</p>
             <h3 className="font-serif text-3xl md:text-4xl mb-3">
-              Decode Your Symptoms · <span className="italic text-pink">$19</span>
+              Decode Your Symptoms
             </h3>
             <p className="font-serif italic text-pink mb-4">Self-care is not soft. It is strategy.</p>
             <p className="text-ink/70 mb-6 flex-grow leading-relaxed">
@@ -182,7 +180,7 @@ export default function HomePage() {
               <Link href="/decode" className="text-sm text-pink-deep hover:underline font-semibold">
                 Read more →
               </Link>
-              <StripeButton href={STRIPE_LINKS.decode} label="Buy · $19" variant="primary" />
+              <StripeButton href={STRIPE_LINKS.decode} label="Buy" variant="primary" />
             </div>
           </div>
         </div>
