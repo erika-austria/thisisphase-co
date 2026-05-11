@@ -85,11 +85,8 @@ export function VolumeCard({ volume }: { volume: Volume }) {
         {volume.tagline}
       </p>
 
-      {/* Price + CTA · pinned to bottom · navy text + pink CTA button matches brand */}
-      <div className="flex items-center justify-between border-t border-rule pt-4 mt-auto">
-        <span className="font-serif text-2xl text-navy">
-          ${volume.price}
-        </span>
+      {/* CTA only · pricing lives on the volume page + Stripe checkout · cards drive cue/reward, not price-shop · CMO lock May 9 */}
+      <div className="flex items-center justify-end border-t border-rule pt-4 mt-auto">
         <Link
           href={`/vol/${volume.slug}`}
           className="inline-flex items-center gap-1 px-4 py-2 bg-navy text-white text-xs font-semibold tracking-[0.1em] uppercase hover:bg-pink-deep transition-colors"
