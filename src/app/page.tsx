@@ -13,8 +13,9 @@ import { EmailCapture } from '@/components/EmailCapture';
 import { StripeButton } from '@/components/StripeButton';
 
 export const metadata: Metadata = buildMetadata({
-  title: 'The PHASE™ · Five-Volume Women's Reinvention Series',
-  description: 'Five volumes. One body-truth. The map of perimenopause, hormones, daily architecture, self-trust, and execution. Built for women who walked out of their fourth doctor's office with no answers. From MOMumental Moments®.',
+  // buildMetadata appends " · The PHASE™" → no need to prefix it here
+  title: 'Five-Volume Women\'s Reinvention Series',
+  description: 'Five volumes. One body-truth. The map of perimenopause, hormones, daily architecture, self-trust, and execution. Built for women who walked out of their fourth doctor\'s office with no answers. From MOMumental Moments®.',
   path: '/',
   ogImage: '/og/home.jpg',
 });
