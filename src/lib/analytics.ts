@@ -2,7 +2,8 @@
  * Analytics + Retargeting Configuration
  *
  * Set these env variables in Vercel project settings:
- *   NEXT_PUBLIC_GA4_ID = G-XXXXXXXXXX
+ *   NEXT_PUBLIC_GA4_ID = G-XXXXXXXXXX            (GA4 measurement ID · analytics)
+ *   NEXT_PUBLIC_GOOGLE_ADS_ID = AW-XXXXXXXXX     (Google Ads conversion ID · direct conversion tracking)
  *   NEXT_PUBLIC_META_PIXEL_ID = 1234567890123456
  *   NEXT_PUBLIC_TIKTOK_PIXEL_ID = (optional)
  *
@@ -10,10 +11,12 @@
  */
 
 export const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID ?? '';
+export const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? 'AW-16900561116';
 export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? '';
 export const TIKTOK_PIXEL_ID = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID ?? '';
 
 export const HAS_GA4 = Boolean(GA4_ID);
+export const HAS_GOOGLE_ADS = Boolean(GOOGLE_ADS_ID);
 export const HAS_META = Boolean(META_PIXEL_ID);
 export const HAS_TIKTOK = Boolean(TIKTOK_PIXEL_ID);
 
