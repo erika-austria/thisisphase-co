@@ -35,7 +35,8 @@ export function buildMetadata({
   const fullOgImage = ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`;
 
   return {
-    title: fullTitle,
+    // absolute prevents layout-level template from double-appending " · The PHASE™"
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical: url },
     robots: noIndex ? { index: false, follow: false } : { index: true, follow: true },
@@ -68,7 +69,8 @@ export const ROOT_METADATA: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: 'The PHASE™ · Five-Volume Women\'s Reinvention Series',
-    template: '%s · The PHASE™',
+    // template removed May 11 · per-page titles use absolute (see buildMetadata above)
+    template: '%s',
   },
   description: DEFAULT_DESCRIPTION,
   applicationName: SITE_NAME,
