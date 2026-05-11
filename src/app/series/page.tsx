@@ -20,10 +20,10 @@ export const metadata: Metadata = buildMetadata({
 
 const FAQS = [
   { question: 'What do I get with The Series?', answer: 'All five volumes of The PHASE™ as digital PDF workbooks. Perimenopause (Vol. I), Hormones (Vol. II), Architecture (Vol. III), Self-trust (Vol. IV), and Execution (Vol. V). Delivered to your inbox immediately after purchase.' },
-  { question: 'How is the Series different from buying volumes individually?', answer: 'You save $38. Five volumes at $27 each is $135. The Series is $97. Same volumes, same digital format, just bundled.' },
+  { question: 'How is the Series different from buying volumes individually?', answer: 'The Series bundles all five volumes at the lowest combined price. Same volumes, same digital format, just bundled into one drop.' },
   { question: 'Is this medical advice?', answer: 'No. The PHASE™ is educational content from a certified holistic health coach. Always consult your healthcare provider before making changes to medications, supplements, or treatment protocols.' },
   { question: 'How long do I have access?', answer: 'Forever. The PDFs are yours to keep, print, and reference whenever you need them.' },
-  { question: 'Are there companion products?', answer: 'Yes. The Reflections Journal ($19) is the emotional companion. Decode Your Symptoms ($19) is the action companion with worksheets. Both pair beautifully with The Series.' },
+  { question: 'Are there companion products?', answer: 'Yes. The Reflections Journal is the emotional companion. Decode Your Symptoms is the action companion with worksheets. Both pair beautifully with The Series.' },
   { question: 'Can I share with my sister or friend?', answer: 'Each purchase is for personal use. If you want to gift it, please buy a second copy.' },
 ];
 
@@ -47,7 +47,7 @@ export default function SeriesPage() {
       <MagazineMasthead
         issue="THE PHASE™ · THE SERIES"
         topics={['ALL FIVE VOLUMES']}
-        publishingNote="MOST POPULAR · SAVES $38"
+        publishingNote="MOST POPULAR"
       />
 
       <section className="max-w-content mx-auto px-6 pt-16 md:pt-20 pb-20 grid md:grid-cols-2 gap-12 items-center">
@@ -120,7 +120,7 @@ export default function SeriesPage() {
         <p className="text-cream/80 mb-8 max-w-md mx-auto">Saves $38. Most popular. Yours forever.</p>
         <StripeButton href={STRIPE_LINKS.series} label="Get the Series" variant="pink" />
         <p className="mt-6 text-sm text-cream/60">
-          Want a deeper companion? <Link href="/journal" className="text-pink hover:underline">The Journal</Link> or <Link href="/decode" className="text-pink hover:underline">Decode Your Symptoms</Link>, $19 each.
+          Want a deeper companion? <Link href="/journal" className="text-pink hover:underline">The Journal</Link> or <Link href="/decode" className="text-pink hover:underline">Decode Your Symptoms</Link>.
         </p>
       </section>
     </>
