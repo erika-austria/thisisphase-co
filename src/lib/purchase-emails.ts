@@ -322,43 +322,59 @@ export function buildCheckInEmail(productKey: ProductKey, customerEmail: string)
   return { subject, html, text, customerEmail };
 }
 
-// ─── Day 7 · Offer · cross-sell or Series upgrade ─────────────────────────
+// ─── Day 7 · Offer · same-tier $17 companion (Kajabi-data-locked) ─────────
 
 /**
  * Sent 7 days after purchase. The conversion email.
- * Single-volume buyers → Series upgrade ($97 saves $38).
- * Series + Journal + Decode buyers → cross-sell to the next logical volume.
+ * v1.1 LOCKED RULE (per Kajabi historical data · 43% attach rate at $17):
+ *   - Single-volume buyers ($27) → offer Decode Your Symptoms ($17) · same-tier companion
+ *   - Series buyers ($97) → offer Decode Your Symptoms ($17) · symptoms-first deep dive
+ *   - Journal buyers ($17) → offer Vol I Perimenopause ($27) · next step
+ *   - Decode buyers ($17) → offer Vol I Perimenopause ($27) · next step
+ * The Series upgrade ($97) is RESERVED for Day 21 follow-up (not this email)
+ * because historical data shows buyers convert on $17 add-ons, not $97 jumps.
  */
 export function buildOfferEmail(productKey: ProductKey, customerEmail: string) {
   const product = PRODUCTS[productKey];
-  const crossSell = product.crossSellKey ? PRODUCTS[product.crossSellKey] : null;
-  const isSingleVol = productKey.startsWith("vol");
 
-  // Single-volume buyers get a Series upgrade offer; everyone else gets the registered cross-sell.
-  const offerKey: ProductKey = isSingleVol ? "series" : (product.crossSellKey ?? "series");
+  // Kajabi-locked offer routing · always offer a $17 same-tier companion (or $27 for $17-buyers)
+  let offerKey: ProductKey;
+  if (productKey === "journal" || productKey === "decode") {
+    // $17 buyers · graduate them to Vol I at $27
+    offerKey = "vol1";
+  } else if (productKey === "series") {
+    // Series buyers · offer the symptoms deep-dive at $17
+    offerKey = "decode";
+  } else {
+    // Single-volume ($27) buyers · offer the symptoms companion at $17
+    offerKey = "decode";
+  }
+
   const offer = PRODUCTS[offerKey];
   const offerPath = crossSellPath(offerKey);
   const offerUrl = `https://thisisphase.co/${offerPath}`;
 
-  const subject = isSingleVol
-    ? `If the ${product.name} landed, here is what is next`
-    : `What you should read next`;
+  // Price for the offered product (used in copy)
+  const offerPrice = offer.price;
 
-  const preheader = isSingleVol
-    ? "The full Series · five volumes · save $38 when you take them together."
-    : `${offer.name} · the next layer of the work.`;
+  const subject = `If the ${product.name} landed, this is the companion`;
+  const preheader = `${offer.name} · $${offerPrice} · the natural next step.`;
+  const headline = `One more thing.`;
 
-  const headline = isSingleVol
-    ? "The next layer is the Series."
-    : "Here is what is next.";
+  // Voice locked to the Kajabi-proven pattern: small commitment, sister tone, no pressure
+  const pitchText =
+    productKey === "series"
+      ? `The Series gave you the whole architecture. ${offer.name} is the symptoms deep-dive that maps everything back to your body. $${offerPrice}.`
+      : productKey === "journal" || productKey === "decode"
+        ? `You have the companion. The natural next step is ${offer.name}. The Volume the Series is built around. $${offerPrice}.`
+        : `You opened the ${product.name}. ${offer.name} is the same-day companion. Reading one without the other is half the picture. $${offerPrice}.`;
 
-  const pitchText = isSingleVol
-    ? `One volume is enough to start. Five volumes is the architecture. The Series gives you Perimenopause, Hormones, Architecture, Self-Trust, and Execution. Buy them separately, that is $135. The Series is $97. You save $38.`
-    : product.crossSellPitch;
-
-  const pitchHtml = isSingleVol
-    ? `One volume is enough to start. <strong>Five volumes is the architecture.</strong> The Series gives you Perimenopause, Hormones, Architecture, Self-Trust, and Execution. Bought separately, that is $135. The Series is $97. You save $38.`
-    : escapeHtml(product.crossSellPitch ?? "");
+  const pitchHtml =
+    productKey === "series"
+      ? `The Series gave you the whole architecture. <strong>${escapeHtml(offer.name)}</strong> is the symptoms deep-dive that maps everything back to your body. $${offerPrice}.`
+      : productKey === "journal" || productKey === "decode"
+        ? `You have the companion. The natural next step is <strong>${escapeHtml(offer.name)}</strong>. The Volume the Series is built around. $${offerPrice}.`
+        : `You opened the ${escapeHtml(product.name)}. <strong>${escapeHtml(offer.name)}</strong> is the same-day companion. Reading one without the other is half the picture. $${offerPrice}.`;
 
   const text = [
     `Hi friend,`,
@@ -369,7 +385,7 @@ export function buildOfferEmail(productKey: ProductKey, customerEmail: string) {
     ``,
     `${offerUrl}`,
     ``,
-    `No pressure. The work waits. But the next layer is here when you are ready.`,
+    `No pressure. The work waits. But the companion is here when you are ready.`,
     ``,
     `MOMumentally,`,
     `Erika`,
@@ -394,30 +410,26 @@ export function buildOfferEmail(productKey: ProductKey, customerEmail: string) {
       ${pitchHtml}
     </p>
 
-    ${isSingleVol ? `
     <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
       <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
-        THE FULL SERIES
+        THE COMPANION
       </p>
-      <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 8px;">Volume I &middot; Perimenopause</p>
-      <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 8px;">Volume II &middot; Hormones</p>
-      <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 8px;">Volume III &middot; Architecture</p>
-      <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 8px;">Volume IV &middot; Self-Trust</p>
-      <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 16px;">Volume V &middot; Execution</p>
+      <p style="font-size:18px;color:${BRAND_NAVY};margin:0 0 8px;font-family:Georgia, 'Times New Roman', serif;">
+        <strong>${escapeHtml(offer.fullTitle)}</strong>
+      </p>
       <p style="font-size:14px;color:${BRAND_NAVY};margin:0;font-style:italic;">
-        $97 together. $135 separately. Save $38.
+        $${offerPrice} &middot; instant delivery to your inbox.
       </p>
     </div>
-    ` : ""}
 
     <div style="margin:32px 0;text-align:center;">
       <a href="${offerUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
-        ${isSingleVol ? "Upgrade to The Series" : `Get ${escapeHtml(offer.name)}`} &rarr;
+        Add ${escapeHtml(offer.name)} &rarr;
       </a>
     </div>
 
     <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 32px;font-style:italic;">
-      No pressure. The work waits. But the next layer is here when you are ready.
+      No pressure. The work waits. But the companion is here when you are ready.
     </p>
 
     <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
