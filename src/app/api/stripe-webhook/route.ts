@@ -3,13 +3,16 @@
  *
  * Receives Stripe webhook events for thisisphase.co Payment Links.
  *
- * V1 scope: handles `checkout.session.completed` only.
+ * Scope: handles `checkout.session.completed`.
  *   1. Verifies the request signature using STRIPE_WEBHOOK_SECRET
  *   2. Identifies the purchased product (metadata first, then amount fallback)
- *   3. Sends the delivery email via Resend (PDF download link in email)
- *   4. Returns 200 OK to acknowledge the event
- *
- * V1.5 will add: scheduled Day 3 check-in, Day 7 cross-sell offer, Day 14 essay.
+ *   3. Sends the Day 0 delivery email instantly via Resend
+ *   4. Schedules 4 follow-ups via Resend's `scheduled_at` parameter:
+ *        Day 0 + 30 min · Substack invite
+ *        Day 3          · pure personal check-in (no selling, no CTA)
+ *        Day 7          · cross-sell / Series upgrade offer
+ *        Day 14         · keystone essay + paid Substack pitch
+ *   5. Returns 200 OK to acknowledge the event
  *
  * Env vars required (set in Vercel · thisisphase-co project):
  *   - STRIPE_WEBHOOK_SECRET   (from Stripe → Developers → Webhooks → reveal)
@@ -28,7 +31,13 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { identifyProduct, PRODUCTS } from "@/lib/products";
-import { buildDeliveryEmail } from "@/lib/purchase-emails";
+import {
+  buildDeliveryEmail,
+  buildSubstackInviteEmail,
+  buildCheckInEmail,
+  buildOfferEmail,
+  buildKeystoneEmail,
+} from "@/lib/purchase-emails";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -95,6 +104,8 @@ async function sendViaResend(opts: {
   html: string;
   text: string;
   tags?: Array<{ name: string; value: string }>;
+  /** ISO 8601 timestamp · if set, Resend schedules instead of sending immediately. Max 30 days future. */
+  scheduledAt?: string;
 }): Promise<{ ok: boolean; status: number; body: string }> {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -109,10 +120,16 @@ async function sendViaResend(opts: {
       html: opts.html,
       text: opts.text,
       tags: opts.tags,
+      ...(opts.scheduledAt ? { scheduled_at: opts.scheduledAt } : {}),
     }),
   });
   const body = await res.text();
   return { ok: res.ok, status: res.status, body };
+}
+
+/** Build an ISO 8601 timestamp `minutes` from now. */
+function offsetFromNow(minutes: number): string {
+  return new Date(Date.now() + minutes * 60 * 1000).toISOString();
 }
 
 // ─── Stripe session expansion · fetch line_items if needed ─────────────────
@@ -215,30 +232,91 @@ export async function POST(req: NextRequest) {
   }
 
   const product = PRODUCTS[productKey];
-  const email = buildDeliveryEmail(productKey, customerEmail);
 
-  const result = await sendViaResend({
-    apiKey: resendKey,
-    from: resendFrom,
-    to: customerEmail,
-    subject: email.subject,
-    html: email.html,
-    text: email.text,
-    tags: [
-      { name: "source", value: "stripe-purchase" },
-      { name: "product", value: productKey },
-      { name: "pillar", value: product.pillar },
-    ],
-  });
+  // ─── Build all 5 emails in the sequence ────────────────────────────────
+  // Day 0 instant: delivery
+  // Day 0 + 30 min: Substack invite
+  // Day 3: personal check-in (no selling)
+  // Day 7: cross-sell / Series upgrade offer
+  // Day 14: keystone essay + paid Substack
+  const sequence = [
+    {
+      stage: "day-0-delivery",
+      scheduledAt: undefined as string | undefined,
+      email: buildDeliveryEmail(productKey, customerEmail),
+    },
+    {
+      stage: "day-0-substack-invite",
+      scheduledAt: offsetFromNow(30),
+      email: buildSubstackInviteEmail(productKey, customerEmail),
+    },
+    {
+      stage: "day-3-checkin",
+      scheduledAt: offsetFromNow(60 * 24 * 3),
+      email: buildCheckInEmail(productKey, customerEmail),
+    },
+    {
+      stage: "day-7-offer",
+      scheduledAt: offsetFromNow(60 * 24 * 7),
+      email: buildOfferEmail(productKey, customerEmail),
+    },
+    {
+      stage: "day-14-keystone",
+      scheduledAt: offsetFromNow(60 * 24 * 14),
+      email: buildKeystoneEmail(productKey, customerEmail),
+    },
+  ];
 
-  if (!result.ok) {
-    console.error("Resend send failed", result.status, result.body);
+  // Dispatch all 5 to Resend in parallel · Day 0 sends immediately, others are scheduled.
+  const results = await Promise.all(
+    sequence.map((item) =>
+      sendViaResend({
+        apiKey: resendKey,
+        from: resendFrom,
+        to: customerEmail,
+        subject: item.email.subject,
+        html: item.email.html,
+        text: item.email.text,
+        scheduledAt: item.scheduledAt,
+        tags: [
+          { name: "source", value: "stripe-purchase" },
+          { name: "product", value: productKey },
+          { name: "pillar", value: product.pillar },
+          { name: "stage", value: item.stage },
+        ],
+      }).then((r) => ({ stage: item.stage, ...r }))
+    )
+  );
+
+  const deliveryResult = results.find((r) => r.stage === "day-0-delivery");
+  const failed = results.filter((r) => !r.ok);
+
+  // Hard-fail only if the Day 0 delivery email failed · that is the one the customer is waiting on.
+  if (deliveryResult && !deliveryResult.ok) {
+    console.error("Day 0 delivery send failed", deliveryResult.status, deliveryResult.body);
     return NextResponse.json(
-      { error: "email send failed", details: result.body },
+      { error: "delivery email send failed", details: deliveryResult.body },
       { status: 500 }
     );
   }
 
-  console.log(`Delivery email sent · ${productKey} · ${customerEmail} · session ${session.id}`);
-  return NextResponse.json({ ok: true, product: productKey, email: customerEmail });
+  // Soft-log any scheduled-email failures · the delivery already shipped so the customer is taken care of.
+  if (failed.length > 0) {
+    console.error(
+      "Some scheduled emails failed to enqueue",
+      failed.map((f) => ({ stage: f.stage, status: f.status, body: f.body }))
+    );
+  }
+
+  console.log(
+    `Purchase sequence dispatched · ${productKey} · ${customerEmail} · session ${session.id} · ` +
+      `${results.length - failed.length}/${results.length} ok`
+  );
+
+  return NextResponse.json({
+    ok: true,
+    product: productKey,
+    email: customerEmail,
+    sequence: results.map((r) => ({ stage: r.stage, ok: r.ok, status: r.status })),
+  });
 }
