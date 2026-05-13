@@ -4,20 +4,27 @@
  * Set these env variables in Vercel project settings:
  *   NEXT_PUBLIC_GA4_ID = G-XXXXXXXXXX            (GA4 measurement ID · analytics)
  *   NEXT_PUBLIC_GOOGLE_ADS_ID = AW-XXXXXXXXX     (Google Ads conversion ID · direct conversion tracking)
- *   NEXT_PUBLIC_META_PIXEL_ID = 1234567890123456
+ *   NEXT_PUBLIC_META_PIXEL_ID = 1234567890123456 (primary · empire-wide master)
+ *   NEXT_PUBLIC_META_PIXEL_ID_SECONDARY = ...    (optional · product-line specific Pixel · fires alongside primary)
  *   NEXT_PUBLIC_TIKTOK_PIXEL_ID = (optional)
  *
- * Tomorrow's task · drop these IDs into Vercel env, redeploy.
+ * Multi-Pixel pattern: when both META_PIXEL_ID and META_PIXEL_ID_SECONDARY are
+ * set, fbq is initialized for both, and ALL fbq.track() events fire to both
+ * Pixels (Meta default behavior when no specific pixelId is passed). Used for
+ * empire-wide retargeting (master Pixel) plus product-line granularity
+ * (secondary Pixel) on the same domain.
  */
 
 export const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID ?? '';
 export const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? 'AW-16900561116';
 export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? '';
+export const META_PIXEL_ID_SECONDARY = process.env.NEXT_PUBLIC_META_PIXEL_ID_SECONDARY ?? '';
 export const TIKTOK_PIXEL_ID = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID ?? '';
 
 export const HAS_GA4 = Boolean(GA4_ID);
 export const HAS_GOOGLE_ADS = Boolean(GOOGLE_ADS_ID);
 export const HAS_META = Boolean(META_PIXEL_ID);
+export const HAS_META_SECONDARY = Boolean(META_PIXEL_ID_SECONDARY);
 export const HAS_TIKTOK = Boolean(TIKTOK_PIXEL_ID);
 
 /**
