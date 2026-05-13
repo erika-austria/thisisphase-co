@@ -38,10 +38,31 @@ export function PurchaseTracker() {
 
     const eventId = sessionId || `thx_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
 
+    // Read the pending-purchase context StripeButton stashed before redirect.
+    // Window: 60 minutes (covers slow checkouts, expires stale data).
+    let pendingValue: number | null = null;
+    let pendingKey: string | null = null;
+    try {
+      const raw = sessionStorage.getItem('phase_pending_purchase');
+      if (raw) {
+        const parsed = JSON.parse(raw) as { key?: string; value?: number | null; ts?: number };
+        const ageMs = parsed.ts ? Date.now() - parsed.ts : Infinity;
+        if (ageMs < 60 * 60 * 1000) {
+          pendingValue = typeof parsed.value === 'number' ? parsed.value : null;
+          pendingKey = typeof parsed.key === 'string' ? parsed.key : null;
+        }
+        sessionStorage.removeItem('phase_pending_purchase');
+      }
+    } catch {}
+
     try {
       window.gtag?.('event', 'purchase', {
         transaction_id: eventId,
         currency: 'USD',
+        ...(pendingValue !== null && { value: pendingValue }),
+        ...(pendingKey && {
+          items: [{ item_id: pendingKey, item_name: pendingKey, ...(pendingValue !== null && { price: pendingValue }) }],
+        }),
       });
     } catch {}
 
@@ -49,7 +70,12 @@ export function PurchaseTracker() {
       window.fbq?.(
         'track',
         'Purchase',
-        { currency: 'USD', content_type: 'product' },
+        {
+          currency: 'USD',
+          content_type: 'product',
+          ...(pendingValue !== null && { value: pendingValue }),
+          ...(pendingKey && { content_ids: [pendingKey] }),
+        },
         { eventID: eventId },
       );
     } catch {}

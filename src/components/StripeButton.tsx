@@ -45,6 +45,16 @@ export function StripeButton({
     const item_id = productKey ?? lookup?.key ?? 'unknown';
     const value = typeof price === 'number' ? price : lookup?.price;
 
+    // Stash the pending purchase context so PurchaseTracker on /thanks can fire
+    // a Purchase event with accurate value + item_id. Survives the Stripe
+    // round-trip because sessionStorage is per-tab.
+    try {
+      sessionStorage.setItem(
+        'phase_pending_purchase',
+        JSON.stringify({ key: item_id, value: value ?? null, ts: Date.now() }),
+      );
+    } catch {}
+
     try {
       window.gtag?.('event', 'begin_checkout', {
         currency: 'USD',
