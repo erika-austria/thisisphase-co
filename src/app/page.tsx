@@ -11,6 +11,7 @@ import { PullQuote } from '@/components/PullQuote';
 import { AffiliateStrip } from '@/components/AffiliateStrip';
 import { EmailCapture } from '@/components/EmailCapture';
 import { StripeButton } from '@/components/StripeButton';
+import { TrustSignalsBar } from '@/components/TrustSignalsBar';
 
 export const metadata: Metadata = buildMetadata({
   // buildMetadata appends " · The PHASE™" → no need to prefix it here
@@ -71,10 +72,10 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Hero visual · acronym block */}
+          {/* Hero visual · acronym block with stats per letter (Fri May 15 update) */}
           <div className="bg-cream-alt rounded-sm border border-navy/10 p-10 md:p-12 bracket-pink">
-            <p className="eyebrow eyebrow-with-dot text-xs mb-6">THE ACRONYM</p>
-            <PhaseAcronym variant="stacked" linked={true} />
+            <p className="eyebrow eyebrow-with-dot text-xs mb-6">THE ACRONYM · BY THE NUMBERS</p>
+            <PhaseAcronym variant="stats" linked={true} />
             <p className="font-serif italic text-navy/60 mt-8 text-sm">
               Click any letter to read the volume.
             </p>
@@ -90,6 +91,9 @@ export default function HomePage() {
         <br />
         Track, don&apos;t tolerate.
       </PullQuote>
+
+      {/* Trust signals · founder credentials strip · added Fri May 15 PM per WTF framework */}
+      <TrustSignalsBar variant="cream" />
 
       {/* Volume grid */}
       <section className="max-w-content mx-auto px-6 py-24" aria-labelledby="volumes-heading">
