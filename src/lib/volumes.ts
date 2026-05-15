@@ -10,6 +10,11 @@ export type Component = {
   summary: string;
 };
 
+export type Stat = {
+  value: string;        // big number/percentage, e.g. "70%" or "4" or "47"
+  description: string;  // short body of the stat in sentence form
+};
+
 export type Volume = {
   slug: string;
   number: number;
@@ -21,6 +26,8 @@ export type Volume = {
   resetMantra: string;
   description: string;
   longDescription: string;
+  /** Stat that appears under each PHASE letter on the homepage acronym + can be shown on volume pages. */
+  stat: Stat;
   components: Component[];
   pullQuotes: string[];
   whoFor: string[];
@@ -49,6 +56,10 @@ export const VOLUMES: Volume[] = [
     resetMantra: 'I am not in a phase. I am in The PHASE.',
     description: 'Vol. I of The PHASE™ series. The map of perimenopause for women who feel dismissed. Symptom decoder, weekly tracker, hormone primer, and the PHASE Pattern reflection. From MOMumental Moments®.',
     longDescription: 'You are not failing at stress. You are not too young. You are not making it up. You are in The PHASE. This volume is the body-truth your provider should have handed you at 38. The hormone primer, the symptom decoder, the weekly tracker, and the PHASE Pattern reflection that maps where you actually are. Built by a woman who spent four years being told it was cortisol.',
+    stat: {
+      value: '70%',
+      description: 'of women have symptoms before menopause is even diagnosed.',
+    },
     components: [
       { number: '01', title: 'The Journey', summary: 'Understanding the three stages of menopause and where you are in the arc.' },
       { number: '02', title: 'Estrogen · The Conductor', summary: 'How estrogen orchestrates everything, and what happens when it drops.' },
@@ -93,6 +104,10 @@ export const VOLUMES: Volume[] = [
     resetMantra: 'My body is not a problem to solve. It is a partner to listen to.',
     description: 'Vol. II of The PHASE™ series. The HRT decision tree, hormone testing 101, doctor conversation script, HRT real-talk, and 12-week tracker. Built from four years of being dismissed and the nurse practitioner who finally listened. From MOMumental Moments®.',
     longDescription: 'I spent four years thinking I was failing at stress. It was always my hormones. This is the volume that took me five years and four doctors to write for myself. The hormone cast (who does what when they decline). The HRT Decision Tree (the framework I wish I had walking into the appointment). Hormone testing 101 (DUTCH, blood panels, saliva, what each one tells you). The doctor conversation script. The HRT real-talk (what it fixes, what it doesn\'t, what nobody warns you about). A 12-week tracker for after you start. Plus my actual supplement stack.',
+    stat: {
+      value: '4 years',
+      description: 'average dismissed before perimenopause gets diagnosed.',
+    },
     components: [
       { number: '01', title: 'The Hormone Cast', summary: 'Estrogen, progesterone, testosterone, thyroid, cortisol. Who does what when they shift.' },
       { number: '02', title: 'The HRT Decision Tree', summary: 'Seven-step decision framework for walking into the HRT conversation prepared.' },
@@ -143,6 +158,10 @@ export const VOLUMES: Volume[] = [
     resetMantra: 'Clarity can be soft. I am moving forward.',
     description: 'Vol. III of The PHASE™ series. Five days of architecture practice: clear your head, the mental load map, toleration detox, boundaries in your voice, and choose your moment. Anchored by one daily self-care template. From MOMumental Moments®.',
     longDescription: 'You are not broken. You are overloaded. This volume rebuilds the architecture of an overstacked life into something that holds. Five days, five practices: name the overload, map the mental load, release one toleration, write a boundary script, choose the one moment that matters. Daily reflection prompts. A reusable self-care template you can keep using forever.',
+    stat: {
+      value: '47',
+      description: 'open mental tabs. Average for women running a household at 42.',
+    },
     components: [
       { number: '01', title: 'Clear Your Head · Day One', summary: 'Overload Inventory: name everything currently living in your brain.' },
       { number: '02', title: 'Mental Load Map · Day Two', summary: 'List the invisible tasks that no one acknowledges but you carry every day.' },
@@ -188,6 +207,10 @@ export const VOLUMES: Volume[] = [
     resetMantra: 'I trust my body. I trust my voice. I trust my pace.',
     description: 'Vol. IV of The PHASE™ series. Five days of self-trust practice: hear yourself, name what you want, trust your no, track the wins, anchor in identity. Anchored by a reusable daily reflection template. From MOMumental Moments®.',
     longDescription: 'Self-trust is not a vibe. It is a practice. Five days that rebuild the conversation you have with yourself. Three pauses today. Five "I want" sentences. A permission slip you sign and treat as binding. Today\'s receipts. The kind of woman you are becoming. Daily reflection. Hear. Name. Honor. Anchor.',
+    stat: {
+      value: '75%',
+      description: 'of women feel less like themselves in perimenopause.',
+    },
     components: [
       { number: '01', title: 'Hear Yourself · Day One', summary: 'Three 60-second pauses. Notice the truthful answer. Write what lands.' },
       { number: '02', title: 'Name It · Day Two', summary: 'Five "I want" sentences. Desire is data. Don\'t filter.' },
@@ -232,6 +255,10 @@ export const VOLUMES: Volume[] = [
     resetMantra: 'I execute on the next right thing.',
     description: 'Vol. V of The PHASE™ series. Five days of execution practice: reset your rhythm, fuel your body, move with intention, sleep like it matters, choose the next right thing. Built for women who already know what to do and need a structure that keeps them doing it.',
     longDescription: 'You already know what to do. This volume builds the structure that keeps you doing it. Five days of grounded action: reset blood sugar and cortisol, fuel for the body you actually live in, move with intention, sleep like it matters, and choose the next right thing on repeat. The execution layer that converts knowledge into pattern.',
+    stat: {
+      value: '3 days',
+      description: 'to reset blood sugar + cortisol. Feel the shift.',
+    },
     components: [
       { number: '01', title: 'Reset Your Rhythm · Day One', summary: 'Balance blood sugar and reduce cortisol spikes. Three small things. Today only.' },
       { number: '02', title: 'Fuel Your Body · Day Two', summary: 'Protein, fiber, hydration. The non-negotiable foundations of perimenopause fueling.' },
