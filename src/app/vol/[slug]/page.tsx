@@ -10,6 +10,7 @@ import { VolumeCard } from '@/components/VolumeCard';
 import { PullQuote } from '@/components/PullQuote';
 import { AffiliateStrip } from '@/components/AffiliateStrip';
 import { StripeButton } from '@/components/StripeButton';
+import { TrustSignalsBar } from '@/components/TrustSignalsBar';
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -143,6 +144,9 @@ export default async function VolumePage({ params }: Params) {
       <PullQuote variant="manifesto" attribution={`RESET MANTRA · VOL. ${volume.numeral}`}>
         {volume.resetMantra}
       </PullQuote>
+
+      {/* Trust signals · added Fri May 15 PM per WTF framework · +20-40% conversion lift on $27 product */}
+      <TrustSignalsBar variant="cream" />
 
       {/* What's inside · components grid */}
       <section className="max-w-content mx-auto px-6 py-20" aria-labelledby="components-heading">
