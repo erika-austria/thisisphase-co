@@ -7,6 +7,7 @@ import { STRIPE_LINKS } from '@/lib/stripe';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
 import { PullQuote } from '@/components/PullQuote';
 import { StripeButton } from '@/components/StripeButton';
+import { TrustSignalsBar } from '@/components/TrustSignalsBar';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Decode Your Symptoms · A Science-Backed Reset · $19',
@@ -87,6 +88,9 @@ export default function DecodePage() {
         <br />
         <span className="italic text-pink">It is asking for different inputs.</span>
       </PullQuote>
+
+      {/* Trust signals · added Fri May 15 PM per WTF framework */}
+      <TrustSignalsBar variant="cream" />
 
       <section className="max-w-3xl mx-auto px-6 py-20">
         <p className="eyebrow text-xs mb-3 text-pink">WHO THIS IS FOR</p>
