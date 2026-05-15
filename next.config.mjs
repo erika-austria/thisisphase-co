@@ -37,6 +37,12 @@ const nextConfig = {
       // Common redirects
       { source: '/buy', destination: '/series', permanent: true },
       { source: '/all', destination: '/series', permanent: true },
+      // Legacy /phase URL (was the old product page name pre-/series rebrand) → 301 to current Series page
+      { source: '/phase', destination: '/series', permanent: true },
+      // Lead funnel aliases · so any short-link or campaign UTM lands on /clarity
+      { source: '/starter', destination: '/clarity', permanent: true },
+      { source: '/kit', destination: '/clarity', permanent: true },
+      { source: '/free', destination: '/clarity', permanent: true },
     ];
   },
 };
