@@ -7,6 +7,7 @@ import { STRIPE_LINKS } from '@/lib/stripe';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
 import { PullQuote } from '@/components/PullQuote';
 import { StripeButton } from '@/components/StripeButton';
+import { TrustSignalsBar } from '@/components/TrustSignalsBar';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Reflections Through the PHASEs · The Journal · $19',
@@ -72,6 +73,9 @@ export default function JournalPage() {
         <br />
         <span className="italic text-pink">This journal moves at your pace.</span>
       </PullQuote>
+
+      {/* Trust signals · added Fri May 15 PM per WTF framework */}
+      <TrustSignalsBar variant="cream" />
 
       <section className="max-w-3xl mx-auto px-6 py-20">
         <p className="eyebrow text-xs mb-3 text-pink">WHO THIS IS FOR</p>
