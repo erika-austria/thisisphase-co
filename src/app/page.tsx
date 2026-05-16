@@ -40,7 +40,7 @@ export default function HomePage() {
       <MagazineMasthead
         issue="VOL. I · NO. 01"
         topics={['REINVENTION', 'HORMONES', 'MIDLIFE BODY-TRUTH']}
-        publishingNote="LAUNCHING MAY 8 · 2026"
+        publishingNote="LIVE NOW · 2026"
       />
 
       {/* Hero */}
