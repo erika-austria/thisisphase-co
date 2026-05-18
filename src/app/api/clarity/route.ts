@@ -16,7 +16,7 @@
  *
  * Env vars required (set in Vercel · thisisphase-co project):
  *   - RESEND_API_KEY                       (re_... from resend.com)
- *   - RESEND_FROM                          (e.g. "Erika Hanafin Austria <hello@erikahanafin.com>")
+ *   - RESEND_FROM                          (e.g. "Erika · MOMumental Moments® <info@momumentalmoments.co>")
  *   - META_CAPI_ACCESS_TOKEN               (from Meta Events Manager → Settings → Conversions API)
  *   - NEXT_PUBLIC_META_PIXEL_ID            (already set · empire-wide master Pixel ID)
  *   - NEXT_PUBLIC_META_PIXEL_ID_SECONDARY  (already set · PHASE-specific Pixel ID)
@@ -145,7 +145,7 @@ async function sendMetaCapiLead(opts: {
 export async function POST(req: NextRequest) {
   const resendKey = process.env.RESEND_API_KEY;
   const resendFrom =
-    process.env.RESEND_FROM || "Erika Hanafin Austria <hello@erikahanafin.com>";
+    process.env.RESEND_FROM || "Erika · MOMumental Moments® <info@momumentalmoments.co>";
 
   if (!resendKey) {
     console.error("RESEND_API_KEY not set · /api/clarity");
