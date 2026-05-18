@@ -5,16 +5,22 @@
  *
  * Scope:
  *   1. Validates email
- *   2. Sends the Day 0 delivery email instantly via Resend
- *   3. Schedules 3 follow-ups via Resend's `scheduled_at` parameter:
+ *   2. Fires Meta Conversions API (CAPI) Lead event server-side · dedupes against
+ *      client-side Pixel via eventID returned in response body
+ *   3. Sends the Day 0 delivery email instantly via Resend
+ *   4. Schedules 3 follow-ups via Resend's `scheduled_at` parameter:
  *        Day 2 · "What you might have missed in the Kit" + soft Vol. I tease
  *        Day 4 · Founder story · "I almost gave up at year three" · nurse practitioner moment
  *        Day 7 · Direct offer · Vol. I or The Series
- *   4. Returns 200 OK with eventId for client-side Meta Lead event firing
+ *   5. Returns 200 OK with eventId for client-side Meta Lead event firing
  *
  * Env vars required (set in Vercel · thisisphase-co project):
- *   - RESEND_API_KEY   (re_... from resend.com)
- *   - RESEND_FROM      (e.g. "Erika Hanafin Austria <hello@erikahanafin.com>")
+ *   - RESEND_API_KEY                       (re_... from resend.com)
+ *   - RESEND_FROM                          (e.g. "Erika Hanafin Austria <hello@erikahanafin.com>")
+ *   - META_CAPI_ACCESS_TOKEN               (from Meta Events Manager → Settings → Conversions API)
+ *   - NEXT_PUBLIC_META_PIXEL_ID            (already set · empire-wide master Pixel ID)
+ *   - NEXT_PUBLIC_META_PIXEL_ID_SECONDARY  (already set · PHASE-specific Pixel ID)
+ *   - META_CAPI_TEST_EVENT_CODE            (optional · for Meta Test Events validation)
  *
  * Pixel Lead event fires CLIENT-SIDE in ClarityForm.tsx after this returns 200,
  * with the eventId returned here for CAPI dedup (mirrors purchase tracking pattern).
@@ -69,6 +75,71 @@ function offsetFromNow(minutes: number): string {
   return new Date(Date.now() + minutes * 60 * 1000).toISOString();
 }
 
+// ─── Meta Conversions API · server-side Lead event ───────────────────────
+//
+// Fires Lead to one or both configured Pixels (primary + optional secondary).
+// Dedupes against client-side Pixel via event_id matching the eventId returned
+// to ClarityForm in the response body.
+// Email is SHA-256 hashed lowercase per Meta CAPI spec.
+// TODO: extract sha256Hex + sendMetaCapi helpers to src/lib/meta-capi.ts after launch.
+
+async function sha256Hex(input: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function sendMetaCapiLead(opts: {
+  pixelId: string;
+  accessToken: string;
+  eventId: string;
+  eventTimeSec: number;
+  eventSourceUrl: string;
+  email: string;
+  clientIp?: string | null;
+  userAgent?: string | null;
+  source?: string;
+  testEventCode?: string | null;
+}): Promise<{ ok: boolean; status: number; body: string }> {
+  const hashedEmail = await sha256Hex(opts.email.trim().toLowerCase());
+
+  const eventPayload: Record<string, unknown> = {
+    event_name: "Lead",
+    event_time: opts.eventTimeSec,
+    event_id: opts.eventId,
+    action_source: "website",
+    event_source_url: opts.eventSourceUrl,
+    user_data: {
+      em: [hashedEmail],
+      ...(opts.clientIp ? { client_ip_address: opts.clientIp } : {}),
+      ...(opts.userAgent ? { client_user_agent: opts.userAgent } : {}),
+    },
+    custom_data: {
+      content_name: "Clarity Starter Kit",
+      content_category: "lead-magnet",
+      ...(opts.source ? { lead_source: opts.source } : {}),
+    },
+  };
+
+  const body: Record<string, unknown> = {
+    data: [eventPayload],
+    ...(opts.testEventCode ? { test_event_code: opts.testEventCode } : {}),
+  };
+
+  const url = `https://graph.facebook.com/v18.0/${opts.pixelId}/events?access_token=${encodeURIComponent(
+    opts.accessToken,
+  )}`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const respBody = await res.text();
+  return { ok: res.ok, status: res.status, body: respBody };
+}
+
 // ─── Main handler ────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -99,6 +170,54 @@ export async function POST(req: NextRequest) {
   // Generate eventId for Pixel CAPI dedup
   const eventId = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 12)}`;
   const source = (body.source ?? "clarity-page").trim().slice(0, 64);
+
+  // ─── Fire Meta CAPI Lead server-side (fire-and-forget, in parallel with emails) ──
+  // Dedupes against client-side Pixel in ClarityForm via event_id matching eventId returned below.
+  // Fires to primary + secondary Pixels if both configured.
+  const capiToken = process.env.META_CAPI_ACCESS_TOKEN;
+  const capiPrimaryPixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const capiSecondaryPixel = process.env.NEXT_PUBLIC_META_PIXEL_ID_SECONDARY;
+  const capiTestCode = process.env.META_CAPI_TEST_EVENT_CODE;
+  if (capiToken && (capiPrimaryPixel || capiSecondaryPixel)) {
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      null;
+    const userAgent = req.headers.get("user-agent") || null;
+    const pixelIds = [capiPrimaryPixel, capiSecondaryPixel].filter(Boolean) as string[];
+
+    // Fire in parallel without awaiting · don't block lead capture on CAPI latency
+    Promise.allSettled(
+      pixelIds.map((pixelId) =>
+        sendMetaCapiLead({
+          pixelId,
+          accessToken: capiToken,
+          eventId,
+          eventTimeSec: Math.floor(Date.now() / 1000),
+          eventSourceUrl: "https://thisisphase.co/clarity",
+          email,
+          clientIp,
+          userAgent,
+          source,
+          testEventCode: capiTestCode || null,
+        }),
+      ),
+    ).then((capiResults) => {
+      capiResults.forEach((r, i) => {
+        const pixelId = pixelIds[i];
+        if (r.status === "fulfilled" && r.value.ok) {
+          console.log(`Meta CAPI Lead sent · pixel ${pixelId} · eventId ${eventId}`);
+        } else {
+          const detail = r.status === "fulfilled" ? r.value.body : String(r.reason);
+          console.error(`Meta CAPI Lead failed · pixel ${pixelId} · ${detail}`);
+        }
+      });
+    });
+  } else if (!capiToken) {
+    console.warn(
+      "META_CAPI_ACCESS_TOKEN not set · skipping server-side Lead event · client-side Pixel only",
+    );
+  }
 
   // ─── Build all 4 emails in the sequence ────────────────────────────────
   // Day 0 instant: Clarity Kit delivery
