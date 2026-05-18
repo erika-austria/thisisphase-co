@@ -6,18 +6,24 @@
  * Scope: handles `checkout.session.completed`.
  *   1. Verifies the request signature using STRIPE_WEBHOOK_SECRET
  *   2. Identifies the purchased product (metadata first, then amount fallback)
- *   3. Sends the Day 0 delivery email instantly via Resend
- *   4. Schedules 4 follow-ups via Resend's `scheduled_at` parameter:
+ *   3. Fires Meta Conversions API (CAPI) Purchase event server-side · dedupes
+ *      against client-side Pixel via eventID = Stripe session.id
+ *   4. Sends the Day 0 delivery email instantly via Resend
+ *   5. Schedules 4 follow-ups via Resend's `scheduled_at` parameter:
  *        Day 0 + 30 min · Substack invite
  *        Day 3          · pure personal check-in (no selling, no CTA)
  *        Day 7          · cross-sell / Series upgrade offer
  *        Day 14         · keystone essay + paid Substack pitch
- *   5. Returns 200 OK to acknowledge the event
+ *   6. Returns 200 OK to acknowledge the event
  *
  * Env vars required (set in Vercel · thisisphase-co project):
- *   - STRIPE_WEBHOOK_SECRET   (from Stripe → Developers → Webhooks → reveal)
- *   - RESEND_API_KEY          (re_... from resend.com)
- *   - RESEND_FROM             (e.g. "Erika Hanafin Austria <hello@erikahanafin.com>")
+ *   - STRIPE_WEBHOOK_SECRET    (from Stripe → Developers → Webhooks → reveal)
+ *   - RESEND_API_KEY           (re_... from resend.com)
+ *   - RESEND_FROM              (e.g. "Erika Hanafin Austria <hello@erikahanafin.com>")
+ *   - META_CAPI_ACCESS_TOKEN   (from Meta Events Manager → Settings → Conversions API)
+ *   - NEXT_PUBLIC_META_PIXEL_ID            (already set · empire-wide master Pixel ID)
+ *   - NEXT_PUBLIC_META_PIXEL_ID_SECONDARY  (already set · PHASE-specific Pixel ID)
+ *   - META_CAPI_TEST_EVENT_CODE            (optional · for Meta Test Events validation)
  *
  * Stripe webhook setup steps (do once after deploy):
  *   1. Stripe dashboard → Developers → Webhooks → Add endpoint
@@ -27,6 +33,13 @@
  *   5. For each Payment Link in Stripe → Edit → Metadata, add:
  *        product=vol1  (or vol2, vol3, vol4, vol5, series, journal, decode)
  *      This makes product identification 100% reliable instead of amount-based fallback.
+ *
+ * Meta CAPI setup steps (do once after deploy):
+ *   1. Meta Events Manager → pick the Pixel → Settings → Conversions API
+ *   2. "Set up manually" → "Generate access token" → copy long token
+ *   3. Vercel project settings → Environment Variables → add META_CAPI_ACCESS_TOKEN
+ *   4. Redeploy · verify in Meta Events Manager → Test Events tab
+ *      (optional: set META_CAPI_TEST_EVENT_CODE in Vercel to route events to Test Events panel)
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -132,6 +145,74 @@ function offsetFromNow(minutes: number): string {
   return new Date(Date.now() + minutes * 60 * 1000).toISOString();
 }
 
+// ─── Meta Conversions API · server-side Purchase event ───────────────────
+//
+// Fires Purchase to one or both configured Pixels (primary + optional secondary).
+// Dedupes against client-side Pixel via event_id = Stripe session.id.
+// Email is SHA-256 hashed lowercase per Meta CAPI spec.
+// IP and user_agent improve match quality but are optional.
+
+async function sha256Hex(input: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function sendMetaCapiPurchase(opts: {
+  pixelId: string;
+  accessToken: string;
+  eventId: string;
+  eventTimeSec: number;
+  eventSourceUrl: string;
+  email: string;
+  clientIp?: string | null;
+  userAgent?: string | null;
+  value?: number | null;
+  currency: string;
+  contentIds?: string[];
+  testEventCode?: string | null;
+}): Promise<{ ok: boolean; status: number; body: string }> {
+  const hashedEmail = await sha256Hex(opts.email.trim().toLowerCase());
+
+  const eventPayload: Record<string, unknown> = {
+    event_name: "Purchase",
+    event_time: opts.eventTimeSec,
+    event_id: opts.eventId,
+    action_source: "website",
+    event_source_url: opts.eventSourceUrl,
+    user_data: {
+      em: [hashedEmail],
+      ...(opts.clientIp ? { client_ip_address: opts.clientIp } : {}),
+      ...(opts.userAgent ? { client_user_agent: opts.userAgent } : {}),
+    },
+    custom_data: {
+      currency: opts.currency,
+      ...(typeof opts.value === "number" ? { value: opts.value } : {}),
+      ...(opts.contentIds?.length
+        ? { content_ids: opts.contentIds, content_type: "product" }
+        : {}),
+    },
+  };
+
+  const body: Record<string, unknown> = {
+    data: [eventPayload],
+    ...(opts.testEventCode ? { test_event_code: opts.testEventCode } : {}),
+  };
+
+  const url = `https://graph.facebook.com/v18.0/${opts.pixelId}/events?access_token=${encodeURIComponent(
+    opts.accessToken,
+  )}`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const respBody = await res.text();
+  return { ok: res.ok, status: res.status, body: respBody };
+}
+
 // ─── Stripe session expansion · fetch line_items if needed ─────────────────
 
 async function fetchSessionLineItems(
@@ -232,6 +313,57 @@ export async function POST(req: NextRequest) {
   }
 
   const product = PRODUCTS[productKey];
+
+  // ─── Fire Meta CAPI Purchase server-side (fire-and-forget) ──────────────
+  // Dedupes against client-side Pixel on /thanks via event_id = Stripe session.id.
+  // Fires to primary + secondary Pixels if both configured.
+  const capiToken = process.env.META_CAPI_ACCESS_TOKEN;
+  const capiPrimaryPixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const capiSecondaryPixel = process.env.NEXT_PUBLIC_META_PIXEL_ID_SECONDARY;
+  const capiTestCode = process.env.META_CAPI_TEST_EVENT_CODE;
+  if (capiToken && (capiPrimaryPixel || capiSecondaryPixel)) {
+    const valueDollars =
+      typeof session.amount_total === "number" ? session.amount_total / 100 : null;
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      null;
+    const userAgent = req.headers.get("user-agent") || null;
+    const pixelIds = [capiPrimaryPixel, capiSecondaryPixel].filter(Boolean) as string[];
+
+    const capiResults = await Promise.allSettled(
+      pixelIds.map((pixelId) =>
+        sendMetaCapiPurchase({
+          pixelId,
+          accessToken: capiToken,
+          eventId: session.id, // matches client-side Pixel eventID for dedup
+          eventTimeSec: Math.floor(Date.now() / 1000),
+          eventSourceUrl: `https://thisisphase.co/thanks?session_id=${session.id}`,
+          email: customerEmail,
+          clientIp,
+          userAgent,
+          value: valueDollars,
+          currency: "USD",
+          contentIds: [productKey],
+          testEventCode: capiTestCode || null,
+        }),
+      ),
+    );
+
+    capiResults.forEach((r, i) => {
+      const pixelId = pixelIds[i];
+      if (r.status === "fulfilled" && r.value.ok) {
+        console.log(`Meta CAPI Purchase sent · pixel ${pixelId} · session ${session.id}`);
+      } else {
+        const detail = r.status === "fulfilled" ? r.value.body : String(r.reason);
+        console.error(`Meta CAPI Purchase failed · pixel ${pixelId} · ${detail}`);
+      }
+    });
+  } else if (!capiToken) {
+    console.warn(
+      "META_CAPI_ACCESS_TOKEN not set · skipping server-side Purchase event · client-side Pixel only",
+    );
+  }
 
   // ─── Build all 5 emails in the sequence ────────────────────────────────
   // Day 0 instant: delivery
