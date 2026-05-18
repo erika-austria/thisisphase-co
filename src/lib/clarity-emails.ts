@@ -33,7 +33,7 @@ const DECODE_URL =
   process.env.CLARITY_DECODE_URL || "https://thisisphase.co/decode";
 const DECODE_PRICE = "$19";
 
-// Kit Graduate Series upsell · $75 special pricing (save $22 off $97).
+// Kit Graduate Series upsell · $75 special pricing (save $60 vs buying volumes separately at 5 x $27 = $135).
 // Override via env CLARITY_KIT_GRADUATE_SERIES_URL with a dedicated Stripe Payment Link priced at $75.
 // Falls back to standard /series page at $97 if env not set (no broken links if not yet created).
 const KIT_GRADUATE_SERIES_URL =
@@ -437,7 +437,7 @@ export function buildClarityOfferEmail(_email: string) {
     ``,
     `You have earned the Kit Graduate upgrade.`,
     ``,
-    `All five PHASE volumes for $75 instead of $97. Save $22. You already proved you do the work. This is the rest of the body-truth map.`,
+    `All five PHASE volumes for $75. That is $60 less than buying them separately at $27 each ($135 total). You already proved you do the work. This is the rest of the body-truth map.`,
     ``,
     `What the full Series gives you that Decode does not:`,
     ``,
@@ -447,7 +447,7 @@ export function buildClarityOfferEmail(_email: string) {
     `- Vol. IV · Self-trust · the inner work no one talks about`,
     `- Vol. V · Execution · the doing part for when language is not enough`,
     ``,
-    `Kit Graduate price · $75 (standard $97)`,
+    `Kit Graduate price · $75 (save $60 vs buying volumes separately at $135)`,
     `${KIT_GRADUATE_SERIES_URL}`,
     ``,
     `If you want to keep reading the long-form work, every Tuesday at 9 AM ET I send a new essay. Free.`,
@@ -544,7 +544,7 @@ export function buildClarityOfferEmail(_email: string) {
           $75
         </p>
         <p style="font-family:Georgia, 'Times New Roman', serif;font-size:13px;color:${BRAND_PINK};margin:0 0 16px;font-style:italic;text-align:center;">
-          standard $97 &middot; save $22
+          $60 less than buying volumes separately ($135)
         </p>
         <div style="text-align:center;">
           <a href="${KIT_GRADUATE_SERIES_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
