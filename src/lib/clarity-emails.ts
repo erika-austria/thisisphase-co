@@ -23,6 +23,16 @@ const BRAND_CREAM_ALT = "#F8F4EE";
 const CLARITY_PDF_URL =
   "https://dpo02ztmhn6nty5u.public.blob.vercel-storage.com/the-clarity-starter-kit.pdf";
 
+// Substack subscribe page · direct one-click signup (not the homepage).
+const SUBSTACK_SUBSCRIBE_URL = "https://www.momumentalreinvention.com/subscribe";
+
+// Kit Graduate Series upsell · $75 special pricing (save $22 off $97), 72-hour window.
+// Override via env CLARITY_KIT_GRADUATE_SERIES_URL with a dedicated Stripe Payment Link priced at $75.
+// Falls back to standard /series page at $97 if env not set (no broken links if Erika hasn't created the link yet).
+const KIT_GRADUATE_SERIES_URL =
+  process.env.CLARITY_KIT_GRADUATE_SERIES_URL || "https://thisisphase.co/series";
+const SERIES_DEFAULT_URL = "https://thisisphase.co/series";
+
 // ─── Day 0 · instant delivery ───────────────────────────────────────────
 
 export function buildClarityDeliveryEmail(_email: string) {
@@ -41,9 +51,13 @@ export function buildClarityDeliveryEmail(_email: string) {
     ``,
     `1. The work is yours forever. The link does not expire. If you ever lose it, just reply and I will resend.`,
     ``,
-    `2. Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. Subscribe at https://www.momumentalreinvention.com if you want to keep reading. Free essays for everyone. Paid subscribers get the deeper work.`,
+    `2. Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. Subscribe at ${SUBSTACK_SUBSCRIBE_URL} if you want to keep reading. Free essays for everyone. Paid subscribers get the deeper work.`,
     ``,
-    `3. The Kit is the doorway. The PHASE volumes are the rooms. When you are ready, Vol. I covers Perimenopause in full at https://thisisphase.co/series.`,
+    `3. The Kit is the doorway. The PHASE volumes are the rooms. When you are ready, Vol. I covers Perimenopause in full.`,
+    ``,
+    `Kit graduates only · $75 access to all five volumes (save $22 off the standard $97). The window closes after Day 7.`,
+    ``,
+    `${KIT_GRADUATE_SERIES_URL}`,
     ``,
     `One ask before you close this. Hit reply and tell me one symptom that is loudest for you right now. The body-truth conversation works better when readers write back. I read every reply.`,
     ``,
@@ -98,13 +112,24 @@ export function buildClarityDeliveryEmail(_email: string) {
         </p>
 
         <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
-          <strong style="color:${BRAND_NAVY};">02 &middot; Tuesday letters.</strong> Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. Free essays for everyone. <a href="https://www.momumentalreinvention.com" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">Subscribe at momumentalreinvention.com</a> if you want to keep reading.
+          <strong style="color:${BRAND_NAVY};">02 &middot; Tuesday letters.</strong> Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. Free essays for everyone. <a href="${SUBSTACK_SUBSCRIBE_URL}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">Subscribe in one click</a> if you want to keep reading.
         </p>
 
         <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
           <strong style="color:${BRAND_NAVY};">03 &middot; What is next.</strong> The Kit is the doorway. The PHASE&trade; volumes are the rooms. When you are ready, Vol. I covers Perimenopause in full.
-          <br><a href="https://thisisphase.co/series" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">See The Series &rarr;</a>
         </p>
+
+        <div style="background:${BRAND_CREAM_ALT};border:1px solid ${BRAND_PINK};border-radius:2px;padding:20px 24px;margin:16px 0 20px;">
+          <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 8px;">
+            KIT GRADUATES ONLY &middot; 7-DAY WINDOW
+          </p>
+          <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 12px;line-height:1.5;">
+            All five PHASE&trade; volumes for <strong style="color:${BRAND_NAVY};">$75</strong> instead of $97. <em style="color:${BRAND_NAVY};opacity:0.75;">Save $22.</em> The window closes after Day 7.
+          </p>
+          <a href="${KIT_GRADUATE_SERIES_URL}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;font-size:14px;font-weight:600;">
+            Claim Kit Graduate price &rarr;
+          </a>
+        </div>
       </div>
 
       <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:20px 24px;margin:32px 0;">
@@ -377,7 +402,7 @@ export function buildClarityStoryEmail(_email: string) {
 // ─── Day 7 · the offer ──────────────────────────────────────────────────
 
 export function buildClarityOfferEmail(_email: string) {
-  const subject = "The next layer · Vol. I or all five";
+  const subject = "Last day · Kit Graduate $75 closes tonight";
 
   const text = [
     `Hi friend,`,
@@ -388,7 +413,13 @@ export function buildClarityOfferEmail(_email: string) {
     ``,
     `Either is okay. Most things in this season sit in the downloads folder for a while before they get used. The Kit will wait.`,
     ``,
-    `But if the Kit lit something up for you, the next layer is Vol. I.`,
+    `But the Kit Graduate price does not.`,
+    ``,
+    `Today is the last day for $75 on all five PHASE volumes (save $22 off the standard $97). After tonight the price goes back to $97.`,
+    ``,
+    `${KIT_GRADUATE_SERIES_URL}`,
+    ``,
+    `If you want the deeper work, the next layer is Vol. I.`,
     ``,
     `What Vol. I covers that the Kit does not:`,
     ``,
@@ -400,16 +431,16 @@ export function buildClarityOfferEmail(_email: string) {
     `Vol. I &middot; Perimenopause &middot; $27`,
     `https://thisisphase.co/vol/perimenopause`,
     ``,
-    `Or take the full kit. Five volumes. P + H + A + S + E. Same price as four individual volumes.`,
+    `Or take the full kit. Five volumes. P + H + A + S + E. Kit Graduate price for the next few hours.`,
     ``,
-    `The Series &middot; $97 &middot; saves $38`,
-    `https://thisisphase.co/series`,
+    `The Series &middot; $75 today (saves $22 vs standard $97)`,
+    `${KIT_GRADUATE_SERIES_URL}`,
     ``,
     `If you want to keep reading the long-form work, every Tuesday at 9 AM ET I send a new essay. Free.`,
     ``,
-    `https://www.momumentalreinvention.com`,
+    `${SUBSTACK_SUBSCRIBE_URL}`,
     ``,
-    `Whatever you decide. Keep the Kit. Use it when you are ready. The work waits.`,
+    `Whatever you decide. Keep the Kit. Use it when you are ready. The work waits. The Kit Graduate price does not.`,
     ``,
     `MOMumentally,`,
     `Erika`,
@@ -430,13 +461,13 @@ export function buildClarityOfferEmail(_email: string) {
     <div style="max-width:600px;margin:0 auto;padding:48px 32px 64px;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin-bottom:12px;">
-          THE PHASE&trade; &middot; DAY 7 &middot; THE NEXT LAYER
+          THE PHASE&trade; &middot; DAY 7 &middot; LAST DAY FOR $75
         </div>
         <div style="height:2px;width:48px;background:${BRAND_PINK};margin:0 auto;"></div>
       </div>
 
       <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.2;color:${BRAND_NAVY};margin:0 0 20px 0;font-weight:normal;">
-        Vol. I &middot; or <span style="font-style:italic;color:${BRAND_PINK};">all five</span>.
+        Tonight the Kit Graduate price <span style="font-style:italic;color:${BRAND_PINK};">closes</span>.
       </h1>
 
       <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
@@ -449,13 +480,31 @@ export function buildClarityOfferEmail(_email: string) {
         Are you using it? Or is it sitting in your downloads folder?
       </p>
 
-      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">
-        Either is okay. Most things in this season sit in the downloads folder for a while before they get used. The Kit will wait.
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+        Either is okay. Most things in this season sit in the downloads folder for a while before they get used. <strong style="color:${BRAND_NAVY};">The Kit will wait. The Kit Graduate price does not.</strong>
       </p>
+
+      <div style="background:${BRAND_NAVY};color:${BRAND_CREAM};border-radius:2px;padding:24px;margin:24px 0;text-align:center;">
+        <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
+          LAST DAY &middot; KIT GRADUATE PRICE
+        </p>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:42px;color:${BRAND_CREAM};margin:0 0 4px;line-height:1;">
+          $75
+        </p>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:13px;color:${BRAND_PINK};margin:0 0 16px;font-style:italic;">
+          standard $97 &middot; save $22
+        </p>
+        <a href="${KIT_GRADUATE_SERIES_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+          Claim Kit Graduate price &rarr;
+        </a>
+        <p style="font-size:12px;color:${BRAND_CREAM};opacity:0.7;margin:16px 0 0;font-style:italic;">
+          After tonight the price goes back to $97.
+        </p>
+      </div>
 
       <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:20px 24px;margin:24px 0;">
         <p style="font-style:italic;font-size:16px;color:${BRAND_NAVY};margin:0;">
-          But if the Kit lit something up for you, the next layer is Vol. I.
+          If you want to start smaller, the next layer is Vol. I alone.
         </p>
       </div>
 
@@ -483,31 +532,17 @@ export function buildClarityOfferEmail(_email: string) {
           </a>
         </div>
 
-        <div style="background:${BRAND_NAVY};border-radius:2px;padding:24px;margin:0 0 20px;text-align:center;">
-          <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 8px;">
-            THE SERIES &middot; ALL FIVE VOLUMES &middot; MOST POPULAR
-          </p>
-          <p style="font-family:Georgia, 'Times New Roman', serif;font-size:36px;color:${BRAND_CREAM};margin:0 0 4px;">
-            $97
-          </p>
-          <p style="font-family:Georgia, 'Times New Roman', serif;font-style:italic;font-size:14px;color:${BRAND_PINK};margin:0 0 16px;">
-            saves $38
-          </p>
-          <a href="https://thisisphase.co/series" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
-            Get The Series &rarr;
-          </a>
-        </div>
       </div>
 
       <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 8px;">
         If you want to keep reading the long-form work, every Tuesday at 9 AM ET I send a new essay. Free.
       </p>
       <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 16px;">
-        <a href="https://www.momumentalreinvention.com" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">Subscribe to MOMumental Reinvention &rarr;</a>
+        <a href="${SUBSTACK_SUBSCRIBE_URL}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">Subscribe to MOMumental Reinvention &rarr;</a>
       </p>
 
       <p style="font-size:15px;color:${BRAND_NAVY};margin:32px 0 16px;font-style:italic;">
-        Whatever you decide. Keep the Kit. Use it when you are ready. The work waits.
+        Whatever you decide. Keep the Kit. Use it when you are ready. The work waits. The Kit Graduate price does not.
       </p>
 
       <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
