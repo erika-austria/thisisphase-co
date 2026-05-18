@@ -108,14 +108,35 @@ export function ClarityForm({
             You&apos;re <span className="italic text-pink">in</span>.
           </p>
           <p className="text-navy/70 text-sm mb-2">
-            Your Clarity Starter Kit is on the way.
+            Your Clarity Starter Kit is on the way from <em>info@momumentalmoments.co</em>.
           </p>
           <p className="text-navy/60 text-xs italic">
             If you do not see it within 5 minutes, check spam or email{' '}
-            <a href="mailto:erika@erikahanafin.com" className="text-pink hover:underline">
-              erika@erikahanafin.com
+            <a href="mailto:info@momumentalmoments.co" className="text-pink hover:underline">
+              info@momumentalmoments.co
             </a>.
           </p>
+        </div>
+
+        {/* Secondary CTA · Substack subscribe · post-conversion cross-promotion */}
+        <div className="max-w-xl mx-auto mt-6 text-center">
+          <p className="eyebrow text-xs text-pink mb-3">
+            WHILE YOU WAIT
+          </p>
+          <p className="font-serif text-xl text-navy mb-3">
+            Free essays drop every Tuesday at <em>MOMumental Reinvention</em>.
+          </p>
+          <p className="text-navy/70 text-sm mb-4">
+            Long-form body-truth essays for the woman walking out of her fourth doctor&apos;s office.
+          </p>
+          <a
+            href="https://www.momumentalreinvention.com/subscribe"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-6 py-3 border border-navy text-navy hover:bg-navy hover:text-cream transition font-mono text-xs uppercase tracking-[0.18em]"
+          >
+            Subscribe in one click &rarr;
+          </a>
         </div>
       </section>
     );
@@ -150,7 +171,7 @@ export function ClarityForm({
 
       {status === 'error' && (
         <p className={`text-sm mt-2 sm:mt-0 sm:absolute sm:translate-y-12 ${variant === 'navy' ? 'text-pink' : 'text-pink-deep'}`}>
-          {errMsg || 'Something went wrong. Try again or email erika@erikahanafin.com.'}
+          {errMsg || 'Something went wrong. Try again or email info@momumentalmoments.co.'}
         </p>
       )}
     </form>
