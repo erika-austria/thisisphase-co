@@ -19,7 +19,7 @@
  * Env vars required (set in Vercel · thisisphase-co project):
  *   - STRIPE_WEBHOOK_SECRET    (from Stripe → Developers → Webhooks → reveal)
  *   - RESEND_API_KEY           (re_... from resend.com)
- *   - RESEND_FROM              (e.g. "Erika Hanafin Austria <hello@erikahanafin.com>")
+ *   - RESEND_FROM              (e.g. "Erika · MOMumental Moments® <info@momumentalmoments.co>")
  *   - META_CAPI_ACCESS_TOKEN   (from Meta Events Manager → Settings → Conversions API)
  *   - NEXT_PUBLIC_META_PIXEL_ID            (already set · empire-wide master Pixel ID)
  *   - NEXT_PUBLIC_META_PIXEL_ID_SECONDARY  (already set · PHASE-specific Pixel ID)
@@ -234,7 +234,7 @@ export async function POST(req: NextRequest) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   const resendKey = process.env.RESEND_API_KEY;
   const resendFrom =
-    process.env.RESEND_FROM || "Erika Hanafin Austria <hello@erikahanafin.com>";
+    process.env.RESEND_FROM || "Erika · MOMumental Moments® <info@momumentalmoments.co>";
   const stripeKey = process.env.STRIPE_SECRET_KEY; // optional · enables line_items expansion
 
   if (!webhookSecret) {
