@@ -130,7 +130,7 @@ export const PRODUCTS: Record<ProductKey, Product> = {
     name: "Decode Your Symptoms",
     fullTitle: "Decode Your Symptoms · The Action Companion",
     pillar: "companion",
-    price: 19,
+    price: 17,
     pdfUrl: `${PDF_BASE}/decode-your-symptoms.pdf`,
     pdfFilename: "Decode-Your-Symptoms.pdf",
     crossSellKey: "vol1",
@@ -155,6 +155,8 @@ export function identifyProduct(session: {
   // 2. Fallback · amount lookup
   const amountCents = session.amount_total ?? 0;
   if (amountCents === 9700) return "series";
+  if (amountCents === 7500) return "series"; // Kit Graduate special pricing on Series
+  if (amountCents === 1700) return "decode"; // Decode is uniquely $17
   // $27 and $19 are ambiguous · need line_items description match below
   if (amountCents === 1900) {
     const desc = session.line_items?.data?.[0]?.description?.toLowerCase() ?? "";

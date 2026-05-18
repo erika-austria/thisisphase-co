@@ -26,12 +26,12 @@ const CLARITY_PDF_URL =
 // Substack subscribe page · direct one-click signup (not the homepage).
 const SUBSTACK_SUBSCRIBE_URL = "https://www.momumentalreinvention.com/subscribe";
 
-// Decode Your Symptoms · $19 tripwire (the first paid step after the free Kit).
+// Decode Your Symptoms · $17 tripwire (the first paid step after the free Kit).
 // Override via env CLARITY_DECODE_URL with a dedicated Stripe Payment Link if needed.
 // Falls back to standard /decode product page.
 const DECODE_URL =
   process.env.CLARITY_DECODE_URL || "https://thisisphase.co/decode";
-const DECODE_PRICE = "$19";
+const DECODE_PRICE = "$17";
 
 // Kit Graduate Series upsell · $75 special pricing (save $60 vs buying volumes separately at 5 x $27 = $135).
 // Override via env CLARITY_KIT_GRADUATE_SERIES_URL with a dedicated Stripe Payment Link priced at $75.
