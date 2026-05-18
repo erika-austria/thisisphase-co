@@ -26,12 +26,18 @@ const CLARITY_PDF_URL =
 // Substack subscribe page · direct one-click signup (not the homepage).
 const SUBSTACK_SUBSCRIBE_URL = "https://www.momumentalreinvention.com/subscribe";
 
-// Kit Graduate Series upsell · $75 special pricing (save $22 off $97), 72-hour window.
+// Decode Your Symptoms · $19 tripwire (the first paid step after the free Kit).
+// Override via env CLARITY_DECODE_URL with a dedicated Stripe Payment Link if needed.
+// Falls back to standard /decode product page.
+const DECODE_URL =
+  process.env.CLARITY_DECODE_URL || "https://thisisphase.co/decode";
+const DECODE_PRICE = "$19";
+
+// Kit Graduate Series upsell · $75 special pricing (save $22 off $97).
 // Override via env CLARITY_KIT_GRADUATE_SERIES_URL with a dedicated Stripe Payment Link priced at $75.
-// Falls back to standard /series page at $97 if env not set (no broken links if Erika hasn't created the link yet).
+// Falls back to standard /series page at $97 if env not set (no broken links if not yet created).
 const KIT_GRADUATE_SERIES_URL =
   process.env.CLARITY_KIT_GRADUATE_SERIES_URL || "https://thisisphase.co/series";
-const SERIES_DEFAULT_URL = "https://thisisphase.co/series";
 
 // ─── Day 0 · instant delivery ───────────────────────────────────────────
 
@@ -53,11 +59,11 @@ export function buildClarityDeliveryEmail(_email: string) {
     ``,
     `2. Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. Subscribe at ${SUBSTACK_SUBSCRIBE_URL} if you want to keep reading. Free essays for everyone. Paid subscribers get the deeper work.`,
     ``,
-    `3. The Kit is the doorway. The PHASE volumes are the rooms. When you are ready, Vol. I covers Perimenopause in full.`,
+    `3. The Kit gives you language. Decode Your Symptoms gives you the worksheet system that turns language into action. ${DECODE_PRICE}.`,
     ``,
-    `Kit graduates only · $75 access to all five volumes (save $22 off the standard $97). The window closes after Day 7.`,
+    `${DECODE_URL}`,
     ``,
-    `${KIT_GRADUATE_SERIES_URL}`,
+    `Most readers grab Decode within the first 48 hours. It is designed to plug straight into the Kit pages you just downloaded.`,
     ``,
     `One ask before you close this. Hit reply and tell me one symptom that is loudest for you right now. The body-truth conversation works better when readers write back. I read every reply.`,
     ``,
@@ -116,18 +122,18 @@ export function buildClarityDeliveryEmail(_email: string) {
         </p>
 
         <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
-          <strong style="color:${BRAND_NAVY};">03 &middot; What is next.</strong> The Kit is the doorway. The PHASE&trade; volumes are the rooms. When you are ready, Vol. I covers Perimenopause in full.
+          <strong style="color:${BRAND_NAVY};">03 &middot; The next step.</strong> The Kit gives you language. <em>Decode Your Symptoms</em> gives you the worksheet system that turns language into action.
         </p>
 
         <div style="background:${BRAND_CREAM_ALT};border:1px solid ${BRAND_PINK};border-radius:2px;padding:20px 24px;margin:16px 0 20px;">
           <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 8px;">
-            KIT GRADUATES ONLY &middot; 7-DAY WINDOW
+            DECODE YOUR SYMPTOMS &middot; THE ACTION COMPANION
           </p>
           <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 12px;line-height:1.5;">
-            All five PHASE&trade; volumes for <strong style="color:${BRAND_NAVY};">$75</strong> instead of $97. <em style="color:${BRAND_NAVY};opacity:0.75;">Save $22.</em> The window closes after Day 7.
+            Plugs straight into the Kit pages you just downloaded. <strong style="color:${BRAND_NAVY};">${DECODE_PRICE}.</strong> One-time purchase.
           </p>
-          <a href="${KIT_GRADUATE_SERIES_URL}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;font-size:14px;font-weight:600;">
-            Claim Kit Graduate price &rarr;
+          <a href="${DECODE_URL}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;font-size:14px;font-weight:600;">
+            Get Decode Your Symptoms &rarr;
           </a>
         </div>
       </div>
@@ -154,7 +160,7 @@ export function buildClarityDeliveryEmail(_email: string) {
 // ─── Day 2 · the nudge ──────────────────────────────────────────────────
 
 export function buildClarityNudgeEmail(_email: string) {
-  const subject = "What you might have missed in the Kit";
+  const subject = "The worksheet that turns the Kit into action";
 
   const text = [
     `Hi friend,`,
@@ -169,13 +175,15 @@ export function buildClarityNudgeEmail(_email: string) {
     ``,
     `That language matters. I lost four years to vague unease before someone finally listened.`,
     ``,
-    `If the Kit clicks something open for you, Vol. I goes deeper. Perimenopause in full. The full body-truth map. $27.`,
+    `Here is the part most readers miss. The Kit gives you the language. Decode Your Symptoms gives you the worksheet system to actually use it.`,
     ``,
-    `https://thisisphase.co/vol/perimenopause`,
+    `Decode is what you fill out before your next doctor appointment. The before/after pattern tracker. The "what to ask" prompt. The "what to push back on" prompt.`,
     ``,
-    `Or take all five volumes for $97. Saves $38.`,
+    `${DECODE_PRICE}. Plugs straight into the Kit pages you already have.`,
     ``,
-    `https://thisisphase.co/series`,
+    `${DECODE_URL}`,
+    ``,
+    `Most readers who grab Decode use it within their first week. It is the difference between knowing the language and being able to speak it.`,
     ``,
     `MOMumentally,`,
     `Erika`,
@@ -202,7 +210,7 @@ export function buildClarityNudgeEmail(_email: string) {
       </div>
 
       <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.2;color:${BRAND_NAVY};margin:0 0 20px 0;font-weight:normal;">
-        What you might have missed in <span style="font-style:italic;color:${BRAND_PINK};">the Kit</span>.
+        The worksheet that turns the Kit <span style="font-style:italic;color:${BRAND_PINK};">into action</span>.
       </h1>
 
       <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
@@ -231,19 +239,27 @@ export function buildClarityNudgeEmail(_email: string) {
 
       <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:28px;margin-top:32px;">
         <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
-          IF THE KIT CLICKS SOMETHING OPEN
+          THE PART MOST READERS MISS
         </p>
-        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 16px;">
-          Vol. I goes deeper. Perimenopause in full. The full body-truth map. <strong>$27.</strong>
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 12px;">
+          The Kit gives you the language. <em>Decode Your Symptoms</em> gives you the worksheet system to actually use it.
         </p>
-        <div style="margin:20px 0 24px;">
-          <a href="https://thisisphase.co/vol/perimenopause" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
-            See Vol. I &rarr;
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
+          Decode is what you fill out before your next doctor appointment. The before/after pattern tracker. The <em>what to ask</em> prompt. The <em>what to push back on</em> prompt.
+        </p>
+        <div style="background:${BRAND_CREAM_ALT};border:1px solid ${BRAND_PINK};border-radius:2px;padding:20px 24px;margin:0 0 20px;text-align:center;">
+          <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 8px;">
+            DECODE YOUR SYMPTOMS
+          </p>
+          <p style="font-family:Georgia, 'Times New Roman', serif;font-size:32px;color:${BRAND_NAVY};margin:0 0 12px;">
+            ${DECODE_PRICE}
+          </p>
+          <a href="${DECODE_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+            Get Decode &rarr;
           </a>
         </div>
         <p style="font-size:14px;color:${BRAND_NAVY};margin:0 0 16px;font-style:italic;">
-          Or take all five volumes for $97. Saves $38.
-          <a href="https://thisisphase.co/series" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">See The Series &rarr;</a>
+          Most readers who grab Decode use it within their first week. It is the difference between knowing the language and being able to speak it.
         </p>
       </div>
 
@@ -284,11 +300,9 @@ export function buildClarityStoryEmail(_email: string) {
     ``,
     `That sentence is why The PHASE™ exists. It is the conversation I had to fight for at 42. It is the conversation you should have been handed at 38.`,
     ``,
-    `The Clarity Starter Kit is the first part of that conversation. The PHASE volumes are the rest of it.`,
+    `The Clarity Starter Kit is the first part of that conversation. Decode Your Symptoms is the worksheet you fill out before the conversation. So you go in armed with the question patterns instead of vague unease.`,
     ``,
-    `If you are ready for the rest, Vol. I is at https://thisisphase.co/vol/perimenopause.`,
-    ``,
-    `If you want all five letters of PHASE in one drop, the Series is at https://thisisphase.co/series. Saves $38.`,
+    `${DECODE_URL}`,
     ``,
     `Either way: you are not imagining this.`,
     ``,
@@ -357,29 +371,19 @@ export function buildClarityStoryEmail(_email: string) {
       </p>
 
       <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
-        The Clarity Starter Kit is the first part of that conversation. The PHASE volumes are the rest of it.
+        The Clarity Starter Kit is the first part of that conversation. <em>Decode Your Symptoms</em> is the worksheet you fill out before the next conversation, so you go in armed with question patterns instead of vague unease.
       </p>
 
-      <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:28px;margin-top:32px;">
+      <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:28px;margin-top:32px;text-align:center;">
         <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
-          IF YOU ARE READY FOR THE REST
+          THE WORKSHEET YOU FILL OUT BEFORE THE NEXT APPOINTMENT
         </p>
-        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 16px;">
-          Vol. I &middot; Perimenopause &middot; <strong>$27</strong>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:32px;color:${BRAND_NAVY};margin:0 0 12px;">
+          ${DECODE_PRICE}
         </p>
-        <div style="margin:8px 0 16px;">
-          <a href="https://thisisphase.co/vol/perimenopause" target="_blank" style="display:inline-block;padding:12px 24px;background:${BRAND_NAVY};color:${BRAND_CREAM};text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
-            Get Vol. I &rarr;
-          </a>
-        </div>
-        <p style="font-size:15px;color:${BRAND_NAVY};margin:16px 0 12px;">
-          Or all five letters in one drop &middot; <strong>$97 &middot; saves $38</strong>
-        </p>
-        <div style="margin:8px 0 16px;">
-          <a href="https://thisisphase.co/series" target="_blank" style="display:inline-block;padding:12px 24px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
-            Get The Series &rarr;
-          </a>
-        </div>
+        <a href="${DECODE_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+          Get Decode Your Symptoms &rarr;
+        </a>
       </div>
 
       <p style="font-size:18px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;text-align:center;">
@@ -402,7 +406,7 @@ export function buildClarityStoryEmail(_email: string) {
 // ─── Day 7 · the offer ──────────────────────────────────────────────────
 
 export function buildClarityOfferEmail(_email: string) {
-  const subject = "Last day · Kit Graduate $75 closes tonight";
+  const subject = "Day 7 · two paths from here";
 
   const text = [
     `Hi friend,`,
@@ -411,36 +415,46 @@ export function buildClarityOfferEmail(_email: string) {
     ``,
     `Are you using it? Or is it sitting in your downloads folder?`,
     ``,
-    `Either is okay. Most things in this season sit in the downloads folder for a while before they get used. The Kit will wait.`,
+    `Either is okay. Most things in this season sit in the downloads folder for a while before they get used.`,
     ``,
-    `But the Kit Graduate price does not.`,
+    `Whichever path fits, here is the next step.`,
     ``,
-    `Today is the last day for $75 on all five PHASE volumes (save $22 off the standard $97). After tonight the price goes back to $97.`,
+    `─────────────────────────────`,
+    `PATH ONE · IF DECODE IS STILL SITTING IN YOUR CART`,
+    `─────────────────────────────`,
     ``,
-    `${KIT_GRADUATE_SERIES_URL}`,
+    `Last call on Decode Your Symptoms at ${DECODE_PRICE}.`,
     ``,
-    `If you want the deeper work, the next layer is Vol. I.`,
+    `Decode is the worksheet system you fill out before your next appointment. The pattern tracker. The "what to ask" prompt. The "what to push back on" prompt.`,
     ``,
-    `What Vol. I covers that the Kit does not:`,
+    `It is what turns the Kit's language into a conversation that goes differently than the last four.`,
     ``,
-    `- The full Symptom Decoder (the Kit only previewed it)`,
-    `- Weekly tracker designed for clinician conversations`,
-    `- The Pattern Decoder framework for catching what your body is signaling`,
-    `- 9-page workbook · usable in any month, any phase`,
+    `${DECODE_URL}`,
     ``,
-    `Vol. I &middot; Perimenopause &middot; $27`,
-    `https://thisisphase.co/vol/perimenopause`,
+    `─────────────────────────────`,
+    `PATH TWO · IF YOU ALREADY HAVE DECODE`,
+    `─────────────────────────────`,
     ``,
-    `Or take the full kit. Five volumes. P + H + A + S + E. Kit Graduate price for the next few hours.`,
+    `You have earned the Kit Graduate upgrade.`,
     ``,
-    `The Series &middot; $75 today (saves $22 vs standard $97)`,
+    `All five PHASE volumes for $75 instead of $97. Save $22. You already proved you do the work. This is the rest of the body-truth map.`,
+    ``,
+    `What the full Series gives you that Decode does not:`,
+    ``,
+    `- Vol. I · Perimenopause · the body-truth map in full`,
+    `- Vol. II · Hormones · the chemistry underneath`,
+    `- Vol. III · Architecture · the daily structure that holds it`,
+    `- Vol. IV · Self-trust · the inner work no one talks about`,
+    `- Vol. V · Execution · the doing part for when language is not enough`,
+    ``,
+    `Kit Graduate price · $75 (standard $97)`,
     `${KIT_GRADUATE_SERIES_URL}`,
     ``,
     `If you want to keep reading the long-form work, every Tuesday at 9 AM ET I send a new essay. Free.`,
     ``,
     `${SUBSTACK_SUBSCRIBE_URL}`,
     ``,
-    `Whatever you decide. Keep the Kit. Use it when you are ready. The work waits. The Kit Graduate price does not.`,
+    `Whatever you decide. Keep the Kit. Use it when you are ready. Both paths are open.`,
     ``,
     `MOMumentally,`,
     `Erika`,
@@ -461,13 +475,13 @@ export function buildClarityOfferEmail(_email: string) {
     <div style="max-width:600px;margin:0 auto;padding:48px 32px 64px;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin-bottom:12px;">
-          THE PHASE&trade; &middot; DAY 7 &middot; LAST DAY FOR $75
+          THE PHASE&trade; &middot; DAY 7 &middot; TWO PATHS
         </div>
         <div style="height:2px;width:48px;background:${BRAND_PINK};margin:0 auto;"></div>
       </div>
 
       <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.2;color:${BRAND_NAVY};margin:0 0 20px 0;font-weight:normal;">
-        Tonight the Kit Graduate price <span style="font-style:italic;color:${BRAND_PINK};">closes</span>.
+        Two paths <span style="font-style:italic;color:${BRAND_PINK};">from here</span>.
       </h1>
 
       <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
@@ -481,57 +495,62 @@ export function buildClarityOfferEmail(_email: string) {
       </p>
 
       <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
-        Either is okay. Most things in this season sit in the downloads folder for a while before they get used. <strong style="color:${BRAND_NAVY};">The Kit will wait. The Kit Graduate price does not.</strong>
+        Either is okay. Most things in this season sit in the downloads folder for a while before they get used. Whichever path fits, here is the next step.
       </p>
 
-      <div style="background:${BRAND_NAVY};color:${BRAND_CREAM};border-radius:2px;padding:24px;margin:24px 0;text-align:center;">
-        <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
-          LAST DAY &middot; KIT GRADUATE PRICE
+      <!-- PATH ONE · Decode last call (for non-buyers) -->
+      <div style="background:${BRAND_CREAM_ALT};border:1px solid rgba(47,72,88,0.15);border-radius:2px;padding:24px;margin:24px 0;">
+        <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;text-align:center;">
+          PATH ONE &middot; IF DECODE IS STILL IN YOUR CART
         </p>
-        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:42px;color:${BRAND_CREAM};margin:0 0 4px;line-height:1;">
-          $75
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_NAVY};margin:0 0 12px;line-height:1.3;">
+          Last call on <em style="color:${BRAND_PINK};">Decode Your Symptoms</em>.
         </p>
-        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:13px;color:${BRAND_PINK};margin:0 0 16px;font-style:italic;">
-          standard $97 &middot; save $22
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 16px;line-height:1.6;">
+          Decode is the worksheet system you fill out before your next appointment. The pattern tracker. The <em>what to ask</em> prompt. The <em>what to push back on</em> prompt. It is what turns the Kit's language into a conversation that goes differently than the last four.
         </p>
-        <a href="${KIT_GRADUATE_SERIES_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
-          Claim Kit Graduate price &rarr;
-        </a>
-        <p style="font-size:12px;color:${BRAND_CREAM};opacity:0.7;margin:16px 0 0;font-style:italic;">
-          After tonight the price goes back to $97.
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:32px;color:${BRAND_NAVY};margin:0 0 16px;text-align:center;">
+          ${DECODE_PRICE}
         </p>
-      </div>
-
-      <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:20px 24px;margin:24px 0;">
-        <p style="font-style:italic;font-size:16px;color:${BRAND_NAVY};margin:0;">
-          If you want to start smaller, the next layer is Vol. I alone.
-        </p>
-      </div>
-
-      <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:24px 0 12px;">
-        WHAT VOL. I COVERS THAT THE KIT DOES NOT
-      </p>
-
-      <ul style="font-size:15px;color:${BRAND_NAVY};margin:0 0 24px;padding-left:24px;line-height:1.7;">
-        <li>The full Symptom Decoder (the Kit only previewed it)</li>
-        <li>Weekly tracker designed for clinician conversations</li>
-        <li>The Pattern Decoder framework for catching what your body is signaling</li>
-        <li>9-page workbook &middot; usable in any month, any phase</li>
-      </ul>
-
-      <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:32px;margin-top:32px;">
-        <div style="background:${BRAND_CREAM_ALT};border:1px solid rgba(47,72,88,0.1);border-radius:2px;padding:24px;margin:0 0 20px;text-align:center;">
-          <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 8px;">
-            VOL. I &middot; PERIMENOPAUSE
-          </p>
-          <p style="font-family:Georgia, 'Times New Roman', serif;font-size:36px;color:${BRAND_NAVY};margin:0 0 16px;">
-            $27
-          </p>
-          <a href="https://thisisphase.co/vol/perimenopause" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_NAVY};color:${BRAND_CREAM};text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
-            Get Vol. I &rarr;
+        <div style="text-align:center;">
+          <a href="${DECODE_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_NAVY};color:${BRAND_CREAM};text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+            Get Decode &rarr;
           </a>
         </div>
+      </div>
 
+      <!-- PATH TWO · Kit Graduate Series upgrade (for Decode buyers) -->
+      <div style="background:${BRAND_NAVY};color:${BRAND_CREAM};border-radius:2px;padding:24px;margin:24px 0;">
+        <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;text-align:center;">
+          PATH TWO &middot; IF YOU ALREADY HAVE DECODE
+        </p>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_CREAM};margin:0 0 12px;line-height:1.3;text-align:center;">
+          You have earned the <em style="color:${BRAND_PINK};">Kit Graduate</em> upgrade.
+        </p>
+        <p style="font-size:14px;color:${BRAND_CREAM};opacity:0.9;margin:0 0 16px;line-height:1.6;">
+          All five PHASE&trade; volumes for $75 instead of $97. You already proved you do the work. This is the rest of the body-truth map.
+        </p>
+        <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:16px 0 10px;">
+          WHAT THE FULL SERIES GIVES YOU
+        </p>
+        <ul style="font-size:13px;color:${BRAND_CREAM};opacity:0.9;margin:0 0 20px;padding-left:20px;line-height:1.7;">
+          <li>Vol. I &middot; Perimenopause &middot; the body-truth map in full</li>
+          <li>Vol. II &middot; Hormones &middot; the chemistry underneath</li>
+          <li>Vol. III &middot; Architecture &middot; the daily structure that holds it</li>
+          <li>Vol. IV &middot; Self-trust &middot; the inner work no one talks about</li>
+          <li>Vol. V &middot; Execution &middot; the doing part for when language is not enough</li>
+        </ul>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:36px;color:${BRAND_CREAM};margin:0 0 4px;text-align:center;line-height:1;">
+          $75
+        </p>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:13px;color:${BRAND_PINK};margin:0 0 16px;font-style:italic;text-align:center;">
+          standard $97 &middot; save $22
+        </p>
+        <div style="text-align:center;">
+          <a href="${KIT_GRADUATE_SERIES_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+            Claim Kit Graduate price &rarr;
+          </a>
+        </div>
       </div>
 
       <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 8px;">
@@ -542,7 +561,7 @@ export function buildClarityOfferEmail(_email: string) {
       </p>
 
       <p style="font-size:15px;color:${BRAND_NAVY};margin:32px 0 16px;font-style:italic;">
-        Whatever you decide. Keep the Kit. Use it when you are ready. The work waits. The Kit Graduate price does not.
+        Whatever you decide. Keep the Kit. Use it when you are ready. Both paths are open.
       </p>
 
       <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
