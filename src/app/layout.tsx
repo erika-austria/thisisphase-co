@@ -45,6 +45,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Theme color for mobile chrome */}
         <meta name="theme-color" content="#fff9f1" />
         <meta name="color-scheme" content="light" />
+        {/* Meta Business · domain verification for MOMumental Empire Business Manager · enables iOS 14.5+ attribution + Ads Manager destinations */}
+        <meta name="facebook-domain-verification" content="gcejqg45xwvgiuhdjzp03l5217jh7s" />
         {/* Preconnect to fonts (already optimized by next/font) */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
