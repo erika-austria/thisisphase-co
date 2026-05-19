@@ -129,12 +129,6 @@ export default async function VolumePage({ params }: Params) {
               price={volume.price}
               variant="primary"
             />
-            <StripeButton
-              href={anchorUrl}
-              label="With coaching prompts"
-              price={volume.anchorPrice}
-              variant="secondary"
-            />
           </div>
           <p className="text-sm text-navy/60">
             Or get all five for <Link href="/series" className="text-pink hover:underline">$97 (saves $38)</Link>.
