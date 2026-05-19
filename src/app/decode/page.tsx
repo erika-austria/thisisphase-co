@@ -8,6 +8,7 @@ import { MagazineMasthead } from '@/components/MagazineMasthead';
 import { PullQuote } from '@/components/PullQuote';
 import { StripeButton } from '@/components/StripeButton';
 import { TrustSignalsBar } from '@/components/TrustSignalsBar';
+import { ProductViewTracker } from '@/components/ProductViewTracker';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Decode Your Symptoms · A Science-Backed Reset · $19',
@@ -20,6 +21,7 @@ export const metadata: Metadata = buildMetadata({
 export default function DecodePage() {
   return (
     <>
+      <ProductViewTracker contentId="decode" contentName="Decode Your Symptoms" value={17} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
