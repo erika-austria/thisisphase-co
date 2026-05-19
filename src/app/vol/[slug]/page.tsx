@@ -11,6 +11,7 @@ import { PullQuote } from '@/components/PullQuote';
 import { AffiliateStrip } from '@/components/AffiliateStrip';
 import { StripeButton } from '@/components/StripeButton';
 import { TrustSignalsBar } from '@/components/TrustSignalsBar';
+import { ProductViewTracker } from '@/components/ProductViewTracker';
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -44,6 +45,7 @@ export default async function VolumePage({ params }: Params) {
 
   return (
     <>
+      <ProductViewTracker contentId={volume.slug} contentName={volume.fullTitle} value={volume.price} />
       {/* Per-page JSON-LD */}
       <script
         type="application/ld+json"
