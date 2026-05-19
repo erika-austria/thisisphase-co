@@ -5,14 +5,14 @@
  */
 
 export const STRIPE_LINKS = {
-  vol1: 'https://buy.stripe.com/6oU7sL0Lc3FE3DZd9DeEo01',
-  vol2: 'https://buy.stripe.com/3cI4gz1Pgb866Qb9XreEo02',
-  vol3: 'https://buy.stripe.com/eVqeVd8dE2BAb6rfhLeEo03',
-  vol4: 'https://buy.stripe.com/8x27sL3Xo7VUgqLb1veEo04',
-  vol5: 'https://buy.stripe.com/dRmdR965wdge8Yj3z3eEo05',
-  series: 'https://buy.stripe.com/cNibJ1fG6fom6Qb4D7eEo06',
-  journal: 'https://buy.stripe.com/8x2dR91Pg8ZYb6r7PjeEo07',
-  decode: 'https://buy.stripe.com/28EeVd51sfom8YjedHeEo08',
+  vol1: 'https://buy.stripe.com/eVqeVd8dE2BAb6rfhLeEo03',
+  vol2: 'https://buy.stripe.com/8x27sL3Xo7VUgqLb1veEo04',
+  vol3: 'https://buy.stripe.com/dRmdR965wdge8Yj3z3eEo05',
+  vol4: 'https://buy.stripe.com/cNibJ1fG6fom6Qb4D7eEo06',
+  vol5: 'https://buy.stripe.com/8x2dR91Pg8ZYb6r7PjeEo07',
+  series: 'https://buy.stripe.com/28EeVd51sfom8YjedHeEo08',
+  journal: 'https://buy.stripe.com/3cI4gz1Pgb866Qb9XreEo02',
+  decode: 'https://buy.stripe.com/6oU7sL0Lc3FE3DZd9DeEo01',
 } as const;
 
 /**
@@ -26,8 +26,8 @@ export const STRIPE_LINK_PRODUCTS: Record<string, { key: string; price: number }
   [STRIPE_LINKS.vol4]: { key: 'vol4', price: 27 },
   [STRIPE_LINKS.vol5]: { key: 'vol5', price: 27 },
   [STRIPE_LINKS.series]: { key: 'series', price: 97 },
-  [STRIPE_LINKS.journal]: { key: 'journal', price: 17 },
-  [STRIPE_LINKS.decode]: { key: 'decode', price: 17 },
+  [STRIPE_LINKS.journal]: { key: 'journal', price: 19 },
+  [STRIPE_LINKS.decode]: { key: 'decode', price: 19 },
 };
 
 /**
