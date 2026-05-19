@@ -8,6 +8,7 @@ import { MagazineMasthead } from '@/components/MagazineMasthead';
 import { PullQuote } from '@/components/PullQuote';
 import { StripeButton } from '@/components/StripeButton';
 import { TrustSignalsBar } from '@/components/TrustSignalsBar';
+import { ProductViewTracker } from '@/components/ProductViewTracker';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Reflections Through the PHASEs · The Journal · $19',
@@ -20,6 +21,7 @@ export const metadata: Metadata = buildMetadata({
 export default function JournalPage() {
   return (
     <>
+      <ProductViewTracker contentId="journal" contentName="The Reflections Journal" value={19} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
