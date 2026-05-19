@@ -10,6 +10,7 @@ import { VolumeCard } from '@/components/VolumeCard';
 import { PullQuote } from '@/components/PullQuote';
 import { StripeButton } from '@/components/StripeButton';
 import { TrustSignalsBar } from '@/components/TrustSignalsBar';
+import { ProductViewTracker } from '@/components/ProductViewTracker';
 
 export const metadata: Metadata = buildMetadata({
   title: 'The Series · All Five Volumes · $97',
@@ -31,6 +32,7 @@ const FAQS = [
 export default function SeriesPage() {
   return (
     <>
+      <ProductViewTracker contentId="series" contentName="The PHASE Series" value={97} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
