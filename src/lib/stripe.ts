@@ -13,6 +13,8 @@ export const STRIPE_LINKS = {
   series: 'https://buy.stripe.com/28EeVd51sfom8YjedHeEo08',
   journal: 'https://buy.stripe.com/3cI4gz1Pgb866Qb9XreEo02',
   decode: 'https://buy.stripe.com/6oU7sL0Lc3FE3DZd9DeEo01',
+    // _eEo0b · Complete the PHASE™ Series UPGRADE $70 · existing customers only · added May 21 2026
+    seriesUpgrade: 'https://buy.stripe.com/6oU4gzdxY3FE0rN5HbeEo0b',
 } as const;
 
 /**
@@ -28,6 +30,7 @@ export const STRIPE_LINK_PRODUCTS: Record<string, { key: string; price: number }
   [STRIPE_LINKS.series]: { key: 'series', price: 97 },
   [STRIPE_LINKS.journal]: { key: 'journal', price: 19 },
   [STRIPE_LINKS.decode]: { key: 'decode', price: 19 },
+  [STRIPE_LINKS.seriesUpgrade]: { key: 'series', price: 70 }, // $70 upgrade for existing Vol buyers
 };
 
 /**
