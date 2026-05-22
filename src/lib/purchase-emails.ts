@@ -527,3 +527,318 @@ export function buildKeystoneEmail(productKey: ProductKey, customerEmail: string
   const html = emailShell({ subject, preheader, bodyHtml });
   return { subject, html, text, customerEmail };
 }
+
+// ─── Abandoned Cart Recovery Sequence (3 emails) ──────────────────────────
+//
+// Triggered by Stripe `checkout.session.expired` event (24hr after creation).
+// Webhook checks for session.customer_email · if present, dispatches the
+// 3-email recovery sequence with Resend `scheduledAt` offsets:
+//
+//   #1 Soft return        · +1hr after expire  · just leaves the link
+//   #2 Pain-point anchor  · +24hr              · re-anchors why they came
+//   #3 Pivot to Clarity   · +72hr              · final · offers free Kit as warmup
+//
+// Anonymous abandoners (no email captured) are silently skipped · no contact path.
+// Recovery rate benchmark: 20-40% of abandons have emails · 5-15% of those convert.
+
+/**
+ * Email #1 · +1 hour after expire · Soft return.
+ * Acknowledges the abandon without pressure · just opens the door back.
+ */
+export function buildCartRecoverySoftEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const productPath = crossSellPath(productKey);
+  const productUrl = `https://www.thisisphase.co/${productPath}`;
+
+  const subject = `The ${product.name} link, in case the tab closed.`;
+  const preheader = `No pressure. The work waits. Here is the link, saved for you.`;
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `You got close. Then life happened, or the tab closed, or the kid yelled from the other room. I do not know which.`,
+    ``,
+    `I am leaving this here in case you want to come back to it.`,
+    ``,
+    `${product.fullTitle} · $${product.price}`,
+    ``,
+    `The map you should have been handed at 38. The hormone primer, the symptom decoder, the weekly tracker, the PHASE Pattern reflection.`,
+    ``,
+    `Tap below when you are ready.`,
+    ``,
+    `${productUrl}`,
+    ``,
+    `No countdown. No expiring discount. Just the link, saved for you.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+      A NOTE FROM ERIKA
+    </p>
+
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.25;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+      The link, <span style="font-style:italic;color:${BRAND_PINK};">in case the tab closed</span>.
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      You got close. Then life happened, or the tab closed, or the kid yelled from the other room. I do not know which.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      I am leaving this here in case you want to come back to it.
+    </p>
+
+    <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
+      <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
+        WHERE YOU LEFT OFF
+      </p>
+      <p style="font-size:18px;color:${BRAND_NAVY};margin:0 0 8px;font-family:Georgia, 'Times New Roman', serif;">
+        <strong>${escapeHtml(product.fullTitle)}</strong>
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;font-style:italic;">
+        $${product.price} &middot; instant delivery to your inbox.
+      </p>
+    </div>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="${productUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Buy ${escapeHtml(product.name)} &middot; $${product.price} &rarr;
+      </a>
+    </div>
+
+    <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 32px;font-style:italic;text-align:center;">
+      No countdown. No expiring discount. Just the link, saved for you.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
+
+/**
+ * Email #2 · +24 hours after expire · Pain-point anchor.
+ * Re-surfaces the pain that brought them in. Adds Clarity Kit safety net.
+ */
+export function buildCartRecoveryPainEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const productPath = crossSellPath(productKey);
+  const productUrl = `https://www.thisisphase.co/${productPath}`;
+  const clarityUrl = `https://www.thisisphase.co/clarity`;
+
+  const subject = `What were you almost ready for?`;
+  const preheader = `Two questions before the link.`;
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `You came to The PHASE™ page yesterday. You got close to ${product.name}. You did not finish.`,
+    ``,
+    `I do not know what stopped you. But I have a guess.`,
+    ``,
+    `Two questions:`,
+    ``,
+    `01 · Are you tired of being told your labs are normal while your body says otherwise?`,
+    `02 · Are you tired of doing more discipline on a body that does not need more discipline?`,
+    ``,
+    `If yes to either, ${product.fullTitle} is the body-truth map you came back for. The map your provider should have handed you at 38.`,
+    ``,
+    `${product.fullTitle} · $${product.price}`,
+    `${productUrl}`,
+    ``,
+    `If now is not the time, the free Clarity Starter Kit is here as a front-door instead:`,
+    `${clarityUrl}`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+      24 HOURS LATER
+    </p>
+
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.25;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+      What were you <span style="font-style:italic;color:${BRAND_PINK};">almost ready</span> for?
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      You came to The PHASE&trade; page yesterday. You got close to ${escapeHtml(product.name)}. You did not finish.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      I do not know what stopped you. But I have a guess.
+    </p>
+
+    <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
+      <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+        TWO QUESTIONS
+      </p>
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 14px;">
+        <strong>01 &middot;</strong> Are you tired of being told your labs are normal while your body says otherwise?
+      </p>
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0;">
+        <strong>02 &middot;</strong> Are you tired of doing more discipline on a body that does not need more discipline?
+      </p>
+    </div>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      If yes to either, <strong>${escapeHtml(product.fullTitle)}</strong> is the body-truth map you came back for. The map your provider should have handed you at 38.
+    </p>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="${productUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Buy ${escapeHtml(product.name)} &middot; $${product.price} &rarr;
+      </a>
+    </div>
+
+    <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:24px;margin-top:32px;">
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0 0 12px;font-style:italic;">
+        If now is not the time, the free Clarity Starter Kit is here as a front-door instead:
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;">
+        <a href="${clarityUrl}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">${clarityUrl}</a>
+      </p>
+    </div>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
+
+/**
+ * Email #3 · +72 hours after expire · Final · Pivot to Clarity Kit.
+ * Acknowledges Vol I might not be the right starting point · offers free Kit instead.
+ * Holds pricing integrity (no Vol I discount) · pivots to lower-friction entry.
+ */
+export function buildCartRecoveryFinalEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const productPath = crossSellPath(productKey);
+  const productUrl = `https://www.thisisphase.co/${productPath}`;
+  const clarityUrl = `https://www.thisisphase.co/clarity`;
+
+  const subject = `Maybe ${product.name} isn't where you start. Try this.`;
+  const preheader = `Free workbook · same body-truth · no purchase needed.`;
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `Three days ago you got close to ${product.name}. You did not finish.`,
+    ``,
+    `Two possible reasons:`,
+    ``,
+    `01 · The timing is wrong. (That is fine. ${product.name} will be here.)`,
+    `02 · The starting point is too far in. You need the front door first.`,
+    ``,
+    `If it is #2, the Clarity Starter Kit is the front door.`,
+    ``,
+    `Clarity Starter Kit · 9-page workbook · FREE`,
+    ``,
+    `It is the body-truth conversation in its simplest form. The same voice, the same framework, the same map · just the entry.`,
+    ``,
+    `${clarityUrl}`,
+    ``,
+    `If you change your mind on ${product.name} later, the link is still here:`,
+    `${productUrl} · $${product.price}`,
+    ``,
+    `This is the last email from me about the cart. The work waits.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+      THREE DAYS LATER &middot; LAST NOTE
+    </p>
+
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:28px;line-height:1.3;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+      Maybe ${escapeHtml(product.name)} <span style="font-style:italic;color:${BRAND_PINK};">isn't where you start</span>.
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      Three days ago you got close to ${escapeHtml(product.name)}. You did not finish.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">
+      Two possible reasons:
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 14px;">
+      <strong>01 &middot;</strong> The timing is wrong. (That is fine. ${escapeHtml(product.name)} will be here.)
+    </p>
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      <strong>02 &middot;</strong> The starting point is too far in. You need the front door first.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      If it is #2, the Clarity Starter Kit is the front door.
+    </p>
+
+    <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
+      <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
+        THE FRONT DOOR
+      </p>
+      <p style="font-size:18px;color:${BRAND_NAVY};margin:0 0 8px;font-family:Georgia, 'Times New Roman', serif;">
+        <strong>Clarity Starter Kit</strong> &middot; 9-page workbook
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0 0 12px;font-style:italic;">
+        FREE &middot; instant delivery.
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;">
+        Same voice. Same framework. Same map &middot; just the entry.
+      </p>
+    </div>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="${clarityUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Get the Free Kit &rarr;
+      </a>
+    </div>
+
+    <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:24px;margin-top:32px;">
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0 0 8px;font-style:italic;">
+        If you change your mind on ${escapeHtml(product.name)} later, the link is still here:
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;">
+        <a href="${productUrl}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">${productUrl}</a> &middot; $${product.price}
+      </p>
+    </div>
+
+    <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 32px;font-style:italic;">
+      This is the last email from me about the cart. The work waits.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
