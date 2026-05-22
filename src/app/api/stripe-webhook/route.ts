@@ -50,6 +50,9 @@ import {
   buildCheckInEmail,
   buildOfferEmail,
   buildKeystoneEmail,
+  buildCartRecoverySoftEmail,
+  buildCartRecoveryPainEmail,
+  buildCartRecoveryFinalEmail,
 } from "@/lib/purchase-emails";
 
 export const runtime = "nodejs";
@@ -265,7 +268,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }
 
-  // Only handle checkout.session.completed in V1
+  // Handle two event types:
+  //   1. checkout.session.completed → purchase delivery + follow-up sequence
+  //   2. checkout.session.expired   → abandoned cart recovery sequence (3 emails over 72hr)
+  // All other events get a 200 OK ignored response (Stripe is happy, no retry).
+  if (event.type === "checkout.session.expired") {
+    return handleCheckoutExpired(event, resendKey, resendFrom);
+  }
   if (event.type !== "checkout.session.completed") {
     return NextResponse.json({ ok: true, ignored: event.type });
   }
@@ -448,6 +457,106 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     ok: true,
     product: productKey,
+    email: customerEmail,
+    sequence: results.map((r) => ({ stage: r.stage, ok: r.ok, status: r.status })),
+  });
+}
+
+// ─── checkout.session.expired · abandoned cart recovery ───────────────────
+//
+// Stripe fires this event 24hr after session creation if the user did not
+// complete payment. We dispatch a 3-email recovery sequence:
+//   #1 Soft return        · +1hr   · acknowledge, leave the link
+//   #2 Pain-point anchor  · +24hr  · re-surface why they came + Clarity safety net
+//   #3 Pivot to Clarity   · +72hr  · final · offer free Kit as warmup entry
+//
+// Anonymous abandoners (session.customer_email === null) are silently
+// skipped · no contact path exists. Returns 200 OK in all cases so Stripe
+// does not retry.
+
+async function handleCheckoutExpired(
+  event: { type: string; data: { object: Record<string, unknown> } },
+  resendKey: string,
+  resendFrom: string
+): Promise<NextResponse> {
+  const session = event.data.object as {
+    id: string;
+    customer_email?: string | null;
+    customer_details?: { email?: string | null };
+    metadata?: Record<string, string> | null;
+    amount_total?: number | null;
+  };
+
+  const customerEmail = session.customer_email || session.customer_details?.email;
+  if (!customerEmail) {
+    console.log(
+      `Cart abandon · session ${session.id} · no customer_email · skipping recovery sequence`
+    );
+    return NextResponse.json({ ok: true, skipped: "no_customer_email" });
+  }
+
+  // Identify which product was abandoned · default to vol1 (ad destination)
+  // if metadata is missing. Future improvement: fetch line_items for accuracy.
+  const productKey = (session.metadata?.product as string | undefined) || "vol1";
+  const validProductKey =
+    productKey in PRODUCTS ? (productKey as keyof typeof PRODUCTS) : "vol1";
+
+  // Build all 3 recovery emails
+  const sequence = [
+    {
+      stage: "abandoned-1hr-soft",
+      scheduledAt: offsetFromNow(60), // +1 hour
+      email: buildCartRecoverySoftEmail(validProductKey, customerEmail),
+    },
+    {
+      stage: "abandoned-24hr-pain",
+      scheduledAt: offsetFromNow(60 * 24), // +24 hours
+      email: buildCartRecoveryPainEmail(validProductKey, customerEmail),
+    },
+    {
+      stage: "abandoned-72hr-final",
+      scheduledAt: offsetFromNow(60 * 72), // +72 hours
+      email: buildCartRecoveryFinalEmail(validProductKey, customerEmail),
+    },
+  ];
+
+  // Dispatch all 3 to Resend in parallel · all are scheduled (none send immediately).
+  const results = await Promise.all(
+    sequence.map((item) =>
+      sendViaResend({
+        apiKey: resendKey,
+        from: resendFrom,
+        to: customerEmail,
+        subject: item.email.subject,
+        html: item.email.html,
+        text: item.email.text,
+        scheduledAt: item.scheduledAt,
+        tags: [
+          { name: "source", value: "stripe-cart-abandoned" },
+          { name: "product", value: validProductKey },
+          { name: "stage", value: item.stage },
+        ],
+      }).then((r) => ({ stage: item.stage, ...r }))
+    )
+  );
+
+  const failed = results.filter((r) => !r.ok);
+  if (failed.length > 0) {
+    console.error(
+      "Some cart recovery emails failed to enqueue",
+      failed.map((f) => ({ stage: f.stage, status: f.status, body: f.body }))
+    );
+  }
+
+  console.log(
+    `Cart abandon recovery dispatched · ${validProductKey} · ${customerEmail} · session ${session.id} · ` +
+      `${results.length - failed.length}/${results.length} ok`
+  );
+
+  return NextResponse.json({
+    ok: true,
+    flow: "cart-abandoned",
+    product: validProductKey,
     email: customerEmail,
     sequence: results.map((r) => ({ stage: r.stage, ok: r.ok, status: r.status })),
   });
