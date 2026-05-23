@@ -121,11 +121,11 @@ export default async function VolumePage({ params }: Params) {
             {volume.longDescription}
           </p>
 
-          {/* Buy buttons */}
+          {/* Buy buttons · single Entry CTA + inline Series upsell (broken anchor button removed per May 19 PM lock · no $47 coaching prompts product built) */}
           <div className="flex flex-wrap gap-3 mb-6">
             <StripeButton
               href={stripeUrl}
-              label={`Buy Vol. ${volume.numeral} · Entry`}
+              label={`Buy Vol. ${volume.numeral} · $${volume.price}`}
               price={volume.price}
               variant="primary"
             />
@@ -219,7 +219,7 @@ export default async function VolumePage({ params }: Params) {
           Vol. {volume.numeral} · <span className="italic text-pink">${volume.price}</span>
         </h2>
         <div className="flex flex-wrap gap-3 justify-center">
-          <StripeButton href={stripeUrl} label={`Buy Vol. ${volume.numeral}`} variant="pink" />
+          <StripeButton href={stripeUrl} label={`Buy Vol. ${volume.numeral} · $${volume.price}`} variant="pink" />
           <Link href="/series" className="btn-secondary border-cream text-cream hover:bg-cream hover:text-navy">
             Or all five for $97 →
           </Link>
