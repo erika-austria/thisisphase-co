@@ -34,6 +34,8 @@ export const ORGANIZATION_SCHEMA = {
     MOMUMENTAL_URL,
     'https://www.instagram.com/thisisphaseco',
     'https://www.instagram.com/erikahanafin',
+    'https://www.youtube.com/@thisisphaseco',
+    'https://www.tiktok.com/@momumentalmoments',
     'https://www.momumentalreinvention.com',
     ERIKA_URL,
   ],
@@ -53,6 +55,8 @@ export const PERSON_SCHEMA = {
     'https://www.linkedin.com/in/erikahanafin',
     'https://www.instagram.com/erikahanafin',
     'https://www.instagram.com/thisisphaseco',
+    'https://www.youtube.com/@thisisphaseco',
+    'https://www.tiktok.com/@momumentalmoments',
     'https://www.momumentalreinvention.com',
   ],
   hasCredential: [
@@ -159,6 +163,51 @@ export function faqSchema(faqs: Array<{ question: string; answer: string }>) {
       name: f.question,
       acceptedAnswer: { '@type': 'Answer', text: f.answer },
     })),
+  };
+}
+
+/**
+ * PodcastSeries schema for MOMumental Reinvention Podcast.
+ * Launches June 2026. Hosted by Erika Hanafin Austria under MOMumental Moments®.
+ * Use on /podcast page (when built) and reference from homepage.
+ */
+export function podcastSeriesSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'PodcastSeries',
+    '@id': `${MOMUMENTAL_URL}/podcast/#podcast`,
+    name: 'MOMumental Reinvention Podcast',
+    description: 'Becoming, not being. A build, not a mood. Conversations on perimenopause, reinvention, and the body-truth women rebuild from. Hosted by Erika Hanafin Austria.',
+    url: `${MOMUMENTAL_URL}/podcast`,
+    author: { '@id': `${ERIKA_URL}/#person` },
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    inLanguage: 'en-US',
+  };
+}
+
+/**
+ * VideoObject schema for embedded YouTube videos.
+ * Use on pages that embed @thisisphaseco YouTube content (created Fri May 22 PM 2026).
+ */
+export function videoObjectSchema(opts: {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  uploadDate: string;
+  embedUrl: string;
+  duration?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: opts.name,
+    description: opts.description,
+    thumbnailUrl: opts.thumbnailUrl,
+    uploadDate: opts.uploadDate,
+    embedUrl: opts.embedUrl,
+    ...(opts.duration && { duration: opts.duration }),
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    author: { '@id': `${ERIKA_URL}/#person` },
   };
 }
 
