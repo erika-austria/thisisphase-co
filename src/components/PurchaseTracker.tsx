@@ -29,14 +29,24 @@ export function PurchaseTracker() {
     if (typeof window === 'undefined') return;
 
     const sessionId = searchParams.get('session_id');
-    const dedupeKey = `phase_purchase_${sessionId ?? 'no-session'}`;
+
+    // Bail if no session_id or if it does not match a real Stripe Checkout Session format.
+    // Real Stripe session IDs are cs_live_ or cs_test_ followed by 40+ alphanumeric chars.
+    // This prevents false-positive Purchase events from /thanks page refreshes, direct nav,
+    // bot traffic, and short fake test IDs (e.g. cs_test_diagnostic_check).
+    // Fixed Mon May 25 2026 · Meta Ads was reporting 1 Website Purchase against zero Stripe reality.
+    if (!sessionId || !/^cs_(live|test)_[a-zA-Z0-9]{40,}$/.test(sessionId)) {
+      return;
+    }
+
+    const dedupeKey = `phase_purchase_${sessionId}`;
 
     try {
       if (sessionStorage.getItem(dedupeKey)) return;
       sessionStorage.setItem(dedupeKey, '1');
     } catch {}
 
-    const eventId = sessionId || `thx_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    const eventId = sessionId;
 
     // Read the pending-purchase context StripeButton stashed before redirect.
     // Window: 60 minutes (covers slow checkouts, expires stale data).
