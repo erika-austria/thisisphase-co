@@ -1,17 +1,23 @@
 /**
- * The Clarity Starter Kit · 4-email lead funnel sequence
+ * The Clarity Starter Kit · 6-email lead funnel sequence
  *
  * Voice firewall: NEON, no em dashes, sister tone, MOMumentally sign-off.
  *
- * Day 0 (instant):  buildClarityDeliveryEmail   · PDF download + one-question invitation
- * Day 2:            buildClarityNudgeEmail      · "what you might have missed" + soft Vol. I tease
- * Day 4:            buildClarityStoryEmail      · founder story · 4 years dismissed · nurse practitioner moment
- * Day 7:            buildClarityOfferEmail      · direct Vol. I or Series offer with launch-week framing
+ * Day 0 (instant):  buildClarityDeliveryEmail    · PDF download + one-question invitation
+ * Day 2:            buildClarityNudgeEmail       · "what you might have missed" + soft Decode tease
+ * Day 4:            buildClarityStoryEmail       · founder story · 4 years dismissed · nurse practitioner moment
+ * Day 7:            buildClarityOfferEmail       · Decode last call ($17) OR Kit Graduate Series ($75)
+ * Day 14:           buildClarityRecaptureEmail   · social proof recapture · "the bedside table workbook"
+ * Day 21:           buildClarityFinalEmail       · final close · "one last note before this thread ends"
  *
- * All four are dispatched at form submit via Resend's `scheduled_at` parameter
+ * All six are dispatched at form submit via Resend's `scheduled_at` parameter
  * (Resend supports up to 30 days future scheduling · no cron infrastructure needed).
  *
  * Mirrors the architecture of purchase-emails.ts so behavior is consistent.
+ *
+ * Day 14 + Day 21 added Thu May 28 2026 · CMO recapture lever after Meta Ads launch.
+ * Targets 1-2% additional recapture on non-Day-7 converters · compounds with every
+ * Meta Ads lead going forward.
  */
 
 const BRAND_PINK = "#F086DC";
@@ -570,6 +576,329 @@ export function buildClarityOfferEmail(_email: string) {
         MOMumentally,
       </p>
       <p style="font-size:16px;color:${BRAND_NAVY};margin:0;">Erika</p>
+
+      ${footerHtml()}
+    </div>
+  </body>
+</html>`;
+
+  return { subject, html, text };
+}
+
+// ─── Day 14 · the recapture (social proof) ──────────────────────────────
+
+export function buildClarityRecaptureEmail(_email: string) {
+  const subject = "The bedside table workbook";
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `Two weeks since you downloaded the Clarity Starter Kit. Quick honest question.`,
+    ``,
+    `Did you ever open page 3?`,
+    ``,
+    `That is the page most women save. The Symptom Decoder. The "I thought it was just stress" page.`,
+    ``,
+    `If you have not opened it yet, no judgment. Some Kits sit in downloads folders for weeks. Then one morning they get pulled out. The work is patient that way.`,
+    ``,
+    `Three things since I last wrote.`,
+    ``,
+    `One. Women have started bringing the Kit to doctor appointments. Tabbed pages. Highlighted lines. One reader sent me a photo of her workbook sitting next to her lab results. She wrote: "The lab said normal. The workbook said the rest of the story."`,
+    ``,
+    `Two. The most common message I get back is four words. "I thought it was me."`,
+    ``,
+    `Three. Decode Your Symptoms is what readers reach for when the Kit's language finally clicks. Still ${DECODE_PRICE}. Still the worksheet that turns the language into action.`,
+    ``,
+    `${DECODE_URL}`,
+    ``,
+    `If today is the day, the link is above. If not, the Kit is still yours. Forever.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+    ``,
+    `P.S. The 4am wake-up. The brain fog. The hot flash that arrives without warning. If any of those three are still loud, Decode is the system for tracking patterns before your next appointment.`,
+    ``,
+    `─────────────────────────────`,
+    `MOMumental Moments® · the parent IP behind The PHASE™.`,
+    `https://thisisphase.co · https://momumentalreinvention.com`,
+  ].join("\n");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${escapeHtml(subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background:${BRAND_CREAM};font-family:Georgia, 'Times New Roman', serif;color:${BRAND_NAVY};line-height:1.6;">
+    <div style="max-width:600px;margin:0 auto;padding:48px 32px 64px;">
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin-bottom:12px;">
+          THE PHASE&trade; &middot; DAY 14 &middot; THE BEDSIDE TABLE WORKBOOK
+        </div>
+        <div style="height:2px;width:48px;background:${BRAND_PINK};margin:0 auto;"></div>
+      </div>
+
+      <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.2;color:${BRAND_NAVY};margin:0 0 20px 0;font-weight:normal;">
+        Did you ever open <span style="font-style:italic;color:${BRAND_PINK};">page 3</span>?
+      </h1>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">
+        Two weeks since you downloaded the Clarity Starter Kit. Quick honest question.
+      </p>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">
+        That is the page most women save. The Symptom Decoder. The <em style="color:${BRAND_PINK};">"I thought it was just stress"</em> page.
+      </p>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+        If you have not opened it yet, no judgment. Some Kits sit in downloads folders for weeks. Then one morning they get pulled out. The work is patient that way.
+      </p>
+
+      <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:28px;margin-top:32px;">
+        <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+          THREE THINGS SINCE I LAST WROTE
+        </p>
+
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
+          <strong style="color:${BRAND_NAVY};">01 &middot; The Kit is going to appointments.</strong> Women have started bringing the workbook to doctor visits. Tabbed pages. Highlighted lines. One reader sent me a photo of her workbook sitting next to her lab results.
+        </p>
+
+        <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:20px 24px;margin:16px 0 20px;">
+          <p style="font-style:italic;font-size:16px;color:${BRAND_NAVY};margin:0;">
+            "The lab said normal. The workbook said the rest of the story."
+          </p>
+        </div>
+
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
+          <strong style="color:${BRAND_NAVY};">02 &middot; The most common message I get back is four words.</strong> "I thought it was me."
+        </p>
+
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
+          <strong style="color:${BRAND_NAVY};">03 &middot; Decode is the action layer.</strong> When the Kit's language finally clicks, Decode is what readers reach for next. The pattern tracker. The <em>what to ask</em> prompt. The <em>what to push back on</em> prompt.
+        </p>
+
+        <div style="background:${BRAND_CREAM_ALT};border:1px solid ${BRAND_PINK};border-radius:2px;padding:20px 24px;margin:16px 0 20px;text-align:center;">
+          <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 8px;">
+            DECODE YOUR SYMPTOMS &middot; THE ACTION COMPANION
+          </p>
+          <p style="font-family:Georgia, 'Times New Roman', serif;font-size:32px;color:${BRAND_NAVY};margin:0 0 12px;">
+            ${DECODE_PRICE}
+          </p>
+          <a href="${DECODE_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+            Get Decode &rarr;
+          </a>
+        </div>
+      </div>
+
+      <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 16px;font-style:italic;">
+        If today is the day, the link is above. If not, the Kit is still yours. Forever.
+      </p>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+        MOMumentally,
+      </p>
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0;">Erika</p>
+
+      <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:20px;margin-top:24px;">
+        <p style="font-size:14px;color:${BRAND_NAVY};margin:0;opacity:0.8;font-style:italic;">
+          P.S. The 4am wake-up. The brain fog. The hot flash that arrives without warning. If any of those three are still loud, Decode is the system for tracking patterns before your next appointment.
+        </p>
+      </div>
+
+      ${footerHtml()}
+    </div>
+  </body>
+</html>`;
+
+  return { subject, html, text };
+}
+
+// ─── Day 21 · the final close ───────────────────────────────────────────
+
+export function buildClarityFinalEmail(_email: string) {
+  const subject = "One last note before this thread ends";
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `This is the last email in this thread.`,
+    ``,
+    `Three weeks ago you downloaded the Clarity Starter Kit. Since then I have written five other emails. I will not write a sixth.`,
+    ``,
+    `Not because I am giving up on you. Because conversations have to end somewhere. The Kit is still in your inbox. The PDF link still works. The work is still yours, forever.`,
+    ``,
+    `If today is the day, here are the two paths.`,
+    ``,
+    `─────────────────────────────`,
+    `PATH ONE · DECODE YOUR SYMPTOMS · ${DECODE_PRICE}`,
+    `─────────────────────────────`,
+    ``,
+    `The worksheet system that plugs straight into the Kit pages. The pattern tracker. The "what to ask" prompt. The "what to push back on" prompt.`,
+    ``,
+    `Most readers grab this within their first month with the Kit. It is the difference between knowing the language and being able to speak it.`,
+    ``,
+    `${DECODE_URL}`,
+    ``,
+    `─────────────────────────────`,
+    `PATH TWO · KIT GRADUATE SERIES · $75`,
+    `─────────────────────────────`,
+    ``,
+    `All five PHASE™ volumes. $60 less than buying separately. The full body-truth map.`,
+    ``,
+    `Vol. I · Perimenopause · the body-truth map in full`,
+    `Vol. II · Hormones · the chemistry underneath`,
+    `Vol. III · Architecture · the daily structure that holds it`,
+    `Vol. IV · Self-trust · the inner work no one talks about`,
+    `Vol. V · Execution · the doing part for when language is not enough`,
+    ``,
+    `${KIT_GRADUATE_SERIES_URL}`,
+    ``,
+    `If today is not the day, that is okay too. You will still be on the Tuesday Letter list at momumentalreinvention.com. I send a new long-form essay every week. Free.`,
+    ``,
+    `${SUBSTACK_SUBSCRIBE_URL}`,
+    ``,
+    `Wherever you go from here, three things.`,
+    ``,
+    `You are not crazy.`,
+    `Your labs are normal. Your body is not.`,
+    `You are not imagining this.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+    ``,
+    `Erika Hanafin Austria`,
+    `Founder, MOMumental Moments® + The PHASE™`,
+    `thisisphase.co · momumentalreinvention.com`,
+  ].join("\n");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${escapeHtml(subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background:${BRAND_CREAM};font-family:Georgia, 'Times New Roman', serif;color:${BRAND_NAVY};line-height:1.6;">
+    <div style="max-width:600px;margin:0 auto;padding:48px 32px 64px;">
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin-bottom:12px;">
+          THE PHASE&trade; &middot; DAY 21 &middot; THE LAST NOTE
+        </div>
+        <div style="height:2px;width:48px;background:${BRAND_PINK};margin:0 auto;"></div>
+      </div>
+
+      <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.2;color:${BRAND_NAVY};margin:0 0 20px 0;font-weight:normal;">
+        One last note before <span style="font-style:italic;color:${BRAND_PINK};">this thread ends</span>.
+      </h1>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+      <p style="font-size:18px;color:${BRAND_NAVY};margin:0 0 16px;font-style:italic;">
+        This is the last email in this thread.
+      </p>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">
+        Three weeks ago you downloaded the Clarity Starter Kit. Since then I have written five other emails. I will not write a sixth.
+      </p>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+        Not because I am giving up on you. Because conversations have to end somewhere. The Kit is still in your inbox. The PDF link still works. The work is still yours. Forever.
+      </p>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;font-style:italic;">
+        If today is the day, here are the two paths.
+      </p>
+
+      <!-- PATH ONE · Decode -->
+      <div style="background:${BRAND_CREAM_ALT};border:1px solid rgba(47,72,88,0.15);border-radius:2px;padding:24px;margin:24px 0;">
+        <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;text-align:center;">
+          PATH ONE &middot; DECODE YOUR SYMPTOMS
+        </p>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_NAVY};margin:0 0 12px;line-height:1.3;">
+          The <em style="color:${BRAND_PINK};">worksheet system</em> that plugs straight into the Kit.
+        </p>
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 16px;line-height:1.6;">
+          The pattern tracker. The <em>what to ask</em> prompt. The <em>what to push back on</em> prompt. Most readers grab this within their first month with the Kit. It is the difference between knowing the language and being able to speak it.
+        </p>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:32px;color:${BRAND_NAVY};margin:0 0 16px;text-align:center;">
+          ${DECODE_PRICE}
+        </p>
+        <div style="text-align:center;">
+          <a href="${DECODE_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_NAVY};color:${BRAND_CREAM};text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+            Get Decode &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- PATH TWO · Kit Graduate Series -->
+      <div style="background:${BRAND_NAVY};color:${BRAND_CREAM};border-radius:2px;padding:24px;margin:24px 0;">
+        <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;text-align:center;">
+          PATH TWO &middot; KIT GRADUATE SERIES
+        </p>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_CREAM};margin:0 0 12px;line-height:1.3;text-align:center;">
+          All five <em style="color:${BRAND_PINK};">PHASE&trade;</em> volumes.
+        </p>
+        <p style="font-size:14px;color:${BRAND_CREAM};opacity:0.9;margin:0 0 16px;line-height:1.6;text-align:center;">
+          $60 less than buying separately. The full body-truth map.
+        </p>
+        <ul style="font-size:13px;color:${BRAND_CREAM};opacity:0.9;margin:0 0 20px;padding-left:20px;line-height:1.7;">
+          <li>Vol. I &middot; Perimenopause &middot; the body-truth map in full</li>
+          <li>Vol. II &middot; Hormones &middot; the chemistry underneath</li>
+          <li>Vol. III &middot; Architecture &middot; the daily structure that holds it</li>
+          <li>Vol. IV &middot; Self-trust &middot; the inner work no one talks about</li>
+          <li>Vol. V &middot; Execution &middot; the doing part for when language is not enough</li>
+        </ul>
+        <p style="font-family:Georgia, 'Times New Roman', serif;font-size:36px;color:${BRAND_CREAM};margin:0 0 16px;text-align:center;line-height:1;">
+          $75
+        </p>
+        <div style="text-align:center;">
+          <a href="${KIT_GRADUATE_SERIES_URL}" target="_blank" style="display:inline-block;padding:14px 28px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+            Claim Kit Graduate price &rarr;
+          </a>
+        </div>
+      </div>
+
+      <p style="font-size:15px;color:${BRAND_NAVY};margin:32px 0 8px;">
+        If today is not the day, that is okay too. You will still be on the Tuesday Letter list at momumentalreinvention.com. I send a new long-form essay every week. Free.
+      </p>
+      <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 24px;">
+        <a href="${SUBSTACK_SUBSCRIBE_URL}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">Subscribe to MOMumental Reinvention &rarr;</a>
+      </p>
+
+      <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
+        <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
+          WHEREVER YOU GO FROM HERE
+        </p>
+        <p style="font-style:italic;font-size:18px;color:${BRAND_NAVY};margin:0 0 8px;line-height:1.4;">
+          You are not crazy.
+        </p>
+        <p style="font-style:italic;font-size:18px;color:${BRAND_NAVY};margin:0 0 8px;line-height:1.4;">
+          Your labs are normal. Your body is not.
+        </p>
+        <p style="font-style:italic;font-size:18px;color:${BRAND_PINK};margin:0;line-height:1.4;">
+          You are not imagining this.
+        </p>
+      </div>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+        MOMumentally,
+      </p>
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0;">Erika</p>
+
+      <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:16px;margin-top:24px;">
+        <p style="font-family:'Courier New', monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_NAVY};opacity:0.7;margin:0 0 4px;">
+          ERIKA HANAFIN AUSTRIA
+        </p>
+        <p style="font-size:13px;color:${BRAND_NAVY};opacity:0.7;margin:0 0 2px;">
+          Founder, MOMumental Moments&reg; + The PHASE&trade;
+        </p>
+        <p style="font-size:13px;color:${BRAND_NAVY};opacity:0.7;margin:0;">
+          thisisphase.co &middot; momumentalreinvention.com
+        </p>
+      </div>
 
       ${footerHtml()}
     </div>
