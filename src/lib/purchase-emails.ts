@@ -45,7 +45,7 @@ export function buildDeliveryEmail(productKey: ProductKey, customerEmail: string
     ``,
     `2. Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. Subscribe at https://www.momumentalreinvention.com if you want to keep reading. Free essays for everyone. Paid subscribers get the deeper work.`,
     ``,
-    `3. ${crossSell ? product.crossSellPitch + ' Find it at ' + (crossSell.key.startsWith('vol') ? 'https://thisisphase.co/vol/' + (crossSell.key === 'vol1' ? 'perimenopause' : crossSell.key === 'vol2' ? 'hormones' : crossSell.key === 'vol3' ? 'architecture' : crossSell.key === 'vol4' ? 'self-trust' : 'execution') : 'https://thisisphase.co/' + crossSell.key) + '.' : 'You have the full Series. That is the foundation. Build from here.'}`,
+    `3. ${crossSell ? product.crossSellPitch + ' Find it at ' + getProductUrl(crossSell.key) + '.' : 'You have the full Series. That is the foundation. Build from here.'}`,
     ``,
     `When you have a minute, hit reply and tell me one thing the work surfaces for you. The body-truth conversation works better when readers write back. I read every reply.`,
     ``,
@@ -105,7 +105,7 @@ export function buildDeliveryEmail(productKey: ProductKey, customerEmail: string
 
         <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
           <strong style="color:${BRAND_NAVY};">03 &middot; What is next.</strong> ${escapeHtml(crossSell ? product.crossSellPitch : 'You have the full Series. That is the foundation. Build from here.')}
-          ${crossSell ? `<br><a href="https://thisisphase.co/${crossSellPath(crossSell.key)}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">See ${escapeHtml(crossSell.name)} &rarr;</a>` : ""}
+          ${crossSell ? `<br><a href="${getProductUrl(crossSell.key)}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">See ${escapeHtml(crossSell.name)} &rarr;</a>` : ""}
         </p>
       </div>
 
@@ -161,7 +161,19 @@ function crossSellPath(key: ProductKey): string {
   return "";
 }
 
-// ─── Shared layout shell ──────────────────────────────────────────────────
+/**
+ * Build the full purchase URL for a product.
+ * Prefers product.purchaseUrl (Stripe Payment Link) for new products.
+ * Falls back to https://thisisphase.co/{path} for legacy PHASE™ products.
+ */
+function getProductUrl(key: ProductKey): string {
+  const product = PRODUCTS[key];
+  if (product?.purchaseUrl) return product.purchaseUrl;
+  const path = crossSellPath(key);
+  return path ? `https://thisisphase.co/${path}` : "https://thisisphase.co";
+}
+
+// ─── Shared layout shell ─────────────────────────────────────────────────────
 
 function emailShell(opts: {
   subject: string;
@@ -196,7 +208,7 @@ function emailShell(opts: {
 </html>`;
 }
 
-// ─── Day 0 + 30 min · Substack invite ─────────────────────────────────────
+// ─── Day 0 + 30 min · Substack invite ───────────────────────────────────
 
 /**
  * Sent 30 min after purchase · soft invite to the free Tuesday essay.
@@ -351,8 +363,7 @@ export function buildOfferEmail(productKey: ProductKey, customerEmail: string) {
   }
 
   const offer = PRODUCTS[offerKey];
-  const offerPath = crossSellPath(offerKey);
-  const offerUrl = `https://thisisphase.co/${offerPath}`;
+  const offerUrl = getProductUrl(offerKey);
 
   // Price for the offered product (used in copy)
   const offerPrice = offer.price;
@@ -842,3 +853,4 @@ export function buildCartRecoveryFinalEmail(productKey: ProductKey, customerEmai
   const html = emailShell({ subject, preheader, bodyHtml });
   return { subject, html, text, customerEmail };
 }
+
