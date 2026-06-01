@@ -29,7 +29,7 @@ const BRAND_CREAM_ALT = "#F8F4EE";
 // Note: filename has trailing space (uploaded that way to Vercel Blob), URL-encoded as %20.
 // If you re-upload without trailing space later, remove the trailing %20 here.
 const CLARITY_PDF_URL =
-  "https://dpo02ztmhn6nty5u.public.blob.vercel-storage.com/the-clarity-starter-kit.pdf%20";
+  "https://dpo02ztmhn6nty5u.public.blob.vercel-storage.com/the-clarity-starter-kit.pdf";
 
 // Substack subscribe page · direct one-click signup (not the homepage).
 const SUBSTACK_SUBSCRIBE_URL = "https://www.momumentalreinvention.com/subscribe";
