@@ -6,6 +6,7 @@ import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
 import { AnalyticsScripts } from '@/components/AnalyticsScripts';
 import './globals.css';
+import JsonLdSchema from '@/components/JsonLdSchema';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -56,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <Nav />
-        <main id="main">{children}</main>
+        <main id="main"><JsonLdSchema /> <JsonLdSchema /> {children}</main>
         <Footer />
         <AnalyticsScripts />
       </body>
