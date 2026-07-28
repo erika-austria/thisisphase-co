@@ -1,22 +1,16 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { VOLUMES, SERIES, JOURNAL, DECODE } from '@/lib/volumes';
 import { buildMetadata } from '@/lib/seo';
 import { allVolumesItemListSchema, bundleProductSchema, journalProductSchema } from '@/lib/schema';
-import { STRIPE_LINKS } from '@/lib/stripe';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
-import { PhaseAcronym } from '@/components/PhaseAcronym';
-import { VolumeCard } from '@/components/VolumeCard';
-import { PullQuote } from '@/components/PullQuote';
-import { AffiliateStrip } from '@/components/AffiliateStrip';
-import { EmailCapture } from '@/components/EmailCapture';
-import { StripeButton } from '@/components/StripeButton';
-import { TrustSignalsBar } from '@/components/TrustSignalsBar';
+
+const LIBRARY_URL = 'https://www.momumentalreinvention.com/p/the-library';
 
 export const metadata: Metadata = buildMetadata({
   // buildMetadata appends " · The PHASE™" → no need to prefix it here
-  title: 'Five-Volume Women\'s Reinvention Series',
-  description: 'Five volumes. One body-truth. The map of perimenopause, hormones, daily architecture, self-trust, and execution. Built for women who walked out of their fourth doctor\'s office with no answers. From MOMumental Moments®.',
+  title: 'The Whole Season of Rebuilding · Body, Family, Voice, Work',
+  description:
+    'You are not in a phase. You are in The PHASE™ — the whole season of rebuilding everything. Four rooms, one woman, one reinvention. The body, the family, the voice, the work. The tools built from inside the wreckage. From MOMumental Moments®.',
   path: '/',
   ogImage: '/og/home.jpg',
 });
@@ -39,183 +33,361 @@ export default function HomePage() {
       {/* Magazine masthead */}
       <MagazineMasthead
         issue="VOL. I · NO. 01"
-        topics={['REINVENTION', 'HORMONES', 'MIDLIFE BODY-TRUTH']}
+        topics={['BODY', 'FAMILY', 'VOICE', 'WORK']}
         publishingNote="LIVE NOW · 2026"
       />
 
-      {/* Hero */}
-      <section className="max-w-content mx-auto px-6 pt-16 md:pt-24 pb-20">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="eyebrow text-xs mb-4">FROM MOMUMENTAL MOMENTS®</p>
-            <h1 className="font-serif text-5xl md:text-6xl leading-tight mb-6">
+      <div className="phase-home">
+        {/* Hero */}
+        <section className="hero" id="top">
+          <span className="ghost">P</span>
+          <div className="wrap inner">
+            <div className="issue">
+              <span className="bracket" />
+              <span className="eyebrow">thisisphase.co · Four rooms · One reinvention</span>
+            </div>
+            <h1>
               You are not in a phase.
               <br />
-              You are in <span className="italic text-pink">The PHASE</span>
-              <sup className="text-2xl">™</sup>.
+              You are in <em>The PHASE™.</em>
             </h1>
-            <p className="text-lg md:text-xl text-navy/80 leading-relaxed mb-10 max-w-xl">
-              Five volumes. One body-truth. Built for the woman who walked out of her fourth doctor&apos;s office with no answers.
+            <p className="subline">
+              The whole season of rebuilding everything. The body. The family. The voice. The work.
+              These are the tools I built while I was still in it.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <StripeButton
-                href={STRIPE_LINKS.series}
-                label="Buy the Series"
-                variant="primary"
-              />
-              <Link href="/series" className="btn-secondary">
-                Read more →
-              </Link>
-            </div>
-            <p className="text-sm text-navy/50 mt-6 italic">
-              Or read each volume on its own page.
-            </p>
-          </div>
-
-          {/* Hero visual · acronym block with stats per letter (Fri May 15 update) */}
-          <div className="bg-cream-alt rounded-sm border border-navy/10 p-10 md:p-12 bracket-pink">
-            <p className="eyebrow eyebrow-with-dot text-xs mb-6">THE ACRONYM · BY THE NUMBERS</p>
-            <PhaseAcronym variant="stats" linked={true} />
-            <p className="font-serif italic text-navy/60 mt-8 text-sm">
-              Click any letter to read the volume.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Manifesto block */}
-      <PullQuote variant="manifesto" attribution="THE PHASE™ MANIFESTO · 2026">
-        Test, don&apos;t guess.
-        <br />
-        Advocate, don&apos;t apologize.
-        <br />
-        Track, don&apos;t tolerate.
-      </PullQuote>
-
-      {/* Trust signals · founder credentials strip · added Fri May 15 PM per WTF framework */}
-      <TrustSignalsBar variant="cream" />
-
-      {/* Volume grid */}
-      <section className="max-w-content mx-auto px-6 py-24" aria-labelledby="volumes-heading">
-        <div className="text-center mb-14">
-          <p className="eyebrow text-xs mb-3">THE FIVE VOLUMES</p>
-          <h2 id="volumes-heading" className="font-serif text-4xl md:text-5xl mb-4">
-            Each one stands alone.
-            <br />
-            <span className="italic text-pink">Together they rebuild everything.</span>
-          </h2>
-        </div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          {VOLUMES.map((v) => (
-            <VolumeCard key={v.slug} volume={v} />
-          ))}
-        </div>
-
-        <div className="text-center mt-14">
-          <p className="font-serif italic text-2xl text-navy/70 mb-2">
-            Or take all five.
-          </p>
-          <p className="text-sm text-navy/60 mb-6">P + H + A + S + E. The full kit.</p>
-          <StripeButton
-            href={STRIPE_LINKS.series}
-            label="Get the Series"
-            variant="pink"
-          />
-        </div>
-      </section>
-
-      {/* Affiliate strip · MOVED UP per Erika's framework */}
-      <AffiliateStrip />
-
-      {/* Series bundle · standalone hero card */}
-      <section className="max-w-content mx-auto px-6 py-16" aria-labelledby="series-heading">
-        <div className="relative bg-cream-alt rounded-sm border-2 border-pink p-10 md:p-14 text-center max-w-3xl mx-auto">
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-pink text-cream eyebrow text-xs px-3 py-1 whitespace-nowrap">
-            MOST POPULAR
-          </span>
-          <p className="eyebrow eyebrow-with-dot text-xs mb-3">ALL FIVE VOLUMES</p>
-          <h2 id="series-heading" className="font-serif text-4xl md:text-5xl mb-4">
-            The <span className="italic text-pink">Series</span>
-          </h2>
-          <p className="text-navy/70 mb-2 text-lg">P + H + A + S + E.</p>
-          <p className="text-navy/70 mb-8">All five volumes. All daily templates. All frameworks. One drop.</p>
-          <StripeButton href={STRIPE_LINKS.series} label="Buy the Series" variant="primary" />
-        </div>
-      </section>
-
-      {/* Companion deep-dives · Journal + Decode */}
-      <section className="max-w-content mx-auto px-6 py-16" aria-labelledby="companions-heading">
-        <div className="text-center mb-12">
-          <p className="eyebrow text-xs mb-3">THE COMPANIONS</p>
-          <h2 id="companions-heading" className="font-serif text-4xl md:text-5xl">
-            Two deep-dives. <span className="italic text-pink">For when one volume is not enough.</span>
-          </h2>
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Reflections Journal · emotional companion */}
-          <div className="bg-cream-alt rounded-sm border border-rule p-10 flex flex-col">
-            <p className="eyebrow eyebrow-with-dot text-xs mb-3">EMOTIONAL COMPANION</p>
-            <h3 className="font-serif text-3xl md:text-4xl mb-3">
-              The Journal
-            </h3>
-            <p className="font-serif italic text-pink mb-4">A space to feel it, not fix it.</p>
-            <p className="text-ink/70 mb-6 flex-grow leading-relaxed">
-              Reflections Through the PHASEs. 14 pages of guided prompts for the grief, identity shifts, and emotional terrain underneath the hot flashes. Move at your own pace.
-            </p>
-            <div className="flex items-center justify-between mt-auto">
-              <Link href="/journal" className="text-sm text-pink-deep hover:underline font-semibold">
-                Read more →
-              </Link>
-              <StripeButton href={STRIPE_LINKS.journal} label="Buy" variant="primary" />
+            <div className="sig">You are not falling apart. You are becoming MOMumental.</div>
+            <div className="cta-row">
+              <a href="#rooms" className="pbtn pbtn-ghost">
+                Enter a room <span className="ar">→</span>
+              </a>
+              <a href="#library" className="pbtn pbtn-pink">
+                The Complete Library · $228 <span className="ar">→</span>
+              </a>
             </div>
           </div>
+        </section>
 
-          {/* Decode Your Symptoms · action companion */}
-          <div className="bg-cream-alt rounded-sm border border-rule p-10 flex flex-col">
-            <p className="eyebrow eyebrow-with-dot text-xs mb-3">ACTION COMPANION</p>
-            <h3 className="font-serif text-3xl md:text-4xl mb-3">
-              Decode Your Symptoms
-            </h3>
-            <p className="font-serif italic text-pink mb-4">Self-care is not soft. It is strategy.</p>
-            <p className="text-ink/70 mb-6 flex-grow leading-relaxed">
-              An 11-page science-backed companion. Nine chapters. Real exercises. Track-what-shifts framing. Build a routine that fits the woman you are becoming.
+        {/* Hero image band */}
+        <section className="band">
+          <div className="figure">
+            <span className="figcap">
+              Wide editorial hero — a woman mid-rebuild. Landscape, room to breathe.
+            </span>
+          </div>
+          <span className="cap">The PHASE™ · Vol. I — No. 01</span>
+        </section>
+
+        {/* Reframe */}
+        <section className="reframe">
+          <div className="wrap in">
+            <span className="marks">&ldquo;</span>
+            <div className="q">
+              The PHASE™ is the <b>season</b>, not the symptom. The divorce is a phase. The blend is a
+              phase. The body at forty-one is a phase. The rebuild of the work is a phase.
+            </div>
+            <p>
+              Everyone else hands you one room. A protocol for the hormones. A course for the split. A
+              planner for the work. You are living all of it at once. This is the house for the whole
+              season — four rooms, one woman, one reinvention.
             </p>
-            <div className="flex items-center justify-between mt-auto">
-              <Link href="/decode" className="text-sm text-pink-deep hover:underline font-semibold">
-                Read more →
-              </Link>
-              <StripeButton href={STRIPE_LINKS.decode} label="Buy" variant="primary" />
+            <div className="phase-strip">
+              <span>Body</span>
+              <span>Family</span>
+              <span>Voice</span>
+              <span>Work</span>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Email capture */}
-      <EmailCapture variant="default" />
+        {/* Rooms */}
+        <section className="section" id="rooms">
+          <div className="wrap">
+            <header className="sechead">
+              <div className="meta">
+                <span className="eyebrow">§ 01 · The House</span>
+                <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
+                  Enter where you&apos;re standing
+                </span>
+              </div>
+              <div>
+                <h2>
+                  The four rooms of <em>The PHASE™.</em>
+                </h2>
+                <p className="subhead" style={{ maxWidth: 'none' }}>
+                  Start where it hurts today. The rest of the house is here when you are ready.
+                </p>
+              </div>
+            </header>
 
-      {/* About preview */}
-      <section className="max-w-content mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <p className="eyebrow text-xs mb-3">FROM THE FOUNDER</p>
-          <h2 className="font-serif text-4xl md:text-5xl mb-6">
-            I built this because <span className="italic text-pink">no one else did</span>.
-          </h2>
-          <p className="text-lg leading-relaxed text-navy/80 mb-4">
-            I spent four years thinking I was failing at stress. I saw four different doctors. I tried every supplement. I optimized everything.
-          </p>
-          <p className="text-lg leading-relaxed text-navy/80 mb-6">
-            Then a nurse practitioner finally listened. The PHASE™ is the conversation you should have been handed at 38, not had to fight for at 42.
-          </p>
-          <Link href="/about" className="btn-secondary">
-            Read the full story →
-          </Link>
-        </div>
+            <div className="rooms">
+              <article className="room body" id="body">
+                <div className="room-img">
+                  <div className="figure">
+                    <span className="figcap">Body room — lab slip, journal, or hands</span>
+                  </div>
+                </div>
+                <div className="room-head">
+                  <span className="room-num">I</span>
+                  <div className="rk">
+                    <span className="lbl">Room · Body</span>
+                    <span className="roman">Vol. I–V</span>
+                  </div>
+                  <h3>The PHASE™ · Perimenopause</h3>
+                  <div className="tag">The map you should have been handed at 38</div>
+                </div>
+                <div className="room-body">
+                  <p className="moment">
+                    Test, do not guess. This is the conversation I had to fight for at forty-two.
+                  </p>
+                  <ul>
+                    <li>
+                      <span>Vol. I–V · single volumes</span>
+                      <span className="pr">
+                        $27<span style={{ fontSize: '13px' }}> ea</span>
+                      </span>
+                    </li>
+                  </ul>
+                  <Link className="enter" href="/series">
+                    Enter the Body room <span className="ar">→</span>
+                  </Link>
+                </div>
+              </article>
 
-        <PullQuote variant="default" attribution="ERIKA HANAFIN AUSTRIA">
-          My body is not a problem to solve. It is a partner to listen to.
-        </PullQuote>
-      </section>
+              <article className="room family" id="family">
+                <div className="room-img">
+                  <div className="figure">
+                    <span className="figcap">Family room — two doorways, calendar, kids&apos; shoes</span>
+                  </div>
+                </div>
+                <div className="room-head">
+                  <span className="room-num">II</span>
+                  <div className="rk">
+                    <span className="lbl">Room · Family</span>
+                    <span className="roman">20 scripts</span>
+                  </div>
+                  <h3>The Co-Parenting Power Method®</h3>
+                  <div className="tag">The playbook for the two-house rebuild</div>
+                </div>
+                <div className="room-body">
+                  <p className="moment">
+                    Twenty scripts already written, for the messages you dread sending.
+                  </p>
+                  <ul>
+                    <li>
+                      <span>Co-Parenting Power Method®</span>
+                      <span className="pr">$47</span>
+                    </li>
+                  </ul>
+                  <a className="enter" href={LIBRARY_URL}>
+                    Enter the Family room <span className="ar">→</span>
+                  </a>
+                </div>
+              </article>
+
+              <article className="room voice" id="voice">
+                <div className="room-img">
+                  <div className="figure">
+                    <span className="figcap">Voice room — mirror, mic, or portrait</span>
+                  </div>
+                </div>
+                <div className="room-head">
+                  <span className="room-num">III</span>
+                  <div className="rk">
+                    <span className="lbl">Room · Voice</span>
+                    <span className="roman">Vol. IV</span>
+                  </div>
+                  <h3>Self-Trust &amp; Confidence</h3>
+                  <div className="tag">Coming back to your own knowing</div>
+                </div>
+                <div className="room-body">
+                  <p className="moment">The thing I stopped apologizing for was my knowing.</p>
+                  <ul>
+                    <li>
+                      <span>PHASE™ Vol. IV · Self-Trust</span>
+                      <span className="pr">$27</span>
+                    </li>
+                  </ul>
+                  <Link className="enter" href="/vol/self-trust">
+                    Enter the Voice room <span className="ar">→</span>
+                  </Link>
+                </div>
+              </article>
+
+              <article className="room work" id="work">
+                <div className="room-img">
+                  <div className="figure">
+                    <span className="figcap">Work room — desk, laptop, framework on paper</span>
+                  </div>
+                </div>
+                <div className="room-head">
+                  <span className="room-num">IV</span>
+                  <div className="rk">
+                    <span className="lbl">Room · Work</span>
+                    <span className="roman">4 tools</span>
+                  </div>
+                  <h3>Building Through It</h3>
+                  <div className="tag">Run your life the way an operator would</div>
+                </div>
+                <div className="room-body">
+                  <p className="moment">
+                    Operators — the good ones — run things on frameworks. Not on willpower.
+                  </p>
+                  <ul>
+                    <li>
+                      <span>Must-Have Frameworks for Profitability</span>
+                      <span className="pr">$17</span>
+                    </li>
+                  </ul>
+                  <a className="enter" href={LIBRARY_URL}>
+                    Enter the Work room <span className="ar">→</span>
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* Library */}
+        <section className="library-sec" id="library">
+          <div className="wrap">
+            <div className="library">
+              <div>
+                <span className="eyebrow">§ 02 · The whole house, one key</span>
+                <h2>
+                  The Complete <em>Library.</em>
+                </h2>
+                <p>
+                  Every tool I built in the wreckage. Every room, every volume. One payment, yours
+                  forever. It lives on my MOMumental Reinvention library.
+                </p>
+                <div className="lib-shot">
+                  <div className="figure">
+                    <span className="figcap">The Library — all five volumes printed and stacked</span>
+                  </div>
+                </div>
+                <div className="lib-stats">
+                  <div>
+                    <div className="n">4</div>
+                    <div className="l">Rooms</div>
+                  </div>
+                  <div>
+                    <div className="n">5</div>
+                    <div className="l">Volumes</div>
+                  </div>
+                  <div>
+                    <div className="n">14</div>
+                    <div className="l">Day promise</div>
+                  </div>
+                </div>
+              </div>
+              <aside className="lib-card">
+                <div className="in">
+                  <span className="eyebrow">One payment · Yours forever</span>
+                  <div className="price">
+                    <sup>$</sup>228
+                  </div>
+                  <div className="price-note">The Complete Library · all four rooms</div>
+                  <ul>
+                    <li>Every PHASE™ volume, I through V</li>
+                    <li>The Co-Parenting Power Method®</li>
+                    <li>Every Voice and Work tool</li>
+                    <li>Lifetime access · every future release</li>
+                  </ul>
+                  <a className="pbtn" href={LIBRARY_URL}>
+                    Open the Complete Library <span className="ar">→</span>
+                  </a>
+                  <div className="guarantee">
+                    Use it for 14 days. If it is not the map you needed, email me and I will refund
+                    you. No forms, no friction.
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* Founder */}
+        <section className="founder">
+          <div className="wrap founder-grid">
+            <div className="founder-portrait">
+              <div className="figure">
+                <span className="figcap">Portrait of Erika — vertical, 4:5</span>
+              </div>
+            </div>
+            <div>
+              <span className="eyebrow">§ 03 · Who built this</span>
+              <q>
+                I did not write these from the other side. I wrote them from inside the wreckage,
+                because that is when I needed them.
+              </q>
+              <div className="attr">Erika Hanafin Austria · Founder, MOMumental Moments®</div>
+            </div>
+          </div>
+        </section>
+
+        {/* Proof */}
+        <section className="section">
+          <div className="wrap">
+            <header className="sechead">
+              <div className="meta">
+                <span className="eyebrow">§ 04 · The Proof</span>
+                <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
+                  In their words
+                </span>
+              </div>
+              <div>
+                <h2>
+                  What readers <em>send back.</em>
+                </h2>
+              </div>
+            </header>
+            <div className="proof">
+              <div className="tcard">
+                <span className="marks">&ldquo;</span>
+                <p className="q">
+                  I bought The PHASE the week I got my labs back. For the first time someone handed me
+                  the words instead of the shrug.
+                </p>
+                <span className="who">Reader · Vol. II</span>
+              </div>
+              <div className="tcard">
+                <span className="marks">&ldquo;</span>
+                <p className="q">
+                  The Co-Parenting scripts saved me on a Sunday night I will never forget. I stopped
+                  rewriting the same text for an hour.
+                </p>
+                <span className="who">Reader · Family room</span>
+              </div>
+              <div className="tcard">
+                <span className="marks">&ldquo;</span>
+                <p className="q">
+                  She has been through it, and she built the thing she needed. You feel that in every
+                  page.
+                </p>
+                <span className="who">Reader · the Library</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Close */}
+        <section className="close">
+          <div className="wrap in">
+            <div className="line">
+              You are not in a phase. You are in <b>The PHASE™.</b> And there is a room here for every
+              part of it.
+            </div>
+            <div className="cta-row">
+              <a href="#rooms" className="pbtn pbtn-ghost">
+                Find your room <span className="ar">→</span>
+              </a>
+              <a href={LIBRARY_URL} className="pbtn pbtn-pink">
+                Open the Library · $228 <span className="ar">→</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
     </>
   );
 }
