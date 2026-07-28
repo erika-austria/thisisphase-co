@@ -314,6 +314,9 @@ h1, h2, h3, h4, h5, h6 {
 .phase-home .figure::before { content:""; position:absolute; top:-25%; right:-12%; width:65%; height:150%; background:var(--glow); opacity:.5; pointer-events:none; }
 .phase-home .figure::after { content:""; position:absolute; bottom:-30%; left:-15%; width:55%; height:130%; background:var(--glow); opacity:.28; pointer-events:none; }
 .phase-home .figcap { position:relative; z-index:2; max-width:80%; text-align:center; font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-muted); }
+/* real photo fill (founder portrait, hero band) */
+.phase-home .ph-photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+.phase-home .band .ph-photo { object-position:center 40%; }
 
 /* hero */
 .phase-home .hero { position:relative; overflow:hidden; padding:clamp(56px,8vw,104px) 0 clamp(48px,7vw,88px); text-align:center; }

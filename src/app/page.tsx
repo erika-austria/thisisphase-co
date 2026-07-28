@@ -69,11 +69,12 @@ export default function HomePage() {
 
         {/* Hero image band */}
         <section className="band">
-          <div className="figure">
-            <span className="figcap">
-              Wide editorial hero — a woman mid-rebuild. Landscape, room to breathe.
-            </span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="ph-photo"
+            src="/hero-erika.jpg"
+            alt="The tools of the rebuild — a desk, a laptop, a planner, and a cup of coffee."
+          />
           <span className="cap">The PHASE™ · Vol. I — No. 01</span>
         </section>
 
@@ -310,9 +311,12 @@ export default function HomePage() {
         <section className="founder">
           <div className="wrap founder-grid">
             <div className="founder-portrait">
-              <div className="figure">
-                <span className="figcap">Portrait of Erika — vertical, 4:5</span>
-              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="ph-photo"
+                src="/founder-erika.jpg"
+                alt="Erika Hanafin Austria, founder of MOMumental Moments®"
+              />
             </div>
             <div>
               <span className="eyebrow">§ 03 · Who built this</span>
