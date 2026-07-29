@@ -31,6 +31,7 @@ export function Footer() {
         <div>
           <p className="eyebrow eyebrow-cream mb-4">More</p>
           <ul className="space-y-2 text-sm">
+            <li><Link href="https://www.amazon.com/shop/erikahanafin" className="hover:text-pink transition">Shop The Stack →</Link></li>
             <li><Link href="/series" className="hover:text-pink transition">The Series</Link></li>
             <li><Link href="/journal" className="hover:text-pink transition">The Journal</Link></li>
             <li><Link href="/decode" className="hover:text-pink transition">Decode Your Symptoms</Link></li>

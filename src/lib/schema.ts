@@ -37,6 +37,7 @@ export const ORGANIZATION_SCHEMA = {
     'https://www.youtube.com/@momumentalreinvention',
     'https://www.tiktok.com/@momumentalmomentsco',
     'https://www.momumentalreinvention.com',
+    'https://www.amazon.com/shop/erikahanafin',
     ERIKA_URL,
   ],
 };
@@ -59,6 +60,7 @@ export const PERSON_SCHEMA = {
     'https://www.youtube.com/@momumentalreinvention',
     'https://www.tiktok.com/@momumentalmomentsco',
     'https://www.momumentalreinvention.com',
+    'https://www.amazon.com/shop/erikahanafin',
   ],
   hasCredential: [
     { '@type': 'EducationalOccupationalCredential', name: 'IIN Certified Holistic Health Coach' },

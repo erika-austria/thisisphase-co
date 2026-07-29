@@ -61,7 +61,7 @@ export default function HomePage() {
                 Enter a room <span className="ar">→</span>
               </a>
               <a href="#library" className="pbtn pbtn-pink">
-                The Complete Library · $228 <span className="ar">→</span>
+                The PHASE™ Library · $228 <span className="ar">→</span>
               </a>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function HomePage() {
           <img
             className="ph-photo"
             src="/hero-erika.jpg"
-            alt="The PHASE™ five volumes, from Perimenopause to Execution."
+            alt="A desk with a laptop, a planner, a pen, and a cup of coffee, the tools of the rebuild."
           />
           <span className="cap">The PHASE™ · Vol. I · No. 01</span>
         </section>
@@ -251,7 +251,7 @@ export default function HomePage() {
               <div>
                 <span className="eyebrow">§ 02 · The whole house, one key</span>
                 <h2>
-                  The Complete <em>Library.</em>
+                  The PHASE™ <em>Library.</em>
                 </h2>
                 <p>
                   Every tool I built in the wreckage. Every room, every volume. One payment, yours
@@ -259,7 +259,7 @@ export default function HomePage() {
                 </p>
                 <div className="lib-shot">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-photo" src="/library-volumes.jpg" alt="The Complete Library, all five PHASE™ volumes." />
+                  <img className="ph-photo" src="/library-volumes.jpg" alt="The PHASE™ Library, all five volumes." />
                 </div>
                 <div className="lib-stats">
                   <div>
@@ -282,7 +282,7 @@ export default function HomePage() {
                   <div className="price">
                     <sup>$</sup>228
                   </div>
-                  <div className="price-note">The Complete Library · all four rooms</div>
+                  <div className="price-note">The PHASE™ Library · all four rooms</div>
                   <ul>
                     <li>Every PHASE™ volume, I through V</li>
                     <li>The Co-Parenting Power Method®</li>
@@ -290,7 +290,7 @@ export default function HomePage() {
                     <li>Lifetime access · every future release</li>
                   </ul>
                   <a className="pbtn" href={LIBRARY_URL}>
-                    Open the Complete Library <span className="ar">→</span>
+                    Open The PHASE™ Library <span className="ar">→</span>
                   </a>
                   <div className="guarantee">
                     Use it for 14 days. If it is not the map you needed, email me and I will refund
@@ -381,7 +381,7 @@ export default function HomePage() {
                 Find your room <span className="ar">→</span>
               </a>
               <a href={LIBRARY_URL} className="pbtn pbtn-pink">
-                Open the Library · $228 <span className="ar">→</span>
+                Open The PHASE™ Library · $228 <span className="ar">→</span>
               </a>
             </div>
           </div>
