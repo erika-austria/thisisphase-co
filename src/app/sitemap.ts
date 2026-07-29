@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { VOLUMES } from '@/lib/volumes';
 
-const SITE_URL = 'https://thisisphase.co';
+const SITE_URL = 'https://thephase.co';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const today = new Date().toISOString().split('T')[0];

@@ -254,7 +254,7 @@ export async function POST(req: NextRequest) {
           accessToken: capiToken,
           eventId,
           eventTimeSec: Math.floor(Date.now() / 1000),
-          eventSourceUrl: "https://thisisphase.co/clarity",
+          eventSourceUrl: "https://thephase.co/clarity",
           email,
           clientIp,
           userAgent,

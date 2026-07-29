@@ -39,8 +39,8 @@ export default function SeriesPage() {
           __html: JSON.stringify([
             bundleProductSchema(),
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thisisphase.co' },
-              { name: 'The Series', url: 'https://thisisphase.co/series' },
+              { name: 'The PHASE', url: 'https://thephase.co' },
+              { name: 'The Series', url: 'https://thephase.co/series' },
             ]),
             faqSchema(FAQS),
           ]),

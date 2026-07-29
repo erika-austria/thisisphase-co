@@ -28,8 +28,8 @@ export default function JournalPage() {
           __html: JSON.stringify([
             journalProductSchema(),
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thisisphase.co' },
-              { name: JOURNAL.title, url: 'https://thisisphase.co/journal' },
+              { name: 'The PHASE', url: 'https://thephase.co' },
+              { name: JOURNAL.title, url: 'https://thephase.co/journal' },
             ]),
           ]),
         }}

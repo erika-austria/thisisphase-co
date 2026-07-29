@@ -6,7 +6,7 @@
 
 import { VOLUMES, SERIES, JOURNAL, type Volume } from './volumes';
 
-const SITE_URL = 'https://thisisphase.co';
+const SITE_URL = 'https://thephase.co';
 const ERIKA_URL = 'https://erikahanafin.com';
 const MOMUMENTAL_URL = 'https://momumentalmoments.co';
 
@@ -18,7 +18,7 @@ export const ORGANIZATION_SCHEMA = {
   alternateName: 'The PHASE',
   url: SITE_URL,
   logo: `${SITE_URL}/og/logo.png`,
-  description: 'A five-volume women\'s reinvention series mapping perimenopause, hormones, daily architecture, self-trust, and execution. From MOMumental Moments®.',
+  description: 'The whole-season house for a woman rebuilding everything at once. Four rooms, one woman, one reinvention: Body, Family, Voice, Work. From MOMumental Moments®.',
   parentOrganization: {
     '@type': 'Organization',
     '@id': `${MOMUMENTAL_URL}/#org`,
@@ -34,8 +34,8 @@ export const ORGANIZATION_SCHEMA = {
     MOMUMENTAL_URL,
     'https://www.instagram.com/thisisphaseco',
     'https://www.instagram.com/erikahanafin',
-    'https://www.youtube.com/@thisisphaseco',
-    'https://www.tiktok.com/@momumentalmoments',
+    'https://www.youtube.com/@momumentalreinvention',
+    'https://www.tiktok.com/@momumentalmomentsco',
     'https://www.momumentalreinvention.com',
     ERIKA_URL,
   ],
@@ -46,17 +46,18 @@ export const PERSON_SCHEMA = {
   '@type': 'Person',
   '@id': `${ERIKA_URL}/#person`,
   name: 'Erika Hanafin Austria',
+  alternateName: ['Erika Hanafin', 'Erika Austria', 'Erika Hanafin Feldhus'],
   jobTitle: 'Founder of The PHASE™ · CEO · Reinvention Leader',
   description: 'IIN-certified holistic health coach, 5x acquisition CEO, twice-named Top 50 Women Leaders Virginia. Founder of The PHASE™ and MOMumental Moments®.',
   url: ERIKA_URL,
   image: `${ERIKA_URL}/images/erika-portrait.jpg`,
   sameAs: [
     MOMUMENTAL_URL,
-    'https://www.linkedin.com/in/erikahanafin',
+    'https://www.linkedin.com/in/erikahanafinaustria',
     'https://www.instagram.com/erikahanafin',
     'https://www.instagram.com/thisisphaseco',
-    'https://www.youtube.com/@thisisphaseco',
-    'https://www.tiktok.com/@momumentalmoments',
+    'https://www.youtube.com/@momumentalreinvention',
+    'https://www.tiktok.com/@momumentalmomentsco',
     'https://www.momumentalreinvention.com',
   ],
   hasCredential: [
@@ -71,7 +72,7 @@ export const WEBSITE_SCHEMA = {
   '@id': `${SITE_URL}/#website`,
   url: SITE_URL,
   name: 'The PHASE™',
-  description: 'Five volumes. One body-truth. Built for women navigating perimenopause, hormones, and reinvention.',
+  description: 'The whole season of rebuilding. Four rooms, one woman, one reinvention: Body, Family, Voice, Work.',
   publisher: { '@id': `${SITE_URL}/#organization` },
   inLanguage: 'en-US',
 };

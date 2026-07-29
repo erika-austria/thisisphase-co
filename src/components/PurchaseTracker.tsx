@@ -5,7 +5,7 @@
  * once when the /thanks page loads after a successful Stripe checkout.
  *
  * Reads the session_id query param (set by Stripe Payment Link redirect:
- *   https://thisisphase.co/thanks?session_id={CHECKOUT_SESSION_ID}).
+ *   https://thephase.co/thanks?session_id={CHECKOUT_SESSION_ID}).
  *
  * Deduplicates via sessionStorage so a page refresh doesn't double-fire.
  * eventID matches the Stripe session_id so Meta dedupes against the server-side

@@ -22,8 +22,8 @@ export default function CommunityPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thisisphase.co' },
-              { name: 'Community', url: 'https://thisisphase.co/community' },
+              { name: 'The PHASE', url: 'https://thephase.co' },
+              { name: 'Community', url: 'https://thephase.co/community' },
             ])
           ),
         }}

@@ -26,8 +26,8 @@ const BRAND_CREAM = "#FFF9F1";
 const BRAND_CREAM_ALT = "#F8F4EE";
 
 // Update if you move the Clarity Starter Kit PDF to a new location.
-// Note: filename has trailing space (uploaded that way to Vercel Blob), URL-encoded as %20.
-// If you re-upload without trailing space later, remove the trailing %20 here.
+// Re-uploaded Mon Jun 1 2026 with correct application/pdf content-type after Eileen reported
+// the previous file was serving a PNG cover image instead of the 7-page PDF.
 const CLARITY_PDF_URL =
   "https://dpo02ztmhn6nty5u.public.blob.vercel-storage.com/the-clarity-starter-kit.pdf";
 
@@ -38,14 +38,14 @@ const SUBSTACK_SUBSCRIBE_URL = "https://www.momumentalreinvention.com/subscribe"
 // Override via env CLARITY_DECODE_URL with a dedicated Stripe Payment Link if needed.
 // Falls back to standard /decode product page.
 const DECODE_URL =
-  process.env.CLARITY_DECODE_URL || "https://thisisphase.co/decode";
+  process.env.CLARITY_DECODE_URL || "https://thephase.co/decode";
 const DECODE_PRICE = "$17";
 
 // Kit Graduate Series upsell · $75 special pricing (save $60 vs buying volumes separately at 5 x $27 = $135).
 // Override via env CLARITY_KIT_GRADUATE_SERIES_URL with a dedicated Stripe Payment Link priced at $75.
 // Falls back to standard /series page at $97 if env not set (no broken links if not yet created).
 const KIT_GRADUATE_SERIES_URL =
-  process.env.CLARITY_KIT_GRADUATE_SERIES_URL || "https://thisisphase.co/series";
+  process.env.CLARITY_KIT_GRADUATE_SERIES_URL || "https://thephase.co/series";
 
 // ─── Day 0 · instant delivery ───────────────────────────────────────────
 
@@ -80,7 +80,7 @@ export function buildClarityDeliveryEmail(_email: string) {
     ``,
     `─────────────────────────────`,
     `MOMumental Moments® · the parent IP behind The PHASE™ + The Power Method®.`,
-    `Live at https://momumentalmoments.co · The PHASE™ at https://thisisphase.co · Substack at https://www.momumentalreinvention.com`,
+    `Live at https://momumentalmoments.co · The PHASE™ at https://thephase.co · Substack at https://www.momumentalreinvention.com`,
   ].join("\n");
 
   const html = `<!DOCTYPE html>
@@ -198,7 +198,7 @@ export function buildClarityNudgeEmail(_email: string) {
     ``,
     `─────────────────────────────`,
     `MOMumental Moments® · the parent IP behind The PHASE™.`,
-    `https://thisisphase.co · https://momumentalreinvention.com`,
+    `https://thephase.co · https://momumentalreinvention.com`,
   ].join("\n");
 
   const html = `<!DOCTYPE html>
@@ -319,7 +319,7 @@ export function buildClarityStoryEmail(_email: string) {
     ``,
     `─────────────────────────────`,
     `MOMumental Moments® · the parent IP behind The PHASE™.`,
-    `https://thisisphase.co · https://momumentalreinvention.com`,
+    `https://thephase.co · https://momumentalreinvention.com`,
   ].join("\n");
 
   const html = `<!DOCTYPE html>
@@ -469,7 +469,7 @@ export function buildClarityOfferEmail(_email: string) {
     ``,
     `─────────────────────────────`,
     `MOMumental Moments® · the parent IP behind The PHASE™.`,
-    `https://thisisphase.co · https://momumentalreinvention.com`,
+    `https://thephase.co · https://momumentalreinvention.com`,
   ].join("\n");
 
   const html = `<!DOCTYPE html>
@@ -620,7 +620,7 @@ export function buildClarityRecaptureEmail(_email: string) {
     ``,
     `─────────────────────────────`,
     `MOMumental Moments® · the parent IP behind The PHASE™.`,
-    `https://thisisphase.co · https://momumentalreinvention.com`,
+    `https://thephase.co · https://momumentalreinvention.com`,
   ].join("\n");
 
   const html = `<!DOCTYPE html>
@@ -771,7 +771,7 @@ export function buildClarityFinalEmail(_email: string) {
     ``,
     `Erika Hanafin Austria`,
     `Founder, MOMumental Moments® + The PHASE™`,
-    `thisisphase.co · momumentalreinvention.com`,
+    `thephase.co · momumentalreinvention.com`,
   ].join("\n");
 
   const html = `<!DOCTYPE html>
@@ -896,7 +896,7 @@ export function buildClarityFinalEmail(_email: string) {
           Founder, MOMumental Moments&reg; + The PHASE&trade;
         </p>
         <p style="font-size:13px;color:${BRAND_NAVY};opacity:0.7;margin:0;">
-          thisisphase.co &middot; momumentalreinvention.com
+          thephase.co &middot; momumentalreinvention.com
         </p>
       </div>
 
@@ -916,7 +916,7 @@ function footerHtml() {
           MOMumental Moments&reg;
         </p>
         <p style="font-size:12px;color:${BRAND_NAVY};opacity:0.6;margin:0 0 4px;">
-          The PHASE&trade; <a href="https://thisisphase.co" style="color:${BRAND_PINK};text-decoration:none;">thisisphase.co</a>
+          The PHASE&trade; <a href="https://thephase.co" style="color:${BRAND_PINK};text-decoration:none;">thephase.co</a>
           &middot; Substack <a href="https://www.momumentalreinvention.com" style="color:${BRAND_PINK};text-decoration:none;">momumentalreinvention.com</a>
         </p>
         <p style="font-size:12px;color:${BRAND_NAVY};opacity:0.5;margin:8px 0 0;font-style:italic;">

@@ -54,7 +54,7 @@ export function buildDeliveryEmail(productKey: ProductKey, customerEmail: string
     ``,
     `─────────────────────────────`,
     `MOMumental Moments® · the parent IP behind The PHASE™ + The Power Method®.`,
-    `Live at https://momumentalmoments.co · The PHASE™ at https://thisisphase.co · Substack at https://www.momumentalreinvention.com`,
+    `Live at https://momumentalmoments.co · The PHASE™ at https://thephase.co · Substack at https://www.momumentalreinvention.com`,
   ].join("\n");
 
   const html = `<!DOCTYPE html>
@@ -125,7 +125,7 @@ export function buildDeliveryEmail(productKey: ProductKey, customerEmail: string
       <div style="margin-top:48px;padding-top:24px;border-top:1px solid rgba(47,72,88,0.1);font-size:11px;color:rgba(47,72,88,0.6);text-align:center;">
         MOMumental Moments&reg; &middot; the parent IP behind The PHASE&trade; + The Power Method&reg;.<br>
         <a href="https://momumentalmoments.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">momumentalmoments.co</a> &middot;
-        <a href="https://thisisphase.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">thisisphase.co</a> &middot;
+        <a href="https://thephase.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">thephase.co</a> &middot;
         <a href="https://www.momumentalreinvention.com" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">Substack</a>
       </div>
     </div>
@@ -164,16 +164,16 @@ function crossSellPath(key: ProductKey): string {
 /**
  * Build the full purchase URL for a product.
  * Prefers product.purchaseUrl (Stripe Payment Link) for new products.
- * Falls back to https://thisisphase.co/{path} for legacy PHASE™ products.
+ * Falls back to https://thephase.co/{path} for legacy PHASE™ products.
  */
 function getProductUrl(key: ProductKey): string {
   const product = PRODUCTS[key];
   if (product?.purchaseUrl) return product.purchaseUrl;
   const path = crossSellPath(key);
-  return path ? `https://thisisphase.co/${path}` : "https://thisisphase.co";
+  return path ? `https://thephase.co/${path}` : "https://thephase.co";
 }
 
-// ─── Shared layout shell ─────────────────────────────────────────────────────
+// ─── Shared layout shell ──────────────────────────────────────────────────
 
 function emailShell(opts: {
   subject: string;
@@ -200,7 +200,7 @@ function emailShell(opts: {
       <div style="margin-top:48px;padding-top:24px;border-top:1px solid rgba(47,72,88,0.1);font-size:11px;color:rgba(47,72,88,0.6);text-align:center;">
         MOMumental Moments&reg; &middot; the parent IP behind The PHASE&trade; + The Power Method&reg;.<br>
         <a href="https://momumentalmoments.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">momumentalmoments.co</a> &middot;
-        <a href="https://thisisphase.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">thisisphase.co</a> &middot;
+        <a href="https://thephase.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">thephase.co</a> &middot;
         <a href="https://www.momumentalreinvention.com" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">Substack</a>
       </div>
     </div>
@@ -208,7 +208,7 @@ function emailShell(opts: {
 </html>`;
 }
 
-// ─── Day 0 + 30 min · Substack invite ───────────────────────────────────
+// ─── Day 0 + 30 min · Substack invite ─────────────────────────────────────
 
 /**
  * Sent 30 min after purchase · soft invite to the free Tuesday essay.
@@ -559,7 +559,7 @@ export function buildKeystoneEmail(productKey: ProductKey, customerEmail: string
 export function buildCartRecoverySoftEmail(productKey: ProductKey, customerEmail: string) {
   const product = PRODUCTS[productKey];
   const productPath = crossSellPath(productKey);
-  const productUrl = `https://www.thisisphase.co/${productPath}`;
+  const productUrl = `https://www.thephase.co/${productPath}`;
 
   const subject = `The ${product.name} link, in case the tab closed.`;
   const preheader = `No pressure. The work waits. Here is the link, saved for you.`;
@@ -645,8 +645,8 @@ export function buildCartRecoverySoftEmail(productKey: ProductKey, customerEmail
 export function buildCartRecoveryPainEmail(productKey: ProductKey, customerEmail: string) {
   const product = PRODUCTS[productKey];
   const productPath = crossSellPath(productKey);
-  const productUrl = `https://www.thisisphase.co/${productPath}`;
-  const clarityUrl = `https://www.thisisphase.co/clarity`;
+  const productUrl = `https://www.thephase.co/${productPath}`;
+  const clarityUrl = `https://www.thephase.co/clarity`;
 
   const subject = `What were you almost ready for?`;
   const preheader = `Two questions before the link.`;
@@ -745,8 +745,8 @@ export function buildCartRecoveryPainEmail(productKey: ProductKey, customerEmail
 export function buildCartRecoveryFinalEmail(productKey: ProductKey, customerEmail: string) {
   const product = PRODUCTS[productKey];
   const productPath = crossSellPath(productKey);
-  const productUrl = `https://www.thisisphase.co/${productPath}`;
-  const clarityUrl = `https://www.thisisphase.co/clarity`;
+  const productUrl = `https://www.thephase.co/${productPath}`;
+  const clarityUrl = `https://www.thephase.co/clarity`;
 
   const subject = `Maybe ${product.name} isn't where you start. Try this.`;
   const preheader = `Free workbook · same body-truth · no purchase needed.`;
@@ -853,4 +853,3 @@ export function buildCartRecoveryFinalEmail(productKey: ProductKey, customerEmai
   const html = emailShell({ subject, preheader, bodyHtml });
   return { subject, html, text, customerEmail };
 }
-

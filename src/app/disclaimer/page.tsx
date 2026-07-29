@@ -19,8 +19,8 @@ export default function DisclaimerPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thisisphase.co' },
-              { name: 'Medical Disclaimer', url: 'https://thisisphase.co/disclaimer' },
+              { name: 'The PHASE', url: 'https://thephase.co' },
+              { name: 'Medical Disclaimer', url: 'https://thephase.co/disclaimer' },
             ])
           ),
         }}
@@ -46,7 +46,7 @@ export default function DisclaimerPage() {
             Erika Hanafin Austria is an IIN Certified Holistic Health Coach (Institute for Integrative Nutrition). She is <em>not</em> a medical doctor, doctor of osteopathy, nurse practitioner, physician assistant, registered dietitian, or licensed therapist.
           </p>
           <p>
-            The information provided in The PHASE™ workbooks, on thisisphase.co, in any newsletter, social post, podcast appearance, video, or related material is for general educational and informational purposes only. It is not intended to diagnose, treat, cure, or prevent any disease. It is not a substitute for professional medical advice, diagnosis, or treatment.
+            The information provided in The PHASE™ workbooks, on thephase.co, in any newsletter, social post, podcast appearance, video, or related material is for general educational and informational purposes only. It is not intended to diagnose, treat, cure, or prevent any disease. It is not a substitute for professional medical advice, diagnosis, or treatment.
           </p>
 
           <h2 className="font-serif text-3xl mt-12 mb-4">Always consult your healthcare provider</h2>
@@ -78,12 +78,12 @@ export default function DisclaimerPage() {
 
           <h2 className="font-serif text-3xl mt-12 mb-4">No doctor-patient relationship</h2>
           <p>
-            Use of The PHASE™, thisisphase.co, or related materials does not create a doctor-patient relationship, coach-client relationship (unless explicitly contracted separately), or any other professional relationship.
+            Use of The PHASE™, thephase.co, or related materials does not create a doctor-patient relationship, coach-client relationship (unless explicitly contracted separately), or any other professional relationship.
           </p>
 
           <h2 className="font-serif text-3xl mt-12 mb-4">Limitation of liability</h2>
           <p>
-            By using The PHASE™ or thisisphase.co, you acknowledge that you are responsible for your own health, medical care, and decisions. MOMumental Moments®, Erika Hanafin Austria, and any affiliated parties are not liable for any actions, decisions, or outcomes resulting from use of educational content provided.
+            By using The PHASE™ or thephase.co, you acknowledge that you are responsible for your own health, medical care, and decisions. MOMumental Moments®, Erika Hanafin Austria, and any affiliated parties are not liable for any actions, decisions, or outcomes resulting from use of educational content provided.
           </p>
 
           <h2 className="font-serif text-3xl mt-12 mb-4">Affiliate disclosure</h2>

@@ -1,7 +1,7 @@
 /**
  * POST /api/stripe-webhook
  *
- * Receives Stripe webhook events for thisisphase.co Payment Links.
+ * Receives Stripe webhook events for thephase.co Payment Links.
  *
  * Scope: handles `checkout.session.completed`.
  *   1. Verifies the request signature using STRIPE_WEBHOOK_SECRET
@@ -16,10 +16,30 @@
  *        Day 14         · keystone essay + paid Substack pitch
  *   6. Returns 200 OK to acknowledge the event
  *
- * SPECIAL BRANCH · Complete Library ($228 Founding cohort)
- *   Handled inline at the top of the POST handler BEFORE the standard product
- *   registry check. Sends buyer 18 direct blob download links + alerts Erika.
- *   Real Clerk portal at thisisphase.co/library replaces this shortly.
+ * Env vars required (set in Vercel · thisisphase-co project):
+ *   - STRIPE_WEBHOOK_SECRET    (from Stripe → Developers → Webhooks → reveal)
+ *   - RESEND_API_KEY           (re_... from resend.com)
+ *   - RESEND_FROM              (e.g. "Erika · MOMumental Moments® <info@momumentalmoments.co>")
+ *   - META_CAPI_ACCESS_TOKEN   (from Meta Events Manager → Settings → Conversions API)
+ *   - NEXT_PUBLIC_META_PIXEL_ID            (already set · empire-wide master Pixel ID)
+ *   - NEXT_PUBLIC_META_PIXEL_ID_SECONDARY  (already set · PHASE-specific Pixel ID)
+ *   - META_CAPI_TEST_EVENT_CODE            (optional · for Meta Test Events validation)
+ *
+ * Stripe webhook setup steps (do once after deploy):
+ *   1. Stripe dashboard → Developers → Webhooks → Add endpoint
+ *   2. URL: https://thephase.co/api/stripe-webhook
+ *   3. Events: select `checkout.session.completed`
+ *   4. Save · copy signing secret · paste into Vercel STRIPE_WEBHOOK_SECRET
+ *   5. For each Payment Link in Stripe → Edit → Metadata, add:
+ *        product=vol1  (or vol2, vol3, vol4, vol5, series, journal, decode)
+ *      This makes product identification 100% reliable instead of amount-based fallback.
+ *
+ * Meta CAPI setup steps (do once after deploy):
+ *   1. Meta Events Manager → pick the Pixel → Settings → Conversions API
+ *   2. "Set up manually" → "Generate access token" → copy long token
+ *   3. Vercel project settings → Environment Variables → add META_CAPI_ACCESS_TOKEN
+ *   4. Redeploy · verify in Meta Events Manager → Test Events tab
+ *      (optional: set META_CAPI_TEST_EVENT_CODE in Vercel to route events to Test Events panel)
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -46,6 +66,7 @@ async function verifyStripeSignature(
   secret: string,
   toleranceSeconds = 300
 ): Promise<boolean> {
+  // Stripe-Signature header format: t=TIMESTAMP,v1=SIG[,v1=SIG2,...]
   const parts = sigHeader.split(",").reduce<Record<string, string[]>>((acc, p) => {
     const [k, v] = p.split("=");
     if (!k || !v) return acc;
@@ -58,6 +79,7 @@ async function verifyStripeSignature(
   const sigs = parts["v1"] ?? [];
   if (!ts || sigs.length === 0) return false;
 
+  // Tolerance check
   const now = Math.floor(Date.now() / 1000);
   if (Math.abs(now - parseInt(ts, 10)) > toleranceSeconds) return false;
 
@@ -75,6 +97,7 @@ async function verifyStripeSignature(
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 
+  // Constant-time comparison
   return sigs.some((s) => timingSafeEqualHex(s, expected));
 }
 
@@ -97,6 +120,7 @@ async function sendViaResend(opts: {
   html: string;
   text: string;
   tags?: Array<{ name: string; value: string }>;
+  /** ISO 8601 timestamp · if set, Resend schedules instead of sending immediately. Max 30 days future. */
   scheduledAt?: string;
 }): Promise<{ ok: boolean; status: number; body: string }> {
   const res = await fetch("https://api.resend.com/emails", {
@@ -119,11 +143,17 @@ async function sendViaResend(opts: {
   return { ok: res.ok, status: res.status, body };
 }
 
+/** Build an ISO 8601 timestamp `minutes` from now. */
 function offsetFromNow(minutes: number): string {
   return new Date(Date.now() + minutes * 60 * 1000).toISOString();
 }
 
 // ─── Meta Conversions API · server-side Purchase event ───────────────────
+//
+// Fires Purchase to one or both configured Pixels (primary + optional secondary).
+// Dedupes against client-side Pixel via event_id = Stripe session.id.
+// Email is SHA-256 hashed lowercase per Meta CAPI spec.
+// IP and user_agent improve match quality but are optional.
 
 async function sha256Hex(input: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
@@ -201,140 +231,6 @@ async function fetchSessionLineItems(
   return res.json();
 }
 
-// ─── Complete Library delivery (Founding cohort · $228) ────────────────────
-
-const BLOB_BASE = "https://dpo02ztmhn6nty5u.public.blob.vercel-storage.com";
-
-const COMPLETE_LIBRARY_LINKS: Array<{ title: string; url: string }> = [
-  { title: "The PHASE™ Vol. I · Perimenopause", url: `${BLOB_BASE}/the-phase-vol-1-perimenopause.pdf` },
-  { title: "The PHASE™ Vol. II · Hormones", url: `${BLOB_BASE}/the-phase-vol-2-hormones.pdf` },
-  { title: "The PHASE™ Vol. III · Architecture", url: `${BLOB_BASE}/the-phase-vol-3-architecture.pdf` },
-  { title: "The PHASE™ Vol. IV · Self-trust", url: `${BLOB_BASE}/the-phase-vol-4-self-trust.pdf` },
-  { title: "The PHASE™ Vol. V · Execution", url: `${BLOB_BASE}/the-phase-vol-5-execution.pdf` },
-  { title: "The PHASE™ Series · All Five (bundle .zip)", url: `${BLOB_BASE}/the-phase-series-all-five.zip` },
-  { title: "Co-Parenting Power Method® Workbook", url: `${BLOB_BASE}/coparenting-power-method.pdf` },
-  { title: "The Ultimate Guide to Balance & Growth", url: `${BLOB_BASE}/balance-and-growth.pdf` },
-  { title: "The Must-Have Frameworks for Profitability", url: `${BLOB_BASE}/frameworks-for-profitability.pdf` },
-  { title: "The Mental Load Detox", url: `${BLOB_BASE}/mental-load-detox.pdf` },
-  { title: "The Smart Woman's Guide to Stress-Free Finances", url: `${BLOB_BASE}/stress-free-finances.pdf` },
-  { title: "The Clarity Starter Kit", url: `${BLOB_BASE}/the-clarity-starter-kit.pdf` },
-  { title: "The Finance Planner", url: `${BLOB_BASE}/the-finance-planner.pdf` },
-  { title: "The Goal Tracker", url: `${BLOB_BASE}/the-goal-tracker.pdf` },
-  { title: "The Productivity Toolkit", url: `${BLOB_BASE}/the-productivity-toolkit.pdf` },
-  { title: "Vision-to-Action Planning Guide", url: `${BLOB_BASE}/vision-to-action-planning-guide.pdf` },
-  { title: "Reflections Through the PHASEs · Journal", url: `${BLOB_BASE}/reflections-journal.pdf` },
-  { title: "Decode Your Symptoms · A Science-Backed Reset", url: `${BLOB_BASE}/decode-your-symptoms.pdf` },
-];
-
-async function handleCompleteLibraryDelivery(
-  session: {
-    id: string;
-    customer_details?: { name?: string | null; email?: string | null };
-  },
-  customerEmail: string,
-  resendKey: string,
-  resendFrom: string
-): Promise<NextResponse> {
-  const firstName = session.customer_details?.name?.split(" ")[0] || "there";
-  const fullName = session.customer_details?.name || customerEmail;
-
-  const linksHtml = COMPLETE_LIBRARY_LINKS.map(
-    (l) => `<li style="margin: 8px 0;"><a href="${l.url}" style="color: #e91e63; text-decoration: none;">${l.title}</a></li>`
-  ).join("\n");
-
-  const linksText = COMPLETE_LIBRARY_LINKS.map((l) => `• ${l.title}\n  ${l.url}`).join("\n\n");
-
-  const welcomeHtml = `
-<div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; color: #222; line-height: 1.6;">
-  <p>Hi ${firstName},</p>
-  <p>You are officially in the Founding cohort of The Complete Library.</p>
-  <p>Which means every workbook I have built to make midlife reinvention survivable is now yours. The five PHASE™ volumes. The Co-Parenting Power Method® workbook. Every individual workbook I have released. All of it. Yours. Forever.</p>
-  <p><strong>Your library, below.</strong> Bookmark this email. Every link is a direct download.</p>
-  <ul style="list-style: none; padding: 0;">
-${linksHtml}
-  </ul>
-  <p style="margin-top: 32px;"><strong>A real note.</strong></p>
-  <p>You are not late. You are not behind. You are exactly on time.</p>
-  <p>The Complete Library is not a course. It is not homework. It is a set of tools that you open when you need them, put down when you do not, and return to when the body-truth part of this rebuild asks for language.</p>
-  <p>I only made this for people who are actually rebuilding. If you ever need me, reply to this email. Every reply reaches me directly.</p>
-  <p>Welcome to Founding.</p>
-  <p style="margin-top: 24px;">
-    MOMumentally,<br />
-    <strong>Erika Hanafin Austria</strong><br />
-    Founder, MOMumental Moments®<br />
-    Publisher, MOMumental Reinvention
-  </p>
-  <p style="margin-top: 32px; font-size: 12px; color: #888;">
-    Order confirmation: ${session.id}<br />
-    A dedicated Founding cohort portal at thisisphase.co/library is launching this week. When it goes live you will receive a magic-link login.
-  </p>
-</div>
-`;
-
-  const welcomeText = `Hi ${firstName},
-
-You are officially in the Founding cohort of The Complete Library.
-
-Which means every workbook I have built to make midlife reinvention survivable is now yours. The five PHASE volumes. The Co-Parenting Power Method workbook. Every individual workbook I have released. All of it. Yours. Forever.
-
-Your library, below. Bookmark this email. Every link is a direct download.
-
-${linksText}
-
-A real note.
-
-You are not late. You are not behind. You are exactly on time.
-
-The Complete Library is not a course. It is not homework. It is a set of tools that you open when you need them, put down when you do not, and return to when the body-truth part of this rebuild asks for language.
-
-I only made this for people who are actually rebuilding. If you ever need me, reply to this email. Every reply reaches me directly.
-
-Welcome to Founding.
-
-MOMumentally,
-Erika Hanafin Austria
-Founder, MOMumental Moments
-Publisher, MOMumental Reinvention
-
-Order confirmation: ${session.id}
-A dedicated Founding cohort portal at thisisphase.co/library is launching this week. When it goes live you will receive a magic-link login.`;
-
-  const buyerSend = await sendViaResend({
-    apiKey: resendKey,
-    from: resendFrom,
-    to: customerEmail,
-    subject: "You are IN. Founding cohort. Welcome home.",
-    html: welcomeHtml,
-    text: welcomeText,
-    tags: [
-      { name: "source", value: "stripe-purchase" },
-      { name: "product", value: "complete-library" },
-      { name: "tier", value: "founding-cohort" },
-      { name: "stage", value: "founding-day-0-delivery" },
-    ],
-  });
-
-  await sendViaResend({
-    apiKey: resendKey,
-    from: resendFrom,
-    to: "erika@erikahanafin.com",
-    subject: `🎉 NEW FOUNDING SALE · ${fullName} · $228`,
-    html: `<p><strong>${fullName}</strong> (${customerEmail}) just joined the Founding cohort.</p><p>Amount: $228.00 USD<br/>Session: ${session.id}<br/>Delivery email sent: ${buyerSend.ok ? "✅ YES" : "❌ FAILED · manually send"}</p><p>They just got instant access to the full library via direct download links. When Clerk portal is live, you will magic-link them in.</p>`,
-    text: `NEW FOUNDING SALE\n\n${fullName} (${customerEmail}) just joined the Founding cohort.\n\nAmount: $228.00 USD\nSession: ${session.id}\nDelivery email sent: ${buyerSend.ok ? "YES" : "FAILED · manually send"}`,
-  });
-
-  if (!buyerSend.ok) {
-    console.error("Founding delivery email failed", buyerSend.status, buyerSend.body);
-    return NextResponse.json(
-      { error: "founding delivery failed", details: buyerSend.body },
-      { status: 500 }
-    );
-  }
-
-  console.log(`Complete Library delivery sent · ${customerEmail} · session ${session.id}`);
-  return NextResponse.json({ ok: true, product: "complete-library", email: customerEmail });
-}
-
 // ─── Main handler ────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -342,7 +238,7 @@ export async function POST(req: NextRequest) {
   const resendKey = process.env.RESEND_API_KEY;
   const resendFrom =
     process.env.RESEND_FROM || "Erika · MOMumental Moments® <info@momumentalmoments.co>";
-  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  const stripeKey = process.env.STRIPE_SECRET_KEY; // optional · enables line_items expansion
 
   if (!webhookSecret) {
     console.error("STRIPE_WEBHOOK_SECRET not set");
@@ -372,6 +268,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }
 
+  // Handle two event types:
+  //   1. checkout.session.completed → purchase delivery + follow-up sequence
+  //   2. checkout.session.expired   → abandoned cart recovery sequence (3 emails over 72hr)
+  // All other events get a 200 OK ignored response (Stripe is happy, no retry).
   if (event.type === "checkout.session.expired") {
     return handleCheckoutExpired(event, resendKey, resendFrom);
   }
@@ -382,7 +282,7 @@ export async function POST(req: NextRequest) {
   const session = event.data.object as {
     id: string;
     customer_email?: string | null;
-    customer_details?: { email?: string | null; name?: string | null };
+    customer_details?: { email?: string | null };
     metadata?: Record<string, string> | null;
     amount_total?: number | null;
     line_items?: { data?: Array<{ description?: string | null }> };
@@ -394,14 +294,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, warning: "no customer email" });
   }
 
-  // ─── COMPLETE LIBRARY BRANCH (Founding cohort $228) ───────────────────
-  // Handled BEFORE the standard product registry check because this SKU is
-  // not in @/lib/products. Delivers direct blob download links + admin alert.
-  if (session.metadata?.product === "complete-library") {
-    return handleCompleteLibraryDelivery(session, customerEmail, resendKey, resendFrom);
-  }
-  // ─── END COMPLETE LIBRARY BRANCH ──────────────────────────────────────
-
+  // Fetch line_items if not present (Payment Links sessions usually omit them)
   let sessionWithLineItems = session;
   if (!session.line_items?.data && stripeKey) {
     const lineItems = await fetchSessionLineItems(session.id, stripeKey);
@@ -416,6 +309,7 @@ export async function POST(req: NextRequest) {
       amount: session.amount_total,
       metadata: session.metadata,
     });
+    // Send Erika an admin alert so she can manually fulfill
     await sendViaResend({
       apiKey: resendKey,
       from: resendFrom,
@@ -429,6 +323,9 @@ export async function POST(req: NextRequest) {
 
   const product = PRODUCTS[productKey];
 
+  // ─── Fire Meta CAPI Purchase server-side (fire-and-forget) ──────────────
+  // Dedupes against client-side Pixel on /thanks via event_id = Stripe session.id.
+  // Fires to primary + secondary Pixels if both configured.
   const capiToken = process.env.META_CAPI_ACCESS_TOKEN;
   const capiPrimaryPixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   const capiSecondaryPixel = process.env.NEXT_PUBLIC_META_PIXEL_ID_SECONDARY;
@@ -448,9 +345,9 @@ export async function POST(req: NextRequest) {
         sendMetaCapiPurchase({
           pixelId,
           accessToken: capiToken,
-          eventId: session.id,
+          eventId: session.id, // matches client-side Pixel eventID for dedup
           eventTimeSec: Math.floor(Date.now() / 1000),
-          eventSourceUrl: `https://thisisphase.co/thanks?session_id=${session.id}`,
+          eventSourceUrl: `https://thephase.co/thanks?session_id=${session.id}`,
           email: customerEmail,
           clientIp,
           userAgent,
@@ -477,6 +374,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // ─── Build all 5 emails in the sequence ────────────────────────────────
+  // Day 0 instant: delivery
+  // Day 0 + 30 min: Substack invite
+  // Day 3: personal check-in (no selling)
+  // Day 7: cross-sell / Series upgrade offer
+  // Day 14: keystone essay + paid Substack
   const sequence = [
     {
       stage: "day-0-delivery",
@@ -505,6 +408,7 @@ export async function POST(req: NextRequest) {
     },
   ];
 
+  // Dispatch all 5 to Resend in parallel · Day 0 sends immediately, others are scheduled.
   const results = await Promise.all(
     sequence.map((item) =>
       sendViaResend({
@@ -528,6 +432,7 @@ export async function POST(req: NextRequest) {
   const deliveryResult = results.find((r) => r.stage === "day-0-delivery");
   const failed = results.filter((r) => !r.ok);
 
+  // Hard-fail only if the Day 0 delivery email failed · that is the one the customer is waiting on.
   if (deliveryResult && !deliveryResult.ok) {
     console.error("Day 0 delivery send failed", deliveryResult.status, deliveryResult.body);
     return NextResponse.json(
@@ -536,6 +441,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Soft-log any scheduled-email failures · the delivery already shipped so the customer is taken care of.
   if (failed.length > 0) {
     console.error(
       "Some scheduled emails failed to enqueue",
@@ -545,7 +451,7 @@ export async function POST(req: NextRequest) {
 
   console.log(
     `Purchase sequence dispatched · ${productKey} · ${customerEmail} · session ${session.id} · ` +
-    `${results.length - failed.length}/${results.length} ok`
+      `${results.length - failed.length}/${results.length} ok`
   );
 
   return NextResponse.json({
@@ -557,6 +463,16 @@ export async function POST(req: NextRequest) {
 }
 
 // ─── checkout.session.expired · abandoned cart recovery ───────────────────
+//
+// Stripe fires this event 24hr after session creation if the user did not
+// complete payment. We dispatch a 3-email recovery sequence:
+//   #1 Soft return        · +1hr   · acknowledge, leave the link
+//   #2 Pain-point anchor  · +24hr  · re-surface why they came + Clarity safety net
+//   #3 Pivot to Clarity   · +72hr  · final · offer free Kit as warmup entry
+//
+// Anonymous abandoners (session.customer_email === null) are silently
+// skipped · no contact path exists. Returns 200 OK in all cases so Stripe
+// does not retry.
 
 async function handleCheckoutExpired(
   event: { type: string; data: { object: Record<string, unknown> } },
@@ -579,28 +495,32 @@ async function handleCheckoutExpired(
     return NextResponse.json({ ok: true, skipped: "no_customer_email" });
   }
 
+  // Identify which product was abandoned · default to vol1 (ad destination)
+  // if metadata is missing. Future improvement: fetch line_items for accuracy.
   const productKey = (session.metadata?.product as string | undefined) || "vol1";
   const validProductKey =
     productKey in PRODUCTS ? (productKey as keyof typeof PRODUCTS) : "vol1";
 
+  // Build all 3 recovery emails
   const sequence = [
     {
       stage: "abandoned-1hr-soft",
-      scheduledAt: offsetFromNow(60),
+      scheduledAt: offsetFromNow(60), // +1 hour
       email: buildCartRecoverySoftEmail(validProductKey, customerEmail),
     },
     {
       stage: "abandoned-24hr-pain",
-      scheduledAt: offsetFromNow(60 * 24),
+      scheduledAt: offsetFromNow(60 * 24), // +24 hours
       email: buildCartRecoveryPainEmail(validProductKey, customerEmail),
     },
     {
       stage: "abandoned-72hr-final",
-      scheduledAt: offsetFromNow(60 * 72),
+      scheduledAt: offsetFromNow(60 * 72), // +72 hours
       email: buildCartRecoveryFinalEmail(validProductKey, customerEmail),
     },
   ];
 
+  // Dispatch all 3 to Resend in parallel · all are scheduled (none send immediately).
   const results = await Promise.all(
     sequence.map((item) =>
       sendViaResend({
@@ -630,7 +550,7 @@ async function handleCheckoutExpired(
 
   console.log(
     `Cart abandon recovery dispatched · ${validProductKey} · ${customerEmail} · session ${session.id} · ` +
-    `${results.length - failed.length}/${results.length} ok`
+      `${results.length - failed.length}/${results.length} ok`
   );
 
   return NextResponse.json({

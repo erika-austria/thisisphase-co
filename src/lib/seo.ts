@@ -5,7 +5,7 @@
 
 import type { Metadata } from 'next';
 
-const SITE_URL = 'https://thisisphase.co';
+const SITE_URL = 'https://thephase.co';
 const SITE_NAME = 'The PHASE™';
 const DEFAULT_DESCRIPTION = 'Five volumes. One body-truth. The map of perimenopause, hormones, daily architecture, self-trust, and execution. From MOMumental Moments®.';
 

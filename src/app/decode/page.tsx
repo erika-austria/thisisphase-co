@@ -29,23 +29,23 @@ export default function DecodePage() {
             {
               '@context': 'https://schema.org',
               '@type': 'Product',
-              '@id': 'https://thisisphase.co/decode/#product',
+              '@id': 'https://thephase.co/decode/#product',
               name: DECODE.title,
               description: DECODE.description,
-              image: `https://thisisphase.co${DECODE.ogImage}`,
+              image: `https://thephase.co${DECODE.ogImage}`,
               brand: { '@type': 'Brand', name: 'The PHASE™' },
               category: 'Digital Workbook · Science-Backed · Women\'s Health',
               offers: {
                 '@type': 'Offer',
-                url: 'https://thisisphase.co/decode',
+                url: 'https://thephase.co/decode',
                 priceCurrency: 'USD',
                 price: DECODE.price.toString(),
                 availability: 'https://schema.org/InStock',
               },
             },
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thisisphase.co' },
-              { name: DECODE.title, url: 'https://thisisphase.co/decode' },
+              { name: 'The PHASE', url: 'https://thephase.co' },
+              { name: DECODE.title, url: 'https://thephase.co/decode' },
             ]),
           ]),
         }}

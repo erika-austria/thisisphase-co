@@ -10,7 +10,7 @@ export const metadata: Metadata = buildMetadata({
   // buildMetadata appends " · The PHASE™" → no need to prefix it here
   title: 'The Whole Season of Rebuilding · Body, Family, Voice, Work',
   description:
-    'You are not in a phase. You are in The PHASE™ — the whole season of rebuilding everything. Four rooms, one woman, one reinvention. The body, the family, the voice, the work. The tools built from inside the wreckage. From MOMumental Moments®.',
+    'You are not in a phase. You are in The PHASE™. The whole season of rebuilding everything. Four rooms, one woman, one reinvention. The body, the family, the voice, the work. The tools built from inside the wreckage. From MOMumental Moments®.',
   path: '/',
   ogImage: '/og/home.jpg',
 });
@@ -44,7 +44,7 @@ export default function HomePage() {
           <div className="wrap inner">
             <div className="issue">
               <span className="bracket" />
-              <span className="eyebrow">thisisphase.co · Four rooms · One reinvention</span>
+              <span className="eyebrow">thephase.co · Four rooms · One reinvention</span>
             </div>
             <h1>
               You are not in a phase.
@@ -73,9 +73,9 @@ export default function HomePage() {
           <img
             className="ph-photo"
             src="/hero-erika.jpg"
-            alt="The tools of the rebuild — a desk, a laptop, a planner, and a cup of coffee."
+            alt="The PHASE™ five volumes, from Perimenopause to Execution."
           />
-          <span className="cap">The PHASE™ · Vol. I — No. 01</span>
+          <span className="cap">The PHASE™ · Vol. I · No. 01</span>
         </section>
 
         {/* Reframe */}
@@ -89,7 +89,7 @@ export default function HomePage() {
             <p>
               Everyone else hands you one room. A protocol for the hormones. A course for the split. A
               planner for the work. You are living all of it at once. This is the house for the whole
-              season — four rooms, one woman, one reinvention.
+              season. Four rooms, one woman, one reinvention.
             </p>
             <div className="phase-strip">
               <span>Body</span>
@@ -123,9 +123,8 @@ export default function HomePage() {
             <div className="rooms">
               <article className="room body" id="body">
                 <div className="room-img">
-                  <div className="figure">
-                    <span className="figcap">Body room — lab slip, journal, or hands</span>
-                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className="ph-photo" src="/room-body.jpg" alt="The PHASE™ workbook covers, Volumes I through V." />
                 </div>
                 <div className="room-head">
                   <span className="room-num">I</span>
@@ -156,9 +155,8 @@ export default function HomePage() {
 
               <article className="room family" id="family">
                 <div className="room-img">
-                  <div className="figure">
-                    <span className="figcap">Family room — two doorways, calendar, kids&apos; shoes</span>
-                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className="ph-photo" style={{ objectPosition: 'center 28%' }} src="/room-family.jpg" alt="Erika Hanafin Austria with her family." />
                 </div>
                 <div className="room-head">
                   <span className="room-num">II</span>
@@ -187,9 +185,8 @@ export default function HomePage() {
 
               <article className="room voice" id="voice">
                 <div className="room-img">
-                  <div className="figure">
-                    <span className="figcap">Voice room — mirror, mic, or portrait</span>
-                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className="ph-photo" src="/room-voice.jpg" alt="MOMumental Reinvention podcast, essays voiced by Erika Hanafin Austria." />
                 </div>
                 <div className="room-head">
                   <span className="room-num">III</span>
@@ -216,9 +213,8 @@ export default function HomePage() {
 
               <article className="room work" id="work">
                 <div className="room-img">
-                  <div className="figure">
-                    <span className="figcap">Work room — desk, laptop, framework on paper</span>
-                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className="ph-photo" style={{ objectPosition: 'center 22%' }} src="/room-work.jpg" alt="Erika Hanafin Austria working from a framework, pen and planner in hand." />
                 </div>
                 <div className="room-head">
                   <span className="room-num">IV</span>
@@ -231,7 +227,7 @@ export default function HomePage() {
                 </div>
                 <div className="room-body">
                   <p className="moment">
-                    Operators — the good ones — run things on frameworks. Not on willpower.
+                    Operators, the good ones, run things on frameworks. Not on willpower.
                   </p>
                   <ul>
                     <li>
@@ -262,9 +258,8 @@ export default function HomePage() {
                   forever. It lives on my MOMumental Reinvention library.
                 </p>
                 <div className="lib-shot">
-                  <div className="figure">
-                    <span className="figcap">The Library — all five volumes printed and stacked</span>
-                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className="ph-photo" src="/library-volumes.jpg" alt="The Complete Library, all five PHASE™ volumes." />
                 </div>
                 <div className="lib-stats">
                   <div>

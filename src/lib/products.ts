@@ -41,7 +41,7 @@ export type Product = {
   pdfUrl: string; // Vercel Blob URL · update after upload
   pdfFilename: string;
   // Stripe Payment Link URL · used in cross-sell emails. Optional · existing PHASE™
-  // products fall back to thisisphase.co landing pages if not set.
+  // products fall back to thephase.co landing pages if not set.
   purchaseUrl?: string;
   // Cross-sell offer for Day 7 follow-up email
   crossSellKey: ProductKey | null;
@@ -79,7 +79,6 @@ export const PRODUCTS: Record<ProductKey, Product> = {
     crossSellKey: "vol3",
     crossSellPitch:
       "Now that you have the chemistry · Vol. III is the daily architecture that holds it.",
-    
   },
   vol3: {
     key: "vol3",
@@ -154,9 +153,9 @@ export const PRODUCTS: Record<ProductKey, Product> = {
       "If Decode gave you the worksheet · Vol. I of The PHASE™ is the full body-truth context. $27.",
   },
 
-  // ──────────────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────────────────
   // FAMILY PILLAR · added Fri May 29 2026
-  // ──────────────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────────────────
 
   mentalloaddetox: {
     key: "mentalloaddetox",
@@ -187,9 +186,9 @@ export const PRODUCTS: Record<ProductKey, Product> = {
       "Now the daily redistribution. The Mental Load Detox is the worksheet for moving three things off your plate this week, every week. $17.",
   },
 
-  // ──────────────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────────────────
   // OPERATOR PILLAR · Business + Finance · added Fri May 29 2026
-  // ──────────────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────────────────
 
   thegoaltracker: {
     key: "thegoaltracker",

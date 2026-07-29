@@ -6,7 +6,6 @@ import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
 import { AnalyticsScripts } from '@/components/AnalyticsScripts';
 import './globals.css';
-import JsonLdSchema from '@/components/JsonLdSchema';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -47,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#fff9f1" />
         <meta name="color-scheme" content="light" />
         {/* Meta Business · domain verification for MOMumental Empire Business Manager · enables iOS 14.5+ attribution + Ads Manager destinations */}
-        <meta name="facebook-domain-verification" content="o2553tcjw6pok1o1axqmmyqf7jjeqp" />
+        <meta name="facebook-domain-verification" content="gcejqg45xwvgiuhdjzp03l5217jh7s" />
         {/* Preconnect to fonts (already optimized by next/font) */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -57,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <Nav />
-        <main id="main"><JsonLdSchema /> <JsonLdSchema /> {children}</main>
+        <main id="main">{children}</main>
         <Footer />
         <AnalyticsScripts />
       </body>

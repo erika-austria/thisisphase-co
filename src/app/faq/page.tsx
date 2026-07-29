@@ -107,7 +107,7 @@ const SECTIONS: FAQSection[] = [
     items: [
       {
         question: 'What information do you collect?',
-        answer: 'When you purchase a volume, Stripe collects your email and payment information directly (we do not store payment details on our servers). When you join the newsletter, we collect your email address only. When you visit thisisphase.co, our analytics provider collects anonymized traffic data (page views, referrers, device type). We do not collect names, addresses, phone numbers, or sensitive demographic data unless you provide them directly.',
+        answer: 'When you purchase a volume, Stripe collects your email and payment information directly (we do not store payment details on our servers). When you join the newsletter, we collect your email address only. When you visit thephase.co, our analytics provider collects anonymized traffic data (page views, referrers, device type). We do not collect names, addresses, phone numbers, or sensitive demographic data unless you provide them directly.',
       },
       {
         question: 'How is my email used?',
@@ -115,7 +115,7 @@ const SECTIONS: FAQSection[] = [
       },
       {
         question: 'Do you use cookies or tracking pixels?',
-        answer: 'Yes, in limited form. We use first-party analytics for site performance (page views, referrers). We do not run advertising retargeting pixels. We do not sell or share your activity with advertising networks. By using thisisphase.co you consent to this baseline analytics use.',
+        answer: 'Yes, in limited form. We use first-party analytics for site performance (page views, referrers). We do not run advertising retargeting pixels. We do not sell or share your activity with advertising networks. By using thephase.co you consent to this baseline analytics use.',
       },
       {
         question: 'How do I request my data or have it deleted?',
@@ -142,7 +142,7 @@ const SECTIONS: FAQSection[] = [
       },
       {
         question: 'I see a brand called "PHASE Wellness" online. Are you affiliated?',
-        answer: 'No. The PHASE™ by MOMumental Moments® is not affiliated with any other brand using "PHASE" or related variations. The PHASE™ is owned and operated by Erika Hanafin Austria. Our domains are thisisphase.co and phasewellness.co. Our Instagram is @thisisphaseco.',
+        answer: 'No. The PHASE™ by MOMumental Moments® is not affiliated with any other brand using "PHASE" or related variations. The PHASE™ is owned and operated by Erika Hanafin Austria. Our domains are thephase.co and phasewellness.co. Our Instagram is @thisisphaseco.',
       },
     ],
   },
@@ -160,8 +160,8 @@ export default function FAQPage() {
           __html: JSON.stringify([
             faqSchema(allFAQs),
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thisisphase.co' },
-              { name: 'FAQ', url: 'https://thisisphase.co/faq' },
+              { name: 'The PHASE', url: 'https://thephase.co' },
+              { name: 'FAQ', url: 'https://thephase.co/faq' },
             ]),
           ]),
         }}

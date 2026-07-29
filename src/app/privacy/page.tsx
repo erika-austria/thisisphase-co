@@ -19,8 +19,8 @@ export default function PrivacyPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thisisphase.co' },
-              { name: 'Privacy', url: 'https://thisisphase.co/privacy' },
+              { name: 'The PHASE', url: 'https://thephase.co' },
+              { name: 'Privacy', url: 'https://thephase.co/privacy' },
             ])
           ),
         }}
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
 
         <div className="space-y-6 text-navy/80 leading-relaxed text-lg">
           <p>
-            This Privacy Policy describes how MOMumental Moments® (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;The PHASE™&rdquo;) collects, uses, and protects information when you visit thisisphase.co or purchase from us.
+            This Privacy Policy describes how MOMumental Moments® (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;The PHASE™&rdquo;) collects, uses, and protects information when you visit thephase.co or purchase from us.
           </p>
 
           <h2 className="font-serif text-3xl mt-12 mb-4">1. What we collect</h2>
@@ -96,7 +96,7 @@ export default function PrivacyPage() {
 
           <h2 className="font-serif text-3xl mt-12 mb-4">7. Changes</h2>
           <p>
-            We may update this Privacy Policy occasionally. The &ldquo;Last Updated&rdquo; date at the top reflects the most recent version. Continued use of thisisphase.co after changes indicates acceptance.
+            We may update this Privacy Policy occasionally. The &ldquo;Last Updated&rdquo; date at the top reflects the most recent version. Continued use of thephase.co after changes indicates acceptance.
           </p>
 
           <h2 className="font-serif text-3xl mt-12 mb-4">8. Contact</h2>
