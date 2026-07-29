@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const FOOTER_CSS = `
 :root{--navy:var(--bg-navy);--navy-deep:var(--bg-navy-deep);--cream:var(--bg-cream-page);--cream-deep:var(--bg-cream-alt);--serif:var(--font-cormorant),Georgia,serif;--mono:var(--font-geist-mono),ui-monospace,monospace}
 .ph-footer{background:var(--navy);color:rgba(255,249,241,.7);padding:56px 0 32px;font-family:var(--mono)}
@@ -165,9 +167,9 @@ export function Footer() {
         <div className="foot-meta">
           <div>© {new Date().getFullYear()} MOMumental Moments®. The PHASE™ is a trademark of MOMumental Moments®.</div>
           <div className="links">
-            <a href="/privacy">Privacy</a>
-            <a href="/terms">Terms</a>
-            <a href="/disclaimer">Disclaimer</a>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+            <Link href="/disclaimer">Disclaimer</Link>
           </div>
         </div>
 
