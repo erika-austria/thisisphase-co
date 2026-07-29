@@ -1,5 +1,5 @@
-# thisisphase.co · robots.txt
-# Generated 2026-05-08
+# thephase.co · robots.txt
+# Generated 2026-07-29
 
 # Allow standard search crawlers
 User-agent: Googlebot
@@ -60,4 +60,4 @@ Allow: /llms.txt
 Allow: /
 
 # Sitemap
-Sitemap: https://thisisphase.co/sitemap.xml
+Sitemap: https://thephase.co/sitemap.xml
