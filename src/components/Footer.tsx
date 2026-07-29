@@ -1,4 +1,5 @@
 const FOOTER_CSS = `
+:root{--navy:var(--bg-navy);--navy-deep:var(--bg-navy-deep);--cream:var(--bg-cream-page);--cream-deep:var(--bg-cream-alt);--serif:var(--font-cormorant),Georgia,serif;--mono:var(--font-geist-mono),ui-monospace,monospace}
 .ph-footer{background:var(--navy);color:rgba(255,249,241,.7);padding:56px 0 32px;font-family:var(--mono)}
 .ph-footer .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
 .ph-footer a{color:inherit;text-decoration:none}
