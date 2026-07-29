@@ -14,7 +14,7 @@ const FOOTER_CSS = `
 .ph-footer .foot-social{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:30px 0;border-bottom:1px solid rgba(255,249,241,.14)}
 @media(max-width:820px){.ph-footer .foot-social{grid-template-columns:1fr;gap:24px}}
 .ph-footer .pod{display:flex;align-items:center;gap:18px}
-.ph-footer .pod .art{width:64px;height:64px;border-radius:6px;flex-shrink:0;background:radial-gradient(circle at 68% 28%,var(--pink) 0%,var(--pink-deep) 46%,#1d2f3d 78%);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:30px;font-weight:500;color:var(--cream);border:1px solid rgba(240,134,220,.45)}
+.ph-footer .pod .art{width:64px;height:64px;border-radius:6px;flex-shrink:0;background:radial-gradient(circle at 68% 28%,var(--pink) 0%,var(--pink-deep) 46%,#1d2f3d 78%);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:30px;font-weight:500;color:var(--cream);border:1px solid rgba(240,134,220,.45);overflow:hidden;object-fit:cover}
 .ph-footer .pod .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--pink)}
 .ph-footer .pod .n{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--cream);letter-spacing:-.01em;margin-top:2px;display:block;transition:color .18s ease}
 .ph-footer .pod .n:hover{color:var(--pink)}
@@ -62,9 +62,8 @@ export function Footer() {
 
         <div className="foot-social">
           <div className="pod">
-            <span className="art" aria-hidden="true">
-              P
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="art" src="/podcast-cover.jpg" alt="MOMumental Reinvention Podcast" />
             <span>
               <span className="l">The Podcast · New episodes weekly</span>
               <a
