@@ -31,6 +31,7 @@ const FOOTER_CSS = `
 export function Footer() {
   return (
     <footer className="ph-footer">
+      <style dangerouslySetInnerHTML={{ __html: FOOTER_CSS }} />
       <div className="wrap">
         <div className="foot-top">
           <div className="foot-name">
