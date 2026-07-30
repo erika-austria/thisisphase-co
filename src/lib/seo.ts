@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 
 const SITE_URL = 'https://thephase.co';
 const SITE_NAME = 'The PHASE™';
-const DEFAULT_DESCRIPTION = 'Five volumes. One body-truth. The map of perimenopause, hormones, daily architecture, self-trust, and execution. From MOMumental Moments®.';
+const DEFAULT_DESCRIPTION = 'The PHASE™ is the whole season of rebuilding everything. Four rooms, one woman, one reinvention: the body, the family, the voice, the work. The tools built from inside the wreckage. From MOMumental Moments®.';
 
 type SEOConfig = {
   title: string;
@@ -68,7 +68,7 @@ export function buildMetadata({
 export const ROOT_METADATA: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'The PHASE™ · Five-Volume Women\'s Reinvention Series',
+    default: 'The PHASE™ · The Whole Season of Rebuilding · Body, Family, Voice, Work',
     // template removed May 11 · per-page titles use absolute (see buildMetadata above)
     template: '%s',
   },
