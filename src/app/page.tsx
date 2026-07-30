@@ -363,7 +363,7 @@ export default function HomePage() {
                   She has been through it, and she built the thing she needed. You feel that in every
                   page.
                 </p>
-                <span className="who">Reader · the Library</span>
+                <span className="who">Reader · The PHASE™ Library</span>
               </div>
             </div>
           </div>
