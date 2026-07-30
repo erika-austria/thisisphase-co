@@ -63,7 +63,7 @@ export function Footer() {
         <div className="foot-social">
           <div className="pod">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="art" src="/MOMumental-Reinvention%20Podcast%20Cover%20Final.png" alt="MOMumental Reinvention Podcast" />
+            <img className="art" src="/podcast-cover.jpg" alt="MOMumental Reinvention Podcast" />
             <span>
               <span className="l">The Podcast · New episodes weekly</span>
               <a
