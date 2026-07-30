@@ -27,7 +27,7 @@ const FOOTER_CSS = `
 .ph-footer .socials a{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,249,241,.85);border:1px solid rgba(255,249,241,.22);padding:9px 15px;border-radius:999px;transition:all .18s ease}
 .ph-footer .socials a:hover{background:var(--pink);border-color:var(--pink);color:var(--navy-deep)}
 .ph-footer .socials svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
-.ph-footer .foot-bottom{padding-top:24px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,249,241,.5);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;line-height:1.9}
+.ph-footer .foot-bottom{padding-top:24px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,249,241,.5);display:flex;justify-content:space-between;gsp:18px;flex-wrap:wrap;line-height:1.9}
 .ph-footer .foot-bottom .marks{color:var(--cream)}
 .ph-footer .foot-meta{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,249,241,.14);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,249,241,.55)}
 .ph-footer .foot-meta .links{display:flex;gap:20px;flex-wrap:wrap}
@@ -63,7 +63,7 @@ export function Footer() {
         <div className="foot-social">
           <div className="pod">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="art" src="/podcast-cover.jpg" alt="MOMumental Reinvention Podcast" />
+            <img className="art" src="/MOMumental-Reinvention%20Podcast%20Cover%20Final.png" alt="MOMumental Reinvention Podcast" />
             <span>
               <span className="l">The Podcast · New episodes weekly</span>
               <a
