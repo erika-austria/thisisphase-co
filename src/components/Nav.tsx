@@ -34,7 +34,7 @@ export function Nav() {
             <a href="/#family">Family</a>
             <a href="/#voice">Voice</a>
             <a href="/#work">Work</a>
-            <a href="/#library">The Library</a>
+            <a href="/#library">The PHASE™ Library</a>
           </div>
           <a
             className="navcta"
