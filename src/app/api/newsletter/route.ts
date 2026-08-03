@@ -11,9 +11,32 @@ import { NextResponse } from 'next/server';
  *     because those people receive the purchase/recovery emails instead.
  *   - any other source (e.g. the founding-cohort form) gets the immediate welcome.
  *
- * Mirrors the proven Resend pattern in /api/clarity. Single-audience workspace
- * model, so no audience id is required. If RESEND_AUDIENCE_ID is set, it is used.
+ * Resend contacts live under an audience: POST /audiences/{id}/contacts. If
+ * RESEND_AUDIENCE_ID is set we use it; otherwise we auto-resolve the workspace's
+ * first audience once and cache it. Resend has no custom-property fields on a
+ * contact, so attribution (source/product) is written into lastName.
  */
+
+// Cached across warm invocations so we only resolve the audience once.
+let cachedAudienceId: string | null = null;
+
+async function resolveAudienceId(
+  apiKey: string,
+  signal: AbortSignal,
+): Promise<string | null> {
+  const envId = process.env.RESEND_AUDIENCE_ID;
+  if (envId) return envId;
+  if (cachedAudienceId) return cachedAudienceId;
+  const res = await fetch('https://api.resend.com/audiences', {
+    headers: { Authorization: `Bearer ${apiKey}` },
+    signal,
+  });
+  if (!res.ok) return null;
+  const json = await res.json().catch(() => null);
+  const id = json?.data?.[0]?.id ?? null;
+  if (id) cachedAudienceId = id;
+  return id;
+}
 
 async function addToResendContacts(opts: {
   apiKey: string;
@@ -30,39 +53,39 @@ async function addToResendContacts(opts: {
     .toLowerCase()
     .replace(/[^a-z0-9\-_]/g, '-')
     .slice(0, 48);
-
   const isCheckout = sourceTag.startsWith('checkout');
-  const audienceId = process.env.RESEND_AUDIENCE_ID;
-  const url = audienceId
-    ? `https://api.resend.com/audiences/${audienceId}/contacts`
-    : 'https://api.resend.com/contacts';
 
-  // Cap the request so a slow Resend never stalls a checkout redirect.
+  // Cap total time so a slow Resend never stalls a checkout redirect.
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 4000);
+  const timer = setTimeout(() => controller.abort(), 6000);
   try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${opts.apiKey}`,
-      },
-      body: JSON.stringify({
-        email: opts.email,
-        firstName:
-          opts.firstName ||
-          (isCheckout ? 'Checkout Lead' : 'MOMumental Subscriber'),
-        unsubscribed: false,
-        properties: {
-          funnel: isCheckout ? 'checkout-capture' : 'newsletter',
-          lead_source: sourceTag,
-          ...(productTag && { product_interest: productTag }),
-          signup_date: new Date().toISOString().slice(0, 10),
-          signup_stage: 'day-0',
+    const audienceId = await resolveAudienceId(opts.apiKey, controller.signal);
+    if (!audienceId) {
+      return { ok: false, status: 0, body: 'no audience resolved' };
+    }
+
+    // Resend contacts have no custom fields, so tag attribution into the name.
+    const descriptor =
+      opts.firstName || (isCheckout ? 'Checkout Lead' : 'MOMumental Subscriber');
+    const attribution = [productTag, sourceTag].filter(Boolean).join(' · ').slice(0, 60);
+
+    const res = await fetch(
+      `https://api.resend.com/audiences/${audienceId}/contacts`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${opts.apiKey}`,
         },
-      }),
-      signal: controller.signal,
-    });
+        body: JSON.stringify({
+          email: opts.email,
+          firstName: descriptor,
+          lastName: attribution,
+          unsubscribed: false,
+        }),
+        signal: controller.signal,
+      },
+    );
     const body = await res.text();
     // Resend returns 409 if the contact already exists · treat as success.
     const ok =
