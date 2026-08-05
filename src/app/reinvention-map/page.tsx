@@ -13,11 +13,13 @@ const FAQS = [
   { question: 'Who is The Reinvention Map for?', answer: 'It is for women running several rebuilds at once: divorce and co-parenting, a changing body in perimenopause, rebuilding self-trust, and building work or a business through all of it. One map for the whole season, not a single symptom.' },
 ];
 
+// Letter tiles rather than cropped photography, matching the home page and the
+// room landing pages. Body and Voice carry pink, Family and Work carry navy.
 const ROOMS = [
-  { num: 'I', label: 'Body', title: 'The PHASE™', line: 'The body that changed at forty-one. Perimenopause is the doorway, not the whole house.', img: '/room-body.jpg', alt: 'The PHASE workbook covers.' },
-  { num: 'II', label: 'Family', title: 'The Co-Parenting Power Method®', line: 'The blend and the co-parenting. The scripts for the messages you dread sending.', img: '/room-family.jpg', alt: 'Erika Hanafin Austria with her family.' },
-  { num: 'III', label: 'Voice', title: 'Self-Trust', line: 'Your own knowing, after a season of handing the microphone to everyone else.', img: '/room-voice.jpg', alt: 'MOMumental Reinvention, essays voiced by Erika Hanafin Austria.' },
-  { num: 'IV', label: 'Work', title: 'Building Through It', line: 'Building something real while everything at home still needs you. Frameworks over willpower.', img: '/room-work.jpg', alt: 'Erika Hanafin Austria working from a framework.' },
+  { num: 'I', label: 'Body', letter: 'B', tint: 'pink', title: 'The PHASE™', line: 'The body that changed at forty-one. Perimenopause is the doorway, not the whole house.' },
+  { num: 'II', label: 'Family', letter: 'F', tint: 'navy', title: 'The Co-Parenting Power Method®', line: 'The blend and the co-parenting. The scripts for the messages you dread sending.' },
+  { num: 'III', label: 'Voice', letter: 'V', tint: 'pink', title: 'Self-Trust', line: 'Your own knowing, after a season of handing the microphone to everyone else.' },
+  { num: 'IV', label: 'Work', letter: 'W', tint: 'navy', title: 'Building Through It', line: 'Building something real while everything at home still needs you. Frameworks over willpower.' },
 ];
 
 export const metadata: Metadata = buildMetadata({
@@ -36,7 +38,9 @@ export default function ReinventionMapPage() {
         .rmap-rooms{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:18px 0;}
         @media(max-width:640px){.rmap-rooms{grid-template-columns:1fr;}}
         .rmap-room{background:#fff;border:1px solid var(--line,#E8DDCB);border-radius:12px;overflow:hidden;}
-        .rmap-room img{width:100%;height:150px;object-fit:cover;display:block;}
+        .rmap-room .rtile{position:relative;height:150px;}
+        .rmap-room .rtile .ltr{font-size:78px;}
+        .rmap-room .rtile .rm{bottom:12px;left:16px;}
         .rmap-room .rin{padding:16px 18px;}
         .rmap-room .rlbl{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold-deep,#A9871F);}
         .rmap-room h3{margin:4px 0 6px;font-size:1.15rem;}
@@ -65,8 +69,12 @@ export default function ReinventionMapPage() {
             <div className="rmap-rooms">
               {ROOMS.map((r) => (
                 <article className="rmap-room" key={r.num}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={r.img} alt={r.alt} />
+                  <div className="rtile">
+                    <div className={`tile ${r.tint}`} role="img" aria-label={`The ${r.label} room`}>
+                      <span className="ltr" aria-hidden="true">{r.letter}</span>
+                      <span className="rm" aria-hidden="true">Room {r.num}</span>
+                    </div>
+                  </div>
                   <div className="rin"><span className="rlbl">Room {r.num} · {r.label}</span><h3>{r.title}</h3><p>{r.line}</p></div>
                 </article>
               ))}

@@ -29,8 +29,17 @@ const nextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      // Shareable URL for the full report text · the file itself lives in /public/report
+      { source: '/report/read', destination: '/report/state-of-reinvention-2026.html' },
+    ];
+  },
   async redirects() {
     return [
+      // Campaign aliases for the free report
+      { source: '/state-of-reinvention', destination: '/report', permanent: true },
+      { source: '/reinvention-report', destination: '/report', permanent: true },
       // Pretty URLs for affiliate routing
       { source: '/joi', destination: 'https://joiandblokes.com/?rid=003UI00000gvOFcYAM', permanent: false },
       { source: '/stack', destination: 'https://www.amazon.com/shop/erikahanafin/list/2CW7UN8D55AN3?ref_=aip_sf_list_spv_ofs_mixed_d', permanent: false },
