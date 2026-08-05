@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ROOMS, type Room, LIBRARY_URL } from '@/lib/rooms';
+import { ROOMS, type Room, WHOLE_HOUSE_URL } from '@/lib/rooms';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
 import { StripeButton } from '@/components/StripeButton';
 
@@ -34,7 +34,11 @@ export function RoomPage({ room }: { room: Room }) {
 
       <MagazineMasthead
         issue={`THE PHASE™ · ROOM ${room.numeral}`}
-        topics={ROOMS.map((r) => r.name.toUpperCase())}
+        topicLinks={ROOMS.map((r) => ({
+          label: r.name.toUpperCase(),
+          href: `/${r.slug}`,
+          active: r.slug === room.slug,
+        }))}
         publishingNote={room.name.toUpperCase()}
       />
 
@@ -58,7 +62,7 @@ export function RoomPage({ room }: { room: Room }) {
                 </a>
                 <a
                   className="pbtn pbtn-ghost"
-                  href={LIBRARY_URL}
+                  href={WHOLE_HOUSE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -89,19 +93,6 @@ export function RoomPage({ room }: { room: Room }) {
               <Link href="/report">State of Reinvention 2026</Link>, the free 15-page report. Twenty
               sources, four rooms, no email required to read it.
             </p>
-            <div className="phase-strip">
-              {ROOMS.map((r) =>
-                r.slug === room.slug ? (
-                  <span key={r.slug} style={{ background: 'var(--pink)', color: 'var(--ink)' }}>
-                    {r.name}
-                  </span>
-                ) : (
-                  <Link key={r.slug} href={`/${r.slug}`}>
-                    <span>{r.name}</span>
-                  </Link>
-                ),
-              )}
-            </div>
           </div>
         </section>
 
@@ -110,7 +101,6 @@ export function RoomPage({ room }: { room: Room }) {
           <div className="wrap">
             <header className="sechead">
               <div className="meta">
-                <span className="eyebrow">§ 01 · The evidence</span>
                 <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
                   You are not imagining it
                 </span>
@@ -145,7 +135,6 @@ export function RoomPage({ room }: { room: Room }) {
           <div className="wrap">
             <header className="sechead">
               <div className="meta">
-                <span className="eyebrow">§ 02 · What is inside</span>
                 <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
                   The working parts
                 </span>
@@ -174,7 +163,6 @@ export function RoomPage({ room }: { room: Room }) {
           <div className="wrap">
             <header className="sechead">
               <div className="meta">
-                <span className="eyebrow">§ 03 · The tools</span>
                 <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
                   Start where it hurts today
                 </span>
@@ -227,7 +215,7 @@ export function RoomPage({ room }: { room: Room }) {
 
             <div className="rep-note" style={{ marginTop: 26 }}>
               Every tool in this room is also included in the Complete Library ·{' '}
-              <a href={LIBRARY_URL} target="_blank" rel="noopener noreferrer">
+              <a href={WHOLE_HOUSE_URL} target="_blank" rel="noopener noreferrer">
                 all four rooms for $228
               </a>
             </div>
@@ -237,7 +225,6 @@ export function RoomPage({ room }: { room: Room }) {
           <div className="wrap">
             <div className="split">
               <div>
-                <span className="eyebrow">§ 04 · Who this is for</span>
                 <h2
                   style={{ fontSize: 'clamp(34px,4.6vw,54px)', color: 'var(--navy)', marginTop: 14 }}
                 >
@@ -272,7 +259,6 @@ export function RoomPage({ room }: { room: Room }) {
           <div className="wrap">
             <header className="sechead">
               <div className="meta">
-                <span className="eyebrow">§ 05 · Questions</span>
                 <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
                   Before you buy
                 </span>
@@ -301,7 +287,7 @@ export function RoomPage({ room }: { room: Room }) {
               One room is where you start. <b>The house is where you end up.</b>
             </div>
             <div className="cta-row">
-              <a className="pbtn pbtn-pink" href={LIBRARY_URL} target="_blank" rel="noopener noreferrer">
+              <a className="pbtn pbtn-pink" href={WHOLE_HOUSE_URL} target="_blank" rel="noopener noreferrer">
                 Open the Complete Library · $228 <span className="ar">→</span>
               </a>
               <Link className="pbtn pbtn-ghost" href="/report">

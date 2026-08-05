@@ -4,7 +4,8 @@ import { buildMetadata } from '@/lib/seo';
 import { allVolumesItemListSchema, bundleProductSchema, journalProductSchema } from '@/lib/schema';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
 
-const LIBRARY_URL = 'https://www.momumentalreinvention.com/p/the-library';
+// The Whole House · $228 bundle checks out directly through Stripe (not the library browse page).
+const WHOLE_HOUSE_URL = 'https://buy.stripe.com/6oU5kD1Pgcca8Yj1qVeEo0m';
 // Every report and map CTA captures the email through the Substack subscribe page
 // before the PDF is handed over.
 const SUBSCRIBE_URL = 'https://www.momumentalreinvention.com/subscribe';
@@ -64,7 +65,7 @@ export default function HomePage() {
                 Read the free report <span className="ar">→</span>
               </Link>
               <a
-                href={LIBRARY_URL}
+                href={WHOLE_HOUSE_URL}
                 className="pbtn pbtn-pink"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -125,7 +126,6 @@ export default function HomePage() {
               </Link>
 
               <div>
-                <span className="eyebrow">§ 01 · The Report · Free</span>
                 <h2>
                   The numbers behind <em>the rebuild.</em>
                 </h2>
@@ -174,7 +174,6 @@ export default function HomePage() {
           <div className="wrap">
             <header className="sechead">
               <div className="meta">
-                <span className="eyebrow">§ 02 · The House</span>
                 <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
                   Enter where you&apos;re standing
                 </span>
@@ -318,7 +317,6 @@ export default function HomePage() {
           <div className="wrap">
             <div className="library">
               <div>
-                <span className="eyebrow">§ 03 · The whole house, one key</span>
                 <h2>
                   The PHASE™ <em>Library.</em>
                 </h2>
@@ -387,7 +385,7 @@ export default function HomePage() {
                     <li>Every Voice and Work tool</li>
                     <li>Lifetime access · every future release</li>
                   </ul>
-                  <a className="pbtn" href={LIBRARY_URL} target="_blank" rel="noopener noreferrer">
+                  <a className="pbtn" href={WHOLE_HOUSE_URL} target="_blank" rel="noopener noreferrer">
                     Open The PHASE™ Library <span className="ar">→</span>
                   </a>
                   <div className="guarantee">
@@ -412,7 +410,6 @@ export default function HomePage() {
               />
             </div>
             <div>
-              <span className="eyebrow">§ 04 · Who built this</span>
               <q>
                 I did not write these from the other side. I wrote them from inside the wreckage,
                 because that is when I needed them.
@@ -427,7 +424,6 @@ export default function HomePage() {
           <div className="wrap">
             <header className="sechead">
               <div className="meta">
-                <span className="eyebrow">§ 05 · The Proof</span>
                 <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
                   In their words
                 </span>
@@ -478,7 +474,7 @@ export default function HomePage() {
               <a href="#rooms" className="pbtn pbtn-ghost">
                 Find your room <span className="ar">→</span>
               </a>
-              <a href={LIBRARY_URL} className="pbtn pbtn-pink" target="_blank" rel="noopener noreferrer">
+              <a href={WHOLE_HOUSE_URL} className="pbtn pbtn-pink" target="_blank" rel="noopener noreferrer">
                 Open The PHASE™ Library · $228 <span className="ar">→</span>
               </a>
             </div>
@@ -490,7 +486,6 @@ export default function HomePage() {
           <div className="wrap">
             <header className="sechead">
               <div className="meta">
-                <span className="eyebrow">§ 06 · The Letter</span>
                 <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
                   Read the letter
                 </span>

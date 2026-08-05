@@ -18,6 +18,9 @@ import { SERIES, VOLUMES } from './volumes';
 
 export const LIBRARY_URL = 'https://www.momumentalreinvention.com/p/the-library';
 
+// The Whole House · $228 bundle checks out directly through Stripe (not the library browse page).
+export const WHOLE_HOUSE_URL = 'https://buy.stripe.com/6oU5kD1Pgcca8Yj1qVeEo0m';
+
 /**
  * The Co-Parenting Power Method® is $97. Confirmed by Erika, Aug 5 2026, which
  * settles a conflict where the home page, llms.txt, and the brand canon all
