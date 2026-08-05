@@ -49,7 +49,7 @@ export const PERSON_SCHEMA = {
   name: 'Erika Hanafin Austria',
   alternateName: ['Erika Hanafin', 'Erika Austria', 'Erika Hanafin Feldhus'],
   jobTitle: 'Founder of The PHASE™ · CEO · Reinvention Leader',
-  description: 'IIN-certified holistic health coach, operator and former CEO, twice-named Top 50 Women Leaders Virginia. Founder of The PHASE™ and MOMumental Moments®.',
+  description: 'IIN-certified holistic health coach, 5x acquisition CEO, twice-named Top 50 Women Leaders Virginia. Founder of The PHASE™ and MOMumental Moments®.',
   url: ERIKA_URL,
   image: `${ERIKA_URL}/images/erika-portrait.jpg`,
   sameAs: [
@@ -225,102 +225,5 @@ export function allVolumesItemListSchema() {
       url: `${SITE_URL}/vol/${v.slug}`,
       name: v.fullTitle,
     })),
-  };
-}
-
-/**
- * One of the four rooms · /body, /family, /voice, /work.
- * An ItemList of the room's tools, each with its own Offer, so an answer engine
- * can name what is in the room and what it costs without guessing.
- */
-export function roomItemListSchema(room: {
-  slug: string;
-  name: string;
-  tagline: string;
-  tools: Array<{ name: string; note: string; price: number; href: string }>;
-}) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    '@id': `${SITE_URL}/${room.slug}/#tools`,
-    name: `The ${room.name} Room · The PHASE™`,
-    description: `${room.tagline}. The ${room.name} room of The PHASE™, from MOMumental Moments®.`,
-    url: `${SITE_URL}/${room.slug}`,
-    numberOfItems: room.tools.length,
-    itemListElement: room.tools.map((t, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'Product',
-        name: t.name,
-        description: t.note,
-        brand: { '@type': 'Brand', name: 'The PHASE™' },
-        offers: {
-          '@type': 'Offer',
-          url: t.href.startsWith('/') ? `${SITE_URL}${t.href}` : t.href,
-          priceCurrency: 'USD',
-          price: t.price.toString(),
-          availability: 'https://schema.org/InStock',
-          seller: { '@id': `${SITE_URL}/#organization` },
-        },
-      },
-    })),
-  };
-}
-
-/**
- * State of Reinvention 2026 · The MOMumental Report.
- * Typed as a Report so answer engines can cite it as research rather than
- * as marketing copy. isAccessibleForFree is true: the fifteen pages are
- * readable in the browser with no email, the PDF is the email trade.
- */
-export function reportSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Report',
-    '@id': `${SITE_URL}/report/#report`,
-    name: 'State of Reinvention 2026 · The MOMumental Report',
-    alternateName: 'State of Reinvention 2026',
-    headline: 'State of Reinvention 2026: The Four Rooms of the Modern Woman',
-    about:
-      'Research on what happens to a woman in midlife across four rooms: the body (perimenopause and the care gap), the family (gray divorce and the cognitive load), the voice (self-silencing), and the work (the pay divide, funding, and burnout).',
-    abstract:
-      'A 15-page report on the midlife rebuild, drawing on 20 cited sources including Mayo Clinic Proceedings, JAMA Network Open, the US Census Bureau, Pew Research Center, and the Institute for Women\'s Policy Research.',
-    url: `${SITE_URL}/report`,
-    isAccessibleForFree: true,
-    inLanguage: 'en-US',
-    datePublished: '2026-08-05',
-    numberOfPages: 15,
-    citation: [
-      'Faubion et al., Mayo Clinic Proceedings (2023): $26.6B total annual cost of menopause symptoms in the US.',
-      'Cunningham et al., npj Women\'s Health (2025): 55% of women aged 30 to 35 report moderate to severe symptoms.',
-      'Lin & Brown, Journals of Gerontology Series B (2020): women\'s standard of living drops 45% after gray divorce.',
-      'Weeks & Ruppanner, Journal of Marriage and Family (2024): mothers manage 71% of household cognitive labor.',
-      'Eaker et al., Framingham Offspring Study (2007): women who self-silenced in conflict were 4x more likely to die over 10 years.',
-      'Institute for Women\'s Policy Research, The Parenthood Pay Divide (2025): mothers earn 61.8 cents per father\'s dollar.',
-    ],
-    author: { '@id': `${ERIKA_URL}/#person` },
-    publisher: { '@id': `${SITE_URL}/#organization` },
-    encoding: {
-      '@type': 'MediaObject',
-      contentUrl: `${SITE_URL}/report/state-of-reinvention-2026.pdf`,
-      encodingFormat: 'application/pdf',
-    },
-  };
-}
-
-export function reinventionMapSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'CreativeWork',
-    '@id': `${SITE_URL}/reinvention-map/#guide`,
-    name: 'The Reinvention Map',
-    about: 'A four-room guide for women rebuilding everything at once: the body, the family, the voice, the work.',
-    isAccessibleForFree: true,
-    inLanguage: 'en-US',
-    learningResourceType: 'Guide',
-    url: `${SITE_URL}/reinvention-map`,
-    author: { '@id': `${ERIKA_URL}/#person` },
-    publisher: { '@id': `${SITE_URL}/#organization` },
   };
 }
