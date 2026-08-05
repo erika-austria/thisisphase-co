@@ -5,9 +5,9 @@
 
 import type { Metadata } from 'next';
 
-const SITE_URL = 'https://thephase.co';
+const SITE_URL = 'https://thisisphase.co';
 const SITE_NAME = 'The PHASE™';
-const DEFAULT_DESCRIPTION = 'The PHASE™ is the whole season of rebuilding everything. Four rooms, one woman, one reinvention: the body, the family, the voice, the work. The tools built from inside the wreckage. From MOMumental Moments®.';
+const DEFAULT_DESCRIPTION = 'Five volumes. One body-truth. The map of perimenopause, hormones, daily architecture, self-trust, and execution. From MOMumental Moments®.';
 
 type SEOConfig = {
   title: string;
@@ -68,7 +68,7 @@ export function buildMetadata({
 export const ROOT_METADATA: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'The PHASE™ · The Whole Season of Rebuilding · Body, Family, Voice, Work',
+    default: 'The PHASE™ · Five-Volume Women\'s Reinvention Series',
     // template removed May 11 · per-page titles use absolute (see buildMetadata above)
     template: '%s',
   },
@@ -79,25 +79,15 @@ export const ROOT_METADATA: Metadata = {
   publisher: 'MOMumental Moments®',
   keywords: [
     'perimenopause',
-    'perimenopause workbook',
-    'perimenopause guide',
-    'perimenopause journal',
-    'perimenopause planner',
-    'perimenopause symptoms',
     'menopause',
-    'menopause workbook',
-    'hormone workbook',
     'HRT',
     'hormone replacement therapy',
     'women\'s health',
     'midlife reinvention',
-    'midlife body changes',
     'hormone testing',
     'DUTCH test',
     'PHASE method',
-    'The PHASE',
     'MOMumental Moments',
-    'MOMumental Reinvention',
     'Erika Hanafin Austria',
   ],
   category: 'Health & Wellness',

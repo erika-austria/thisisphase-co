@@ -6,7 +6,7 @@
 
 import { VOLUMES, SERIES, JOURNAL, type Volume } from './volumes';
 
-const SITE_URL = 'https://thephase.co';
+const SITE_URL = 'https://thisisphase.co';
 const ERIKA_URL = 'https://erikahanafin.com';
 const MOMUMENTAL_URL = 'https://momumentalmoments.co';
 
@@ -18,7 +18,7 @@ export const ORGANIZATION_SCHEMA = {
   alternateName: 'The PHASE',
   url: SITE_URL,
   logo: `${SITE_URL}/og/logo.png`,
-  description: 'The whole-season house for a woman rebuilding everything at once. Four rooms, one woman, one reinvention: Body, Family, Voice, Work. From MOMumental Moments®.',
+  description: 'A five-volume women\'s reinvention series mapping perimenopause, hormones, daily architecture, self-trust, and execution. From MOMumental Moments®.',
   parentOrganization: {
     '@type': 'Organization',
     '@id': `${MOMUMENTAL_URL}/#org`,
@@ -34,10 +34,7 @@ export const ORGANIZATION_SCHEMA = {
     MOMUMENTAL_URL,
     'https://www.instagram.com/thisisphaseco',
     'https://www.instagram.com/erikahanafin',
-    'https://www.youtube.com/@momumentalreinvention',
-    'https://www.tiktok.com/@momumentalmomentsco',
     'https://www.momumentalreinvention.com',
-    'https://www.amazon.com/shop/erikahanafin',
     ERIKA_URL,
   ],
 };
@@ -47,20 +44,16 @@ export const PERSON_SCHEMA = {
   '@type': 'Person',
   '@id': `${ERIKA_URL}/#person`,
   name: 'Erika Hanafin Austria',
-  alternateName: ['Erika Hanafin', 'Erika Austria', 'Erika Hanafin Feldhus'],
   jobTitle: 'Founder of The PHASE™ · CEO · Reinvention Leader',
-  description: 'IIN-certified holistic health coach, operator and former CEO, twice-named Top 50 Women Leaders Virginia. Founder of The PHASE™ and MOMumental Moments®.',
+  description: 'IIN-certified holistic health coach, 5x acquisition CEO, twice-named Top 50 Women Leaders Virginia. Founder of The PHASE™ and MOMumental Moments®.',
   url: ERIKA_URL,
   image: `${ERIKA_URL}/images/erika-portrait.jpg`,
   sameAs: [
     MOMUMENTAL_URL,
-    'https://www.linkedin.com/in/erikahanafinaustria',
+    'https://www.linkedin.com/in/erikahanafin',
     'https://www.instagram.com/erikahanafin',
     'https://www.instagram.com/thisisphaseco',
-    'https://www.youtube.com/@momumentalreinvention',
-    'https://www.tiktok.com/@momumentalmomentsco',
     'https://www.momumentalreinvention.com',
-    'https://www.amazon.com/shop/erikahanafin',
   ],
   hasCredential: [
     { '@type': 'EducationalOccupationalCredential', name: 'IIN Certified Holistic Health Coach' },
@@ -74,7 +67,7 @@ export const WEBSITE_SCHEMA = {
   '@id': `${SITE_URL}/#website`,
   url: SITE_URL,
   name: 'The PHASE™',
-  description: 'The whole season of rebuilding. Four rooms, one woman, one reinvention: Body, Family, Voice, Work.',
+  description: 'Five volumes. One body-truth. Built for women navigating perimenopause, hormones, and reinvention.',
   publisher: { '@id': `${SITE_URL}/#organization` },
   inLanguage: 'en-US',
 };
@@ -169,51 +162,6 @@ export function faqSchema(faqs: Array<{ question: string; answer: string }>) {
   };
 }
 
-/**
- * PodcastSeries schema for MOMumental Reinvention Podcast.
- * Launches June 2026. Hosted by Erika Hanafin Austria under MOMumental Moments®.
- * Use on /podcast page (when built) and reference from homepage.
- */
-export function podcastSeriesSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'PodcastSeries',
-    '@id': `${MOMUMENTAL_URL}/podcast/#podcast`,
-    name: 'MOMumental Reinvention Podcast',
-    description: 'Becoming, not being. A build, not a mood. Conversations on perimenopause, reinvention, and the body-truth women rebuild from. Hosted by Erika Hanafin Austria.',
-    url: `${MOMUMENTAL_URL}/podcast`,
-    author: { '@id': `${ERIKA_URL}/#person` },
-    publisher: { '@id': `${SITE_URL}/#organization` },
-    inLanguage: 'en-US',
-  };
-}
-
-/**
- * VideoObject schema for embedded YouTube videos.
- * Use on pages that embed @thisisphaseco YouTube content (created Fri May 22 PM 2026).
- */
-export function videoObjectSchema(opts: {
-  name: string;
-  description: string;
-  thumbnailUrl: string;
-  uploadDate: string;
-  embedUrl: string;
-  duration?: string;
-}) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
-    name: opts.name,
-    description: opts.description,
-    thumbnailUrl: opts.thumbnailUrl,
-    uploadDate: opts.uploadDate,
-    embedUrl: opts.embedUrl,
-    ...(opts.duration && { duration: opts.duration }),
-    publisher: { '@id': `${SITE_URL}/#organization` },
-    author: { '@id': `${ERIKA_URL}/#person` },
-  };
-}
-
 export function allVolumesItemListSchema() {
   return {
     '@context': 'https://schema.org',
@@ -225,21 +173,5 @@ export function allVolumesItemListSchema() {
       url: `${SITE_URL}/vol/${v.slug}`,
       name: v.fullTitle,
     })),
-  };
-}
-
-export function reinventionMapSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'CreativeWork',
-    '@id': `${SITE_URL}/reinvention-map/#guide`,
-    name: 'The Reinvention Map',
-    about: 'A four-room guide for women rebuilding everything at once: the body, the family, the voice, the work.',
-    isAccessibleForFree: true,
-    inLanguage: 'en-US',
-    learningResourceType: 'Guide',
-    url: `${SITE_URL}/reinvention-map`,
-    author: { '@id': `${ERIKA_URL}/#person` },
-    publisher: { '@id': `${SITE_URL}/#organization` },
   };
 }

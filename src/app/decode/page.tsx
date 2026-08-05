@@ -7,8 +7,6 @@ import { STRIPE_LINKS } from '@/lib/stripe';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
 import { PullQuote } from '@/components/PullQuote';
 import { StripeButton } from '@/components/StripeButton';
-import { TrustSignalsBar } from '@/components/TrustSignalsBar';
-import { ProductViewTracker } from '@/components/ProductViewTracker';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Decode Your Symptoms · A Science-Backed Reset · $19',
@@ -21,7 +19,6 @@ export const metadata: Metadata = buildMetadata({
 export default function DecodePage() {
   return (
     <>
-      <ProductViewTracker contentId="decode" contentName="Decode Your Symptoms" value={17} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -29,23 +26,23 @@ export default function DecodePage() {
             {
               '@context': 'https://schema.org',
               '@type': 'Product',
-              '@id': 'https://thephase.co/decode/#product',
+              '@id': 'https://thisisphase.co/decode/#product',
               name: DECODE.title,
               description: DECODE.description,
-              image: `https://thephase.co${DECODE.ogImage}`,
+              image: `https://thisisphase.co${DECODE.ogImage}`,
               brand: { '@type': 'Brand', name: 'The PHASE™' },
               category: 'Digital Workbook · Science-Backed · Women\'s Health',
               offers: {
                 '@type': 'Offer',
-                url: 'https://thephase.co/decode',
+                url: 'https://thisisphase.co/decode',
                 priceCurrency: 'USD',
                 price: DECODE.price.toString(),
                 availability: 'https://schema.org/InStock',
               },
             },
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thephase.co' },
-              { name: DECODE.title, url: 'https://thephase.co/decode' },
+              { name: 'The PHASE', url: 'https://thisisphase.co' },
+              { name: DECODE.title, url: 'https://thisisphase.co/decode' },
             ]),
           ]),
         }}
@@ -90,9 +87,6 @@ export default function DecodePage() {
         <br />
         <span className="italic text-pink">It is asking for different inputs.</span>
       </PullQuote>
-
-      {/* Trust signals · added Fri May 15 PM per WTF framework */}
-      <TrustSignalsBar variant="cream" />
 
       <section className="max-w-3xl mx-auto px-6 py-20">
         <p className="eyebrow text-xs mb-3 text-pink">WHO THIS IS FOR</p>

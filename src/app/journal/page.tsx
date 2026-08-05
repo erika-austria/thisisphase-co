@@ -7,8 +7,6 @@ import { STRIPE_LINKS } from '@/lib/stripe';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
 import { PullQuote } from '@/components/PullQuote';
 import { StripeButton } from '@/components/StripeButton';
-import { TrustSignalsBar } from '@/components/TrustSignalsBar';
-import { ProductViewTracker } from '@/components/ProductViewTracker';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Reflections Through the PHASEs · The Journal · $19',
@@ -21,15 +19,14 @@ export const metadata: Metadata = buildMetadata({
 export default function JournalPage() {
   return (
     <>
-      <ProductViewTracker contentId="journal" contentName="The Reflections Journal" value={19} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
             journalProductSchema(),
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thephase.co' },
-              { name: JOURNAL.title, url: 'https://thephase.co/journal' },
+              { name: 'The PHASE', url: 'https://thisisphase.co' },
+              { name: JOURNAL.title, url: 'https://thisisphase.co/journal' },
             ]),
           ]),
         }}
@@ -75,9 +72,6 @@ export default function JournalPage() {
         <br />
         <span className="italic text-pink">This journal moves at your pace.</span>
       </PullQuote>
-
-      {/* Trust signals · added Fri May 15 PM per WTF framework */}
-      <TrustSignalsBar variant="cream" />
 
       <section className="max-w-3xl mx-auto px-6 py-20">
         <p className="eyebrow text-xs mb-3 text-pink">WHO THIS IS FOR</p>

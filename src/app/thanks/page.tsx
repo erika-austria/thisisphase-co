@@ -1,10 +1,7 @@
-import { Suspense } from 'react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
-import { PurchaseTracker } from '@/components/PurchaseTracker';
-import { STRIPE_LINKS } from '@/lib/stripe';
 
 export const metadata: Metadata = buildMetadata({
   title: 'You\'re in.',
@@ -16,11 +13,6 @@ export const metadata: Metadata = buildMetadata({
 export default function ThanksPage() {
   return (
     <>
-      {/* Fires GA4 + Meta Pixel Purchase events once on load (deduped by sessionStorage). */}
-      <Suspense fallback={null}>
-        <PurchaseTracker />
-      </Suspense>
-
       <MagazineMasthead
         issue="THE PHASE™"
         topics={['CONFIRMATION']}
@@ -54,32 +46,10 @@ export default function ThanksPage() {
           </ol>
         </div>
 
-        {/* Post-purchase CTAs · Series upgrade ($70 customer-only price) + Substack subscribe direct.
-            Updated Thu May 21 PM 2026:
-            · "Complete the Series" → $70 upgrade Stripe Payment Link (was /series at $97 · wrong tier for existing customers)
-              Per locked pricing rule: existing buyers get Series upgrade at $70 ($97 minus $27 already paid)
-            · "Subscribe to Substack" → direct subscribe URL (was /community explainer page · friction removed) */}
         <div className="flex flex-wrap gap-3 justify-center">
-          <a
-            href={STRIPE_LINKS.seriesUpgrade}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary"
-          >
-            Complete the Series · $70 →
-          </a>
-          <a
-            href="https://www.momumentalreinvention.com/subscribe"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-          >
-            Subscribe to the Substack →
-          </a>
+          <Link href="/series" className="btn-primary">See the full series →</Link>
+          <Link href="/community" className="btn-secondary">Join the community →</Link>
         </div>
-        <p className="text-sm text-navy/60 mt-4 italic">
-          You already paid for one Volume. The Series upgrade is $70 for all five (vs $97 public price).
-        </p>
       </section>
     </>
   );

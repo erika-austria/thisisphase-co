@@ -10,8 +10,6 @@ import { VolumeCard } from '@/components/VolumeCard';
 import { PullQuote } from '@/components/PullQuote';
 import { AffiliateStrip } from '@/components/AffiliateStrip';
 import { StripeButton } from '@/components/StripeButton';
-import { TrustSignalsBar } from '@/components/TrustSignalsBar';
-import { ProductViewTracker } from '@/components/ProductViewTracker';
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -45,7 +43,6 @@ export default async function VolumePage({ params }: Params) {
 
   return (
     <>
-      <ProductViewTracker contentId={volume.slug} contentName={volume.fullTitle} value={volume.price} />
       {/* Per-page JSON-LD */}
       <script
         type="application/ld+json"
@@ -53,8 +50,8 @@ export default async function VolumePage({ params }: Params) {
           __html: JSON.stringify([
             volumeProductSchema(volume),
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thephase.co' },
-              { name: volume.fullTitle, url: `https://thephase.co/vol/${volume.slug}` },
+              { name: 'The PHASE', url: 'https://thisisphase.co' },
+              { name: volume.fullTitle, url: `https://thisisphase.co/vol/${volume.slug}` },
             ]),
           ]),
         }}
@@ -121,13 +118,19 @@ export default async function VolumePage({ params }: Params) {
             {volume.longDescription}
           </p>
 
-          {/* Buy buttons · single Entry CTA + inline Series upsell (broken anchor button removed per May 19 PM lock · no $47 coaching prompts product built) */}
+          {/* Buy buttons */}
           <div className="flex flex-wrap gap-3 mb-6">
             <StripeButton
               href={stripeUrl}
-              label={`Buy Vol. ${volume.numeral} · $${volume.price}`}
+              label={`Buy Vol. ${volume.numeral} · Entry`}
               price={volume.price}
               variant="primary"
+            />
+            <StripeButton
+              href={anchorUrl}
+              label="With coaching prompts"
+              price={volume.anchorPrice}
+              variant="secondary"
             />
           </div>
           <p className="text-sm text-navy/60">
@@ -140,9 +143,6 @@ export default async function VolumePage({ params }: Params) {
       <PullQuote variant="manifesto" attribution={`RESET MANTRA · VOL. ${volume.numeral}`}>
         {volume.resetMantra}
       </PullQuote>
-
-      {/* Trust signals · added Fri May 15 PM per WTF framework · +20-40% conversion lift on $27 product */}
-      <TrustSignalsBar variant="cream" />
 
       {/* What's inside · components grid */}
       <section className="max-w-content mx-auto px-6 py-20" aria-labelledby="components-heading">

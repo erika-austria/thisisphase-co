@@ -1,36 +1,32 @@
 import Script from 'next/script';
-import { GA4_ID, GOOGLE_ADS_ID, META_PIXEL_ID, META_PIXEL_ID_SECONDARY, TIKTOK_PIXEL_ID } from '@/lib/analytics';
+import { GA4_ID, META_PIXEL_ID, TIKTOK_PIXEL_ID } from '@/lib/analytics';
 
 /**
- * Tracking scripts for GA4, Google Ads Conversion Tag, Meta Pixel, and TikTok Pixel.
- * gtag.js handles both GA4 and Google Ads (one loader, two config calls).
- * Meta Pixel supports a primary (empire-wide master) + optional secondary
- * (product-line specific) Pixel on the same page. Both receive all fbq events.
- * Only loads each pixel if its ID is configured. Drop into root layout.
+ * Tracking scripts for GA4, Meta Pixel, and TikTok Pixel.
+ * Only loads each one if its env var is set. Drop into root layout.
  */
 export function AnalyticsScripts() {
   return (
     <>
-      {/* Google Analytics 4 + Google Ads Conversion Tag · shared gtag.js loader */}
-      {(GA4_ID || GOOGLE_ADS_ID) && (
+      {/* Google Analytics 4 */}
+      {GA4_ID && (
         <>
           <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID || GOOGLE_ADS_ID}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
             strategy="afterInteractive"
           />
-          <Script id="gtag-init" strategy="afterInteractive">
+          <Script id="ga4-init" strategy="afterInteractive">
             {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              ${GA4_ID ? `gtag('config', '${GA4_ID}', { anonymize_ip: true });` : ''}
-              ${GOOGLE_ADS_ID ? `gtag('config', '${GOOGLE_ADS_ID}');` : ''}
+              gtag('config', '${GA4_ID}', { anonymize_ip: true });
             `}
           </Script>
         </>
       )}
 
-      {/* Meta Pixel(s) · for IG/FB retargeting · primary master + optional secondary */}
+      {/* Meta Pixel · for IG/FB retargeting */}
       {META_PIXEL_ID && (
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
@@ -43,7 +39,6 @@ export function AnalyticsScripts() {
             s.parentNode.insertBefore(t,s)}(window,document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
             fbq('init', '${META_PIXEL_ID}');
-            ${META_PIXEL_ID_SECONDARY ? `fbq('init', '${META_PIXEL_ID_SECONDARY}');` : ''}
             fbq('track', 'PageView');
           `}
         </Script>

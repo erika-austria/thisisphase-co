@@ -1,52 +1,44 @@
-const NAV_CSS = `
-.ph-banner{background:var(--navy);color:var(--cream);text-align:center;font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:11px 16px;line-height:1.5}
-.ph-banner a{color:var(--pink);border-bottom:1px solid rgba(240,134,220,.4)}
-.ph-banner a:hover{color:var(--pink)}
-.ph-nav{position:sticky;top:0;background:rgba(255,249,241,.93);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);z-index:50}
-.ph-nav .navin{max-width:1180px;margin:0 auto;padding:14px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.ph-nav .logo{font-family:var(--mono);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--navy);display:inline-flex;align-items:center}
-.ph-nav .logo .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--pink);margin-right:9px}
-.ph-nav .navlinks{display:flex;gap:24px;font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);flex-wrap:wrap}
-.ph-nav .navlinks a{transition:color .18s ease}
-.ph-nav .navlinks a:hover{color:var(--pink-deep)}
-.ph-nav .navcta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--navy);color:var(--navy);padding:8px 14px;border-radius:999px;transition:all .18s ease;white-space:nowrap}
-.ph-nav .navcta:hover{background:var(--navy);color:var(--cream)}
-@media(max-width:860px){.ph-nav .navlinks{display:none}}
-`;
+import Link from 'next/link';
 
 export function Nav() {
   return (
-    <>
-      <div className="ph-banner">
-        The whole season, one library · read free every Tuesday at{' '}
-        <a href="https://www.momumentalreinvention.com/" target="_blank" rel="noopener noreferrer">
-          momumentalreinvention.com
-        </a>
-      </div>
-      <nav className="ph-nav" aria-label="Primary">
-        <div className="navin">
-          <a href="/#top" className="logo" aria-label="The PHASE · Home">
-            <span className="dot" aria-hidden="true" />
-            The PHASE™
-          </a>
-          <div className="navlinks">
-            <a href="/#body">Body</a>
-            <a href="/#family">Family</a>
-            <a href="/#voice">Voice</a>
-            <a href="/#work">Work</a>
-            <a href="/#library">The PHASE™ Library</a>
-          </div>
-          <a
-            className="navcta"
-            href="https://www.momumentalreinvention.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Free Tuesday letter →
-          </a>
+    <nav className="border-b border-navy/10 bg-cream sticky top-0 z-40 backdrop-blur-sm bg-cream/95">
+      <div className="max-w-content mx-auto px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 group" aria-label="The PHASE · Home">
+          <span className="text-pink font-serif italic text-3xl leading-none group-hover:text-pink-deep transition">
+            ⌐
+          </span>
+          <span className="font-serif text-xl tracking-tightest text-navy">
+            The <span className="italic">
+              <span className="text-pink font-bold">P</span><span className="text-pink font-bold">H</span><span className="text-pink font-bold">A</span><span className="text-pink font-bold">S</span><span className="text-pink font-bold">E</span>
+            </span>
+            <sup className="text-xs ml-0.5">™</sup>
+          </span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-8 eyebrow text-sm text-navy">
+          <Link href="/vol/perimenopause" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">P</span>erimenopause
+          </Link>
+          <Link href="/vol/hormones" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">H</span>ormones
+          </Link>
+          <Link href="/vol/architecture" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">A</span>rchitecture
+          </Link>
+          <Link href="/vol/self-trust" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">S</span>elf-trust
+          </Link>
+          <Link href="/vol/execution" className="hover:text-pink transition group">
+            <span className="text-pink font-bold group-hover:text-pink-deep">E</span>xecution
+          </Link>
+          <Link href="/about" className="hover:text-pink transition">About</Link>
         </div>
-      </nav>
-      <style dangerouslySetInnerHTML={{ __html: NAV_CSS }} />
-    </>
+
+        <Link href="/series" className="btn-primary text-xs">
+          Get The Series →
+        </Link>
+      </div>
+    </nav>
   );
 }

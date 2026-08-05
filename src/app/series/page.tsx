@@ -9,8 +9,6 @@ import { PhaseAcronym } from '@/components/PhaseAcronym';
 import { VolumeCard } from '@/components/VolumeCard';
 import { PullQuote } from '@/components/PullQuote';
 import { StripeButton } from '@/components/StripeButton';
-import { TrustSignalsBar } from '@/components/TrustSignalsBar';
-import { ProductViewTracker } from '@/components/ProductViewTracker';
 
 export const metadata: Metadata = buildMetadata({
   title: 'The Series · All Five Volumes · $97',
@@ -32,15 +30,14 @@ const FAQS = [
 export default function SeriesPage() {
   return (
     <>
-      <ProductViewTracker contentId="series" contentName="The PHASE Series" value={97} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
             bundleProductSchema(),
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thephase.co' },
-              { name: 'The Series', url: 'https://thephase.co/series' },
+              { name: 'The PHASE', url: 'https://thisisphase.co' },
+              { name: 'The Series', url: 'https://thisisphase.co/series' },
             ]),
             faqSchema(FAQS),
           ]),
@@ -87,9 +84,6 @@ export default function SeriesPage() {
         <br />
         <span className="italic">Take all of it.</span>
       </PullQuote>
-
-      {/* Trust signals · added Fri May 15 PM per WTF framework · +20-40% conversion lift on $97 product */}
-      <TrustSignalsBar variant="cream" />
 
       <section className="max-w-content mx-auto px-6 py-20">
         <div className="text-center mb-12">

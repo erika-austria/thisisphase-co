@@ -6,7 +6,7 @@ import { MagazineMasthead } from '@/components/MagazineMasthead';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Terms of Use',
-  description: 'Terms of use for thephase.co and The PHASE™ products.',
+  description: 'Terms of use for thisisphase.co and The PHASE™ products.',
   path: '/terms',
   ogImage: '/og/legal.jpg',
 });
@@ -19,8 +19,8 @@ export default function TermsPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thephase.co' },
-              { name: 'Terms', url: 'https://thephase.co/terms' },
+              { name: 'The PHASE', url: 'https://thisisphase.co' },
+              { name: 'Terms', url: 'https://thisisphase.co/terms' },
             ])
           ),
         }}
@@ -40,7 +40,7 @@ export default function TermsPage() {
 
         <div className="space-y-6 text-navy/80 leading-relaxed text-lg">
           <p>
-            By using thephase.co or purchasing from us, you agree to these Terms of Use. Read them carefully.
+            By using thisisphase.co or purchasing from us, you agree to these Terms of Use. Read them carefully.
           </p>
 
           <h2 className="font-serif text-3xl mt-12 mb-4">1. License to use</h2>
@@ -50,7 +50,7 @@ export default function TermsPage() {
 
           <h2 className="font-serif text-3xl mt-12 mb-4">2. Intellectual property</h2>
           <p>
-            All content on thephase.co and within The PHASE™ workbooks (text, graphics, frameworks, mantras, decision trees, templates) is the intellectual property of MOMumental Moments®. The PHASE™ and MOMumental Moments® are trademarks of MOMumental Moments®.
+            All content on thisisphase.co and within The PHASE™ workbooks (text, graphics, frameworks, mantras, decision trees, templates) is the intellectual property of MOMumental Moments®. The PHASE™ and MOMumental Moments® are trademarks of MOMumental Moments®.
           </p>
           <p>
             Brief quotation for personal, non-commercial use with attribution is permitted. Commercial use, framework licensing, and republication require written permission.
