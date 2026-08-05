@@ -1,0 +1,855 @@
+/**
+ * Purchase delivery + follow-up email sequence · 5 emails per purchase.
+ *
+ * Voice firewall: NEON, no em dashes, sister tone, MOMumentally sign-off.
+ *
+ * Day 0 (instant):  buildDeliveryEmail            · PDF download + reply prompt
+ * Day 0 + 30 min:   buildSubstackInviteEmail      · soft invite to Tuesday essays
+ * Day 3:            buildCheckInEmail             · PURE personal check-in · NO selling, NO CTA, just visibility
+ * Day 7:            buildOfferEmail               · cross-sell / upsell offer (single-vol → Series upgrade)
+ * Day 14:           buildKeystoneEmail            · drive to keystone essay + paid Substack
+ *
+ * All five are dispatched at purchase time via Resend's `scheduled_at` parameter
+ * (Resend supports up to 30 days future scheduling · no cron infrastructure needed).
+ */
+
+import { PRODUCTS, type ProductKey } from "./products";
+
+const BRAND_PINK = "#F086DC";
+const BRAND_NAVY = "#2f4858";
+const BRAND_CREAM = "#FFF9F1";
+const BRAND_CREAM_ALT = "#F8F4EE";
+
+/**
+ * Build the delivery email for a given purchased product.
+ * Returns { subject, html, text } ready for Resend.
+ */
+export function buildDeliveryEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const crossSell = product.crossSellKey ? PRODUCTS[product.crossSellKey] : null;
+
+  const subject = `Your ${product.name} · here is the work`;
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `${product.fullTitle} is in your inbox now. The PDF download is at the link below.`,
+    ``,
+    `${product.pdfUrl}`,
+    ``,
+    `Save it to your device. Print it if you want. Use it.`,
+    ``,
+    `Three things before you close this email:`,
+    ``,
+    `1. The work is yours forever. The link does not expire. If you ever lose it, just reply and I will resend.`,
+    ``,
+    `2. Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. Subscribe at https://www.momumentalreinvention.com if you want to keep reading. Free essays for everyone. Paid subscribers get the deeper work.`,
+    ``,
+    `3. ${crossSell ? product.crossSellPitch + ' Find it at ' + getProductUrl(crossSell.key) + '.' : 'You have the full Series. That is the foundation. Build from here.'}`,
+    ``,
+    `When you have a minute, hit reply and tell me one thing the work surfaces for you. The body-truth conversation works better when readers write back. I read every reply.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+    ``,
+    `─────────────────────────────`,
+    `MOMumental Moments® · the parent IP behind The PHASE™ + The Power Method®.`,
+    `Live at https://momumentalmoments.co · The PHASE™ at https://thephase.co · Substack at https://www.momumentalreinvention.com`,
+  ].join("\n");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${escapeHtml(subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background:${BRAND_CREAM};font-family:Georgia, 'Times New Roman', serif;color:${BRAND_NAVY};line-height:1.6;">
+    <div style="max-width:600px;margin:0 auto;padding:48px 32px 64px;">
+      <div style="text-align:center;margin-bottom:40px;">
+        <div style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin-bottom:12px;">
+          MOMUMENTAL MOMENTS&reg;
+        </div>
+        <div style="height:2px;width:48px;background:${BRAND_PINK};margin:0 auto;"></div>
+      </div>
+
+      <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:32px;line-height:1.2;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+        Your ${escapeHtml(product.name)}<br>
+        <span style="font-style:italic;color:${BRAND_PINK};">is in your inbox</span>.
+      </h1>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+        ${escapeHtml(product.fullTitle)} is yours now. Download below. Save it to your device. Print it if you want. Use it.
+      </p>
+
+      <div style="margin:32px 0;text-align:center;">
+        <a href="${product.pdfUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+          Download your PDF &rarr;
+        </a>
+      </div>
+
+      <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:32px;margin-top:32px;">
+        <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+          THREE THINGS BEFORE YOU CLOSE THIS EMAIL
+        </p>
+
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
+          <strong style="color:${BRAND_NAVY};">01 &middot; Yours forever.</strong> The work is yours. The link does not expire. If you ever lose it, just reply to this email and I will resend.
+        </p>
+
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
+          <strong style="color:${BRAND_NAVY};">02 &middot; Tuesday letters.</strong> Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. Free essays for everyone. Paid subscribers go deeper. <a href="https://www.momumentalreinvention.com" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">Subscribe at momumentalreinvention.com</a> if you want to keep reading.
+        </p>
+
+        <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 20px;">
+          <strong style="color:${BRAND_NAVY};">03 &middot; What is next.</strong> ${escapeHtml(crossSell ? product.crossSellPitch : 'You have the full Series. That is the foundation. Build from here.')}
+          ${crossSell ? `<br><a href="${getProductUrl(crossSell.key)}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">See ${escapeHtml(crossSell.name)} &rarr;</a>` : ""}
+        </p>
+      </div>
+
+      <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:20px 24px;margin:32px 0;">
+        <p style="font-style:italic;font-size:16px;color:${BRAND_NAVY};margin:0;">
+          When you have a minute, hit reply and tell me one thing the work surfaces for you. The body-truth conversation works better when readers write back. I read every reply.
+        </p>
+      </div>
+
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+        MOMumentally,
+      </p>
+      <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+        Erika
+      </p>
+
+      <div style="margin-top:48px;padding-top:24px;border-top:1px solid rgba(47,72,88,0.1);font-size:11px;color:rgba(47,72,88,0.6);text-align:center;">
+        MOMumental Moments&reg; &middot; the parent IP behind The PHASE&trade; + The Power Method&reg;.<br>
+        <a href="https://momumentalmoments.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">momumentalmoments.co</a> &middot;
+        <a href="https://thephase.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">thephase.co</a> &middot;
+        <a href="https://www.momumentalreinvention.com" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">Substack</a>
+      </div>
+    </div>
+  </body>
+</html>`;
+
+  return { subject, html, text, customerEmail };
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function crossSellPath(key: ProductKey): string {
+  if (key.startsWith("vol")) {
+    const map: Record<string, string> = {
+      vol1: "vol/perimenopause",
+      vol2: "vol/hormones",
+      vol3: "vol/architecture",
+      vol4: "vol/self-trust",
+      vol5: "vol/execution",
+    };
+    return map[key] || "";
+  }
+  if (key === "series") return "series";
+  if (key === "journal") return "journal";
+  if (key === "decode") return "decode";
+  return "";
+}
+
+/**
+ * Build the full purchase URL for a product.
+ * Prefers product.purchaseUrl (Stripe Payment Link) for new products.
+ * Falls back to https://thephase.co/{path} for legacy PHASE™ products.
+ */
+function getProductUrl(key: ProductKey): string {
+  const product = PRODUCTS[key];
+  if (product?.purchaseUrl) return product.purchaseUrl;
+  const path = crossSellPath(key);
+  return path ? `https://thephase.co/${path}` : "https://thephase.co";
+}
+
+// ─── Shared layout shell ──────────────────────────────────────────────────
+
+function emailShell(opts: {
+  subject: string;
+  preheader?: string;
+  bodyHtml: string;
+}): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${escapeHtml(opts.subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background:${BRAND_CREAM};font-family:Georgia, 'Times New Roman', serif;color:${BRAND_NAVY};line-height:1.6;">
+    ${opts.preheader ? `<div style="display:none;font-size:1px;color:${BRAND_CREAM};line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">${escapeHtml(opts.preheader)}</div>` : ""}
+    <div style="max-width:600px;margin:0 auto;padding:48px 32px 64px;">
+      <div style="text-align:center;margin-bottom:40px;">
+        <div style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin-bottom:12px;">
+          MOMUMENTAL MOMENTS&reg;
+        </div>
+        <div style="height:2px;width:48px;background:${BRAND_PINK};margin:0 auto;"></div>
+      </div>
+      ${opts.bodyHtml}
+      <div style="margin-top:48px;padding-top:24px;border-top:1px solid rgba(47,72,88,0.1);font-size:11px;color:rgba(47,72,88,0.6);text-align:center;">
+        MOMumental Moments&reg; &middot; the parent IP behind The PHASE&trade; + The Power Method&reg;.<br>
+        <a href="https://momumentalmoments.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">momumentalmoments.co</a> &middot;
+        <a href="https://thephase.co" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">thephase.co</a> &middot;
+        <a href="https://www.momumentalreinvention.com" target="_blank" style="color:rgba(47,72,88,0.6);text-decoration:underline;">Substack</a>
+      </div>
+    </div>
+  </body>
+</html>`;
+}
+
+// ─── Day 0 + 30 min · Substack invite ─────────────────────────────────────
+
+/**
+ * Sent 30 min after purchase · soft invite to the free Tuesday essay.
+ * One CTA: subscribe to Substack. No upsell, no cross-sell, no products.
+ */
+export function buildSubstackInviteEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const subject = `One more thing while you have the ${product.name} open`;
+  const preheader = "Tuesday letters · free · the body-truth conversation that built The PHASE.";
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `Quick second email. I want to make sure you know about the work that lives outside the PDF.`,
+    ``,
+    `Every Tuesday at 9 AM ET I send a long-form essay to MOMumental Reinvention. The free essays are where the body-truth conversation actually happens. The ${product.name} you just downloaded came out of those Tuesday letters.`,
+    ``,
+    `If you want to keep reading: https://www.momumentalreinvention.com`,
+    ``,
+    `Free is the front door. Paid subscribers go deeper. Either way, you have me in your inbox once a week.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:28px;line-height:1.25;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+      One more thing<br>
+      <span style="font-style:italic;color:${BRAND_PINK};">while you have it open</span>.
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      Quick second email. I want to make sure you know about the work that lives outside the PDF.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      Every Tuesday at 9 AM ET I send a long-form essay to <strong>MOMumental Reinvention</strong>. The free essays are where the body-truth conversation actually happens. The ${escapeHtml(product.name)} you just downloaded came out of those Tuesday letters.
+    </p>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="https://www.momumentalreinvention.com" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Subscribe free &rarr;
+      </a>
+    </div>
+
+    <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 32px;font-style:italic;">
+      Free is the front door. Paid subscribers go deeper. Either way, you have me in your inbox once a week.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
+
+// ─── Day 3 · Pure personal check-in · NO selling, NO CTA, just visibility ──
+
+/**
+ * Sent 3 days after purchase. Pure check-in.
+ * LOCKED RULE: zero selling, zero CTA, zero product links.
+ * Single purpose: stay visible, sound human, invite a reply if they want.
+ */
+export function buildCheckInEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const subject = `Checking in on you`;
+  const preheader = "Just a quick note. No agenda.";
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `Three days in. I am not writing to sell you anything.`,
+    ``,
+    `I just wanted to say I am thinking about you. The ${product.name} is heavy work if you are actually opening it, and most people are not used to anyone following up after the download lands.`,
+    ``,
+    `If anything has surfaced for you, you can hit reply. I read every message myself. If nothing has surfaced yet, that is fine too. The work waits.`,
+    ``,
+    `That is the whole email.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.25;color:${BRAND_NAVY};margin:0 0 28px 0;font-weight:normal;">
+      Checking in <span style="font-style:italic;color:${BRAND_PINK};">on you</span>.
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      Three days in. I am not writing to sell you anything.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      I just wanted to say I am thinking about you. The ${escapeHtml(product.name)} is heavy work if you are actually opening it, and most people are not used to anyone following up after the download lands.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      If anything has surfaced for you, you can hit reply. I read every message myself. If nothing has surfaced yet, that is fine too. The work waits.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 32px;font-style:italic;">
+      That is the whole email.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
+
+// ─── Day 7 · Offer · same-tier $17 companion (Kajabi-data-locked) ─────────
+
+/**
+ * Sent 7 days after purchase. The conversion email.
+ * v1.1 LOCKED RULE (per Kajabi historical data · 43% attach rate at $17):
+ *   - Single-volume buyers ($27) → offer Decode Your Symptoms ($17) · same-tier companion
+ *   - Series buyers ($97) → offer Decode Your Symptoms ($17) · symptoms-first deep dive
+ *   - Journal buyers ($17) → offer Vol I Perimenopause ($27) · next step
+ *   - Decode buyers ($17) → offer Vol I Perimenopause ($27) · next step
+ * The Series upgrade ($97) is RESERVED for Day 21 follow-up (not this email)
+ * because historical data shows buyers convert on $17 add-ons, not $97 jumps.
+ */
+export function buildOfferEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+
+  // Kajabi-locked offer routing · always offer a $17 same-tier companion (or $27 for $17-buyers)
+  let offerKey: ProductKey;
+  if (productKey === "journal" || productKey === "decode") {
+    // $17 buyers · graduate them to Vol I at $27
+    offerKey = "vol1";
+  } else if (productKey === "series") {
+    // Series buyers · offer the symptoms deep-dive at $17
+    offerKey = "decode";
+  } else {
+    // Single-volume ($27) buyers · offer the symptoms companion at $17
+    offerKey = "decode";
+  }
+
+  const offer = PRODUCTS[offerKey];
+  const offerUrl = getProductUrl(offerKey);
+
+  // Price for the offered product (used in copy)
+  const offerPrice = offer.price;
+
+  const subject = `If the ${product.name} landed, this is the companion`;
+  const preheader = `${offer.name} · $${offerPrice} · the natural next step.`;
+  const headline = `One more thing.`;
+
+  // Voice locked to the Kajabi-proven pattern: small commitment, sister tone, no pressure
+  const pitchText =
+    productKey === "series"
+      ? `The Series gave you the whole architecture. ${offer.name} is the symptoms deep-dive that maps everything back to your body. $${offerPrice}.`
+      : productKey === "journal" || productKey === "decode"
+        ? `You have the companion. The natural next step is ${offer.name}. The Volume the Series is built around. $${offerPrice}.`
+        : `You opened the ${product.name}. ${offer.name} is the same-day companion. Reading one without the other is half the picture. $${offerPrice}.`;
+
+  const pitchHtml =
+    productKey === "series"
+      ? `The Series gave you the whole architecture. <strong>${escapeHtml(offer.name)}</strong> is the symptoms deep-dive that maps everything back to your body. $${offerPrice}.`
+      : productKey === "journal" || productKey === "decode"
+        ? `You have the companion. The natural next step is <strong>${escapeHtml(offer.name)}</strong>. The Volume the Series is built around. $${offerPrice}.`
+        : `You opened the ${escapeHtml(product.name)}. <strong>${escapeHtml(offer.name)}</strong> is the same-day companion. Reading one without the other is half the picture. $${offerPrice}.`;
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `A week in. I hope the ${product.name} is doing what it is supposed to do.`,
+    ``,
+    pitchText,
+    ``,
+    `${offerUrl}`,
+    ``,
+    `No pressure. The work waits. But the companion is here when you are ready.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+      ONE WEEK IN
+    </p>
+
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:32px;line-height:1.2;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+      ${escapeHtml(headline)}
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      A week in. I hope the ${escapeHtml(product.name)} is doing what it is supposed to do.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      ${pitchHtml}
+    </p>
+
+    <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
+      <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
+        THE COMPANION
+      </p>
+      <p style="font-size:18px;color:${BRAND_NAVY};margin:0 0 8px;font-family:Georgia, 'Times New Roman', serif;">
+        <strong>${escapeHtml(offer.fullTitle)}</strong>
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;font-style:italic;">
+        $${offerPrice} &middot; instant delivery to your inbox.
+      </p>
+    </div>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="${offerUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Add ${escapeHtml(offer.name)} &rarr;
+      </a>
+    </div>
+
+    <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 32px;font-style:italic;">
+      No pressure. The work waits. But the companion is here when you are ready.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
+
+// ─── Day 14 · Keystone essay · drive to paid Substack ─────────────────────
+
+/**
+ * Sent 14 days after purchase. Drives back to MOMumental Reinvention.
+ * Soft pitch for paid Substack ($7/mo or $70/yr) · the audience anchor.
+ */
+export function buildKeystoneEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const subject = `The essay behind ${product.name}`;
+  const preheader = "Two weeks in · the keystone essay · paid subscribers go here.";
+
+  const substackUrl = "https://www.momumentalreinvention.com";
+  const upgradeUrl = "https://www.momumentalreinvention.com/subscribe";
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `Two weeks since you bought the ${product.name}. I want to point you at the essay that holds the whole thing together.`,
+    ``,
+    `Everything in The PHASE was sketched first in a Tuesday letter at MOMumental Reinvention. The free essays are where the body-truth conversation happens in public. The paid essays are where the architecture gets built.`,
+    ``,
+    `If the work has been landing for you, paid is $7/month or $70/year. It is the cheapest way to keep me in your inbox without buying another product.`,
+    ``,
+    `${upgradeUrl}`,
+    ``,
+    `If paid is not for you, free is still the front door. Stay close.`,
+    ``,
+    `${substackUrl}`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+      TWO WEEKS IN
+    </p>
+
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.25;color:${BRAND_NAVY};margin:0 0 28px 0;font-weight:normal;">
+      The essay <span style="font-style:italic;color:${BRAND_PINK};">behind</span> ${escapeHtml(product.name)}.
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      Two weeks since you bought the ${escapeHtml(product.name)}. I want to point you at the work that holds the whole thing together.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      Everything in The PHASE&trade; was sketched first in a Tuesday letter at <strong>MOMumental Reinvention</strong>. The free essays are where the body-truth conversation happens in public. The paid essays are where the architecture gets built.
+    </p>
+
+    <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:20px 24px;margin:32px 0;">
+      <p style="font-size:15px;color:${BRAND_NAVY};margin:0 0 8px;">
+        <strong>Paid subscribers</strong> get the deeper letters, the working drafts, and the live thread.
+      </p>
+      <p style="font-size:15px;color:${BRAND_NAVY};margin:0;font-style:italic;">
+        $7 a month or $70 a year. The cheapest way to keep me in your inbox without buying another product.
+      </p>
+    </div>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="${upgradeUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Upgrade to paid &rarr;
+      </a>
+    </div>
+
+    <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 16px;text-align:center;">
+      Or stay close on the free side:
+      <a href="${substackUrl}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">momumentalreinvention.com</a>
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
+
+// ─── Abandoned Cart Recovery Sequence (3 emails) ──────────────────────────
+//
+// Triggered by Stripe `checkout.session.expired` event (24hr after creation).
+// Webhook checks for session.customer_email · if present, dispatches the
+// 3-email recovery sequence with Resend `scheduledAt` offsets:
+//
+//   #1 Soft return        · +1hr after expire  · just leaves the link
+//   #2 Pain-point anchor  · +24hr              · re-anchors why they came
+//   #3 Pivot to Clarity   · +72hr              · final · offers free Kit as warmup
+//
+// Anonymous abandoners (no email captured) are silently skipped · no contact path.
+// Recovery rate benchmark: 20-40% of abandons have emails · 5-15% of those convert.
+
+/**
+ * Email #1 · +1 hour after expire · Soft return.
+ * Acknowledges the abandon without pressure · just opens the door back.
+ */
+export function buildCartRecoverySoftEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const productPath = crossSellPath(productKey);
+  const productUrl = `https://www.thephase.co/${productPath}`;
+
+  const subject = `The ${product.name} link, in case the tab closed.`;
+  const preheader = `No pressure. The work waits. Here is the link, saved for you.`;
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `You got close. Then life happened, or the tab closed, or the kid yelled from the other room. I do not know which.`,
+    ``,
+    `I am leaving this here in case you want to come back to it.`,
+    ``,
+    `${product.fullTitle} · $${product.price}`,
+    ``,
+    `The map you should have been handed at 38. The hormone primer, the symptom decoder, the weekly tracker, the PHASE Pattern reflection.`,
+    ``,
+    `Tap below when you are ready.`,
+    ``,
+    `${productUrl}`,
+    ``,
+    `No countdown. No expiring discount. Just the link, saved for you.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+      A NOTE FROM ERIKA
+    </p>
+
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.25;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+      The link, <span style="font-style:italic;color:${BRAND_PINK};">in case the tab closed</span>.
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      You got close. Then life happened, or the tab closed, or the kid yelled from the other room. I do not know which.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      I am leaving this here in case you want to come back to it.
+    </p>
+
+    <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
+      <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
+        WHERE YOU LEFT OFF
+      </p>
+      <p style="font-size:18px;color:${BRAND_NAVY};margin:0 0 8px;font-family:Georgia, 'Times New Roman', serif;">
+        <strong>${escapeHtml(product.fullTitle)}</strong>
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;font-style:italic;">
+        $${product.price} &middot; instant delivery to your inbox.
+      </p>
+    </div>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="${productUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Buy ${escapeHtml(product.name)} &middot; $${product.price} &rarr;
+      </a>
+    </div>
+
+    <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 32px;font-style:italic;text-align:center;">
+      No countdown. No expiring discount. Just the link, saved for you.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
+
+/**
+ * Email #2 · +24 hours after expire · Pain-point anchor.
+ * Re-surfaces the pain that brought them in. Adds Clarity Kit safety net.
+ */
+export function buildCartRecoveryPainEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const productPath = crossSellPath(productKey);
+  const productUrl = `https://www.thephase.co/${productPath}`;
+  const clarityUrl = `https://www.thephase.co/clarity`;
+
+  const subject = `What were you almost ready for?`;
+  const preheader = `Two questions before the link.`;
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `You came to The PHASE™ page yesterday. You got close to ${product.name}. You did not finish.`,
+    ``,
+    `I do not know what stopped you. But I have a guess.`,
+    ``,
+    `Two questions:`,
+    ``,
+    `01 · Are you tired of being told your labs are normal while your body says otherwise?`,
+    `02 · Are you tired of doing more discipline on a body that does not need more discipline?`,
+    ``,
+    `If yes to either, ${product.fullTitle} is the body-truth map you came back for. The map your provider should have handed you at 38.`,
+    ``,
+    `${product.fullTitle} · $${product.price}`,
+    `${productUrl}`,
+    ``,
+    `If now is not the time, the free Clarity Starter Kit is here as a front-door instead:`,
+    `${clarityUrl}`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+      24 HOURS LATER
+    </p>
+
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:30px;line-height:1.25;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+      What were you <span style="font-style:italic;color:${BRAND_PINK};">almost ready</span> for?
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 20px;">
+      You came to The PHASE&trade; page yesterday. You got close to ${escapeHtml(product.name)}. You did not finish.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      I do not know what stopped you. But I have a guess.
+    </p>
+
+    <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
+      <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+        TWO QUESTIONS
+      </p>
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 14px;">
+        <strong>01 &middot;</strong> Are you tired of being told your labs are normal while your body says otherwise?
+      </p>
+      <p style="font-size:16px;color:${BRAND_NAVY};margin:0;">
+        <strong>02 &middot;</strong> Are you tired of doing more discipline on a body that does not need more discipline?
+      </p>
+    </div>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      If yes to either, <strong>${escapeHtml(product.fullTitle)}</strong> is the body-truth map you came back for. The map your provider should have handed you at 38.
+    </p>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="${productUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Buy ${escapeHtml(product.name)} &middot; $${product.price} &rarr;
+      </a>
+    </div>
+
+    <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:24px;margin-top:32px;">
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0 0 12px;font-style:italic;">
+        If now is not the time, the free Clarity Starter Kit is here as a front-door instead:
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;">
+        <a href="${clarityUrl}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">${clarityUrl}</a>
+      </p>
+    </div>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
+
+/**
+ * Email #3 · +72 hours after expire · Final · Pivot to Clarity Kit.
+ * Acknowledges Vol I might not be the right starting point · offers free Kit instead.
+ * Holds pricing integrity (no Vol I discount) · pivots to lower-friction entry.
+ */
+export function buildCartRecoveryFinalEmail(productKey: ProductKey, customerEmail: string) {
+  const product = PRODUCTS[productKey];
+  const productPath = crossSellPath(productKey);
+  const productUrl = `https://www.thephase.co/${productPath}`;
+  const clarityUrl = `https://www.thephase.co/clarity`;
+
+  const subject = `Maybe ${product.name} isn't where you start. Try this.`;
+  const preheader = `Free workbook · same body-truth · no purchase needed.`;
+
+  const text = [
+    `Hi friend,`,
+    ``,
+    `Three days ago you got close to ${product.name}. You did not finish.`,
+    ``,
+    `Two possible reasons:`,
+    ``,
+    `01 · The timing is wrong. (That is fine. ${product.name} will be here.)`,
+    `02 · The starting point is too far in. You need the front door first.`,
+    ``,
+    `If it is #2, the Clarity Starter Kit is the front door.`,
+    ``,
+    `Clarity Starter Kit · 9-page workbook · FREE`,
+    ``,
+    `It is the body-truth conversation in its simplest form. The same voice, the same framework, the same map · just the entry.`,
+    ``,
+    `${clarityUrl}`,
+    ``,
+    `If you change your mind on ${product.name} later, the link is still here:`,
+    `${productUrl} · $${product.price}`,
+    ``,
+    `This is the last email from me about the cart. The work waits.`,
+    ``,
+    `MOMumentally,`,
+    `Erika`,
+  ].join("\n");
+
+  const bodyHtml = `
+    <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 16px;">
+      THREE DAYS LATER &middot; LAST NOTE
+    </p>
+
+    <h1 style="font-family:Georgia, 'Times New Roman', serif;font-size:28px;line-height:1.3;color:${BRAND_NAVY};margin:0 0 24px 0;font-weight:normal;">
+      Maybe ${escapeHtml(product.name)} <span style="font-style:italic;color:${BRAND_PINK};">isn't where you start</span>.
+    </h1>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">Hi friend,</p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      Three days ago you got close to ${escapeHtml(product.name)}. You did not finish.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 16px;">
+      Two possible reasons:
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 14px;">
+      <strong>01 &middot;</strong> The timing is wrong. (That is fine. ${escapeHtml(product.name)} will be here.)
+    </p>
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      <strong>02 &middot;</strong> The starting point is too far in. You need the front door first.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:0 0 24px;">
+      If it is #2, the Clarity Starter Kit is the front door.
+    </p>
+
+    <div style="background:${BRAND_CREAM_ALT};border-left:3px solid ${BRAND_PINK};padding:24px 28px;margin:32px 0;">
+      <p style="font-family:'Courier New', monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:${BRAND_PINK};margin:0 0 12px;">
+        THE FRONT DOOR
+      </p>
+      <p style="font-size:18px;color:${BRAND_NAVY};margin:0 0 8px;font-family:Georgia, 'Times New Roman', serif;">
+        <strong>Clarity Starter Kit</strong> &middot; 9-page workbook
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0 0 12px;font-style:italic;">
+        FREE &middot; instant delivery.
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;">
+        Same voice. Same framework. Same map &middot; just the entry.
+      </p>
+    </div>
+
+    <div style="margin:32px 0;text-align:center;">
+      <a href="${clarityUrl}" target="_blank" style="display:inline-block;padding:16px 32px;background:${BRAND_PINK};color:#FFFFFF;text-decoration:none;font-family:'Courier New', monospace;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;border-radius:2px;">
+        Get the Free Kit &rarr;
+      </a>
+    </div>
+
+    <div style="border-top:1px solid rgba(47,72,88,0.15);padding-top:24px;margin-top:32px;">
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0 0 8px;font-style:italic;">
+        If you change your mind on ${escapeHtml(product.name)} later, the link is still here:
+      </p>
+      <p style="font-size:14px;color:${BRAND_NAVY};margin:0;">
+        <a href="${productUrl}" target="_blank" style="color:${BRAND_PINK};text-decoration:underline;">${productUrl}</a> &middot; $${product.price}
+      </p>
+    </div>
+
+    <p style="font-size:15px;color:${BRAND_NAVY};margin:24px 0 32px;font-style:italic;">
+      This is the last email from me about the cart. The work waits.
+    </p>
+
+    <p style="font-size:16px;color:${BRAND_NAVY};margin:32px 0 8px;font-style:italic;">
+      MOMumentally,
+    </p>
+    <p style="font-family:Georgia, 'Times New Roman', serif;font-size:24px;color:${BRAND_PINK};font-style:italic;margin:0;">
+      Erika
+    </p>
+  `;
+
+  const html = emailShell({ subject, preheader, bodyHtml });
+  return { subject, html, text, customerEmail };
+}
