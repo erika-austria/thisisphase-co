@@ -5,7 +5,7 @@
  * Update PDF_URL constants once PDFs are uploaded to Vercel Blob.
  *
  * Webhook identifies the product by:
- *   1. session.metadata.product (preferred · set in Stripe Payment Link metadata)
+ *   1. session.metadata.product (preferred · set in Stripe Payment Link metaavdata)
  *   2. line_items[0].amount_total fallback (works for unique-priced products)
  *   3. line_items[0].description text match (last resort)
  */
