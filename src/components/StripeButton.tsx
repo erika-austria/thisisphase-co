@@ -4,6 +4,7 @@ type StripeButtonProps = {
   href: string;
   label: string;
   price?: number;
+  productKey?: string;
   variant?: 'primary' | 'pink' | 'secondary';
   className?: string;
 };
