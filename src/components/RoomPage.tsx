@@ -39,7 +39,7 @@ export function RoomPage({ room }: { room: Room }) {
           href: `/${r.slug}`,
           active: r.slug === room.slug,
         }))}
-        publishingNote={room.name.toUpperCase()}
+        publishingNote="LIVE NOW · 2026"
       />
 
       <div className="phase-home">
