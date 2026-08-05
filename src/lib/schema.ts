@@ -49,7 +49,7 @@ export const PERSON_SCHEMA = {
   name: 'Erika Hanafin Austria',
   alternateName: ['Erika Hanafin', 'Erika Austria', 'Erika Hanafin Feldhus'],
   jobTitle: 'Founder of The PHASE™ · CEO · Reinvention Leader',
-  description: 'IIN-certified holistic health coach, 5x acquisition CEO, twice-named Top 50 Women Leaders Virginia. Founder of The PHASE™ and MOMumental Moments®.',
+  description: 'IIN-certified holistic health coach, operator and former CEO, twice-named Top 50 Women Leaders Virginia. Founder of The PHASE™ and MOMumental Moments®.',
   url: ERIKA_URL,
   image: `${ERIKA_URL}/images/erika-portrait.jpg`,
   sameAs: [
@@ -225,5 +225,21 @@ export function allVolumesItemListSchema() {
       url: `${SITE_URL}/vol/${v.slug}`,
       name: v.fullTitle,
     })),
+  };
+}
+
+export function reinventionMapSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    '@id': `${SITE_URL}/reinvention-map/#guide`,
+    name: 'The Reinvention Map',
+    about: 'A four-room guide for women rebuilding everything at once: the body, the family, the voice, the work.',
+    isAccessibleForFree: true,
+    inLanguage: 'en-US',
+    learningResourceType: 'Guide',
+    url: `${SITE_URL}/reinvention-map`,
+    author: { '@id': `${ERIKA_URL}/#person` },
+    publisher: { '@id': `${SITE_URL}/#organization` },
   };
 }
