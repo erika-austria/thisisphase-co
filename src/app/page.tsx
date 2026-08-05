@@ -63,7 +63,12 @@ export default function HomePage() {
               <Link href="/report" className="pbtn pbtn-ghost">
                 Read the free report <span className="ar">→</span>
               </Link>
-              <a href="#library" className="pbtn pbtn-pink">
+              <a
+                href={LIBRARY_URL}
+                className="pbtn pbtn-pink"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 The PHASE™ Library · $228 <span className="ar">→</span>
               </a>
             </div>
@@ -188,14 +193,12 @@ export default function HomePage() {
               <article className="room body" id="body">
                 <div className="room-img">
                   <div className="tile pink" role="img" aria-label="The Body room">
-                    <span className="ltr" aria-hidden="true">B</span>
-                    <span className="rm" aria-hidden="true">Room I</span>
+                    <span className="room-name">The Body</span>
                   </div>
                 </div>
                 <div className="room-head">
                   <span className="room-num">I</span>
                   <div className="rk">
-                    <span className="lbl">Room · Body</span>
                     <span className="roman">Vol. I–V</span>
                   </div>
                   <h3>The PHASE™ · Perimenopause</h3>
@@ -222,14 +225,12 @@ export default function HomePage() {
               <article className="room family" id="family">
                 <div className="room-img">
                   <div className="tile navy" role="img" aria-label="The Family room">
-                    <span className="ltr" aria-hidden="true">F</span>
-                    <span className="rm" aria-hidden="true">Room II</span>
+                    <span className="room-name">The Family</span>
                   </div>
                 </div>
                 <div className="room-head">
                   <span className="room-num">II</span>
                   <div className="rk">
-                    <span className="lbl">Room · Family</span>
                     <span className="roman">20 scripts</span>
                   </div>
                   <h3>The Co-Parenting Power Method®</h3>
@@ -254,14 +255,12 @@ export default function HomePage() {
               <article className="room voice" id="voice">
                 <div className="room-img">
                   <div className="tile pink" role="img" aria-label="The Voice room">
-                    <span className="ltr" aria-hidden="true">V</span>
-                    <span className="rm" aria-hidden="true">Room III</span>
+                    <span className="room-name">The Voice</span>
                   </div>
                 </div>
                 <div className="room-head">
                   <span className="room-num">III</span>
                   <div className="rk">
-                    <span className="lbl">Room · Voice</span>
                     <span className="roman">Vol. IV</span>
                   </div>
                   <h3>Self-Trust &amp; Confidence</h3>
@@ -284,14 +283,12 @@ export default function HomePage() {
               <article className="room work" id="work">
                 <div className="room-img">
                   <div className="tile navy" role="img" aria-label="The Work room">
-                    <span className="ltr" aria-hidden="true">W</span>
-                    <span className="rm" aria-hidden="true">Room IV</span>
+                    <span className="room-name">The Work</span>
                   </div>
                 </div>
                 <div className="room-head">
                   <span className="room-num">IV</span>
                   <div className="rk">
-                    <span className="lbl">Room · Work</span>
                     <span className="roman">7 tools</span>
                   </div>
                   <h3>Building Through It</h3>
@@ -330,8 +327,37 @@ export default function HomePage() {
                   forever. It lives on my MOMumental Reinvention library.
                 </p>
                 <div className="lib-shot">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-photo" src="/library-volumes.jpg" alt="The PHASE™ Library, all five volumes." />
+                  <div
+                    className="tile navy"
+                    role="img"
+                    aria-label="The PHASE™ Library, all four rooms and five volumes."
+                  >
+                    <div
+                      style={{
+                        position: 'relative',
+                        zIndex: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '12px',
+                        textAlign: 'center',
+                        padding: '0 24px',
+                      }}
+                    >
+                      <span className="room-name">The PHASE™ Library</span>
+                      <span
+                        style={{
+                          fontFamily: 'var(--mono)',
+                          fontSize: '11px',
+                          letterSpacing: '.22em',
+                          textTransform: 'uppercase',
+                          color: 'rgba(255,249,241,.72)',
+                        }}
+                      >
+                        Four rooms · Five volumes
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <div className="lib-stats">
                   <div>
@@ -361,7 +387,7 @@ export default function HomePage() {
                     <li>Every Voice and Work tool</li>
                     <li>Lifetime access · every future release</li>
                   </ul>
-                  <a className="pbtn" href={LIBRARY_URL}>
+                  <a className="pbtn" href={LIBRARY_URL} target="_blank" rel="noopener noreferrer">
                     Open The PHASE™ Library <span className="ar">→</span>
                   </a>
                   <div className="guarantee">
@@ -452,8 +478,55 @@ export default function HomePage() {
               <a href="#rooms" className="pbtn pbtn-ghost">
                 Find your room <span className="ar">→</span>
               </a>
-              <a href={LIBRARY_URL} className="pbtn pbtn-pink">
+              <a href={LIBRARY_URL} className="pbtn pbtn-pink" target="_blank" rel="noopener noreferrer">
                 Open The PHASE™ Library · $228 <span className="ar">→</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Letters · the essays behind the rebuild */}
+        <section className="section">
+          <div className="wrap">
+            <header className="sechead">
+              <div className="meta">
+                <span className="eyebrow">§ 06 · The Letter</span>
+                <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
+                  Read the letter
+                </span>
+              </div>
+              <div>
+                <h2>
+                  The PHASE™ started as <em>a letter.</em>
+                </h2>
+                <p className="subhead" style={{ maxWidth: 'none' }}>
+                  Every Tuesday, a dispatch from inside the rebuild. Read a few, then never miss one.
+                </p>
+              </div>
+            </header>
+
+            <div className="cards">
+              <article className="icard">
+                <h3>Two Chapters, One Body, One Year</h3>
+                <p>Motherhood at 41 while my body was becoming something else.</p>
+              </article>
+              <article className="icard">
+                <h3>Building Through It</h3>
+                <p>
+                  What it actually takes to build a company while your own life is still remaking
+                  itself.
+                </p>
+              </article>
+            </div>
+
+            <div className="cta-row" style={{ marginTop: 30 }}>
+              <a
+                className="pbtn pbtn-pink"
+                href="https://momumentalreinvention.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Read on MOMumental Reinvention <span className="ar">→</span>
               </a>
             </div>
           </div>

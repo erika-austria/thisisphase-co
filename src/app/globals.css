@@ -344,6 +344,10 @@ h1, h2, h3, h4, h5, h6 {
 .phase-home .tile.pink .rm { color:rgba(26,20,16,.7); }
 .phase-home .tile.navy .rm { color:rgba(255,249,241,.7); }
 .phase-home .band .tile .ltr { font-size:clamp(120px,18vw,260px); }
+.phase-home .tile .room-name { position:relative; z-index:2; font-family:var(--serif); font-weight:500; font-size:clamp(30px,4.6vw,52px); line-height:1.02; letter-spacing:-.02em; text-align:center; padding:0 20px; }
+.phase-home .tile.pink .room-name { color:var(--ink); }
+.phase-home .tile.navy .room-name { color:var(--cream); }
+.phase-home .band .tile .room-name { font-size:clamp(40px,7vw,88px); }
 
 /* hero */
 .phase-home .hero { position:relative; overflow:hidden; padding:clamp(56px,8vw,104px) 0 clamp(48px,7vw,88px); text-align:center; }

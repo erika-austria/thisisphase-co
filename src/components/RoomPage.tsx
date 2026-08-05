@@ -72,12 +72,7 @@ export function RoomPage({ room }: { room: Room }) {
         {/* ─── ROOM PLATE ─── */}
         <section className="band">
           <div className={`tile ${room.tint}`} role="img" aria-label={`The ${room.name} room`}>
-            <span className="ltr" aria-hidden="true">
-              {room.letter}
-            </span>
-            <span className="rm" aria-hidden="true">
-              Room {room.numeral}
-            </span>
+            <span className="room-name">The {room.name}</span>
           </div>
           <span className="cap">
             The PHASE™ · Room {room.numeral} · {room.name}

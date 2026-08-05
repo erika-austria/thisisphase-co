@@ -51,7 +51,7 @@ export function Footer() {
             <a href="/family">Family</a>
             <a href="/voice">Voice</a>
             <a href="/work">Work</a>
-            <a href="/#library">The PHASE™ Library</a>
+            <a href="https://www.momumentalreinvention.com/p/the-library" target="_blank" rel="noopener noreferrer">The PHASE™ Library</a>
             <a href="https://www.amazon.com/shop/erikahanafin" target="_blank" rel="noopener noreferrer">
               Shop
             </a>
