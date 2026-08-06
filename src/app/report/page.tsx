@@ -3,26 +3,21 @@ import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
 import { breadcrumbSchema, faqSchema, reportSchema } from '@/lib/schema';
 import { MagazineMasthead } from '@/components/MagazineMasthead';
+import { ReportForm } from '@/components/ReportForm';
 
 /**
  * /report · State of Reinvention 2026 · The MOMumental Report.
  *
  * The free read at the top of the funnel. Fifteen pages, four rooms, twenty
- * cited sources. Email captures the download, the same fifteen pages stay
- * readable in the browser at /report/state-of-reinvention-2026.html so search
- * and AI engines can actually read and cite the research.
+ * cited sources.
  *
- * Lead flow: every "send me the report" CTA goes to the MOMumental Reinvention
- * subscribe page, so the email is captured before the PDF is handed over. The
- * same route the Reinvention Map uses.
- *
- * ReportForm and /api/report are still in the repo, wired for on-site capture
- * through Resend. Swap them back in here if the funnel ever moves off Substack.
+ * Lead flow: every "send me the report" CTA is the on-site ReportForm, which
+ * captures the email straight to Resend (/api/report) and reveals the PDF. No
+ * Substack subscribe step, so existing subscribers are never blocked, and no
+ * un-gated online read is offered on the page.
  */
 
-const READ_URL = '/report/state-of-reinvention-2026.html';
 const LIBRARY_URL = 'https://www.momumentalreinvention.com/p/the-library';
-const SUBSCRIBE_URL = 'https://www.momumentalreinvention.com/subscribe';
 
 export const metadata: Metadata = buildMetadata({
   title: 'State of Reinvention 2026 · The MOMumental Report',
@@ -149,28 +144,11 @@ export default function ReportPage() {
                   </div>
                 </div>
 
-                <div className="rep-cta">
-                  <a
-                    className="pbtn pbtn-pink"
-                    href={SUBSCRIBE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Send me the report <span className="ar">→</span>
-                  </a>
-                  <a
-                    className="pbtn pbtn-ghost"
-                    href={READ_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Read it online <span className="ar">→</span>
-                  </a>
-                </div>
+                <ReportForm variant="cream" source="report-hero" />
 
                 <div className="rep-note">
-                  Subscribe to the Tuesday letter and the PDF lands in your inbox · or read all 15
-                  pages online, free
+                  Drop your email and the 15-page PDF lands in your inbox · no subscription, no
+                  catch
                 </div>
               </div>
             </div>
@@ -231,16 +209,7 @@ export default function ReportPage() {
                   <li>Framingham Offspring Study · what self-silencing does over ten years</li>
                   <li>Institute for Women&apos;s Policy Research · the parenthood pay divide</li>
                 </ul>
-                <div className="rep-cta">
-                  <a
-                    className="pbtn pbtn-ghost"
-                    href={`${READ_URL}#p15`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Jump to the sources <span className="ar">→</span>
-                  </a>
-                </div>
+                {/* Online-read link removed · the report is email-gated */}
               </div>
 
               <aside className="lib-card">
@@ -320,17 +289,7 @@ export default function ReportPage() {
               tool.
             </p>
             <div className="rep-cta" style={{ justifyContent: 'center', marginTop: 30 }}>
-              <a
-                className="pbtn pbtn-pink"
-                href={SUBSCRIBE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Send me the report <span className="ar">→</span>
-              </a>
-              <a className="pbtn pbtn-ghost" href={READ_URL} target="_blank" rel="noopener noreferrer">
-                Read it online <span className="ar">→</span>
-              </a>
+              <ReportForm variant="navy" source="report-final" />
             </div>
             <p style={{ marginTop: 26 }}>
               Or go straight to <Link href="/#rooms">the four rooms</Link>, or open{' '}

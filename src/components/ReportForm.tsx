@@ -21,7 +21,6 @@ declare global {
 }
 
 const FALLBACK_PDF = '/report/state-of-reinvention-2026.pdf';
-const READ_URL = '/report/state-of-reinvention-2026.html';
 
 type ReportFormProps = {
   variant?: 'cream' | 'navy';
@@ -105,9 +104,6 @@ export function ReportForm({
             download="State-of-Reinvention-2026.pdf"
           >
             Download the PDF <span className="ar">→</span>
-          </a>
-          <a className="pbtn pbtn-ghost" href={READ_URL} target="_blank" rel="noopener noreferrer">
-            Read it online <span className="ar">→</span>
           </a>
         </div>
         <p className="rep-done-note">

@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
 import { reinventionMapSchema, faqSchema, PERSON_SCHEMA } from '@/lib/schema';
-
-const SUBSCRIBE_URL = 'https://www.momumentalreinvention.com/subscribe';
+import { ReportForm } from '@/components/ReportForm';
 
 const OPENER =
   'The Reinvention Map is a free four-room guide from Erika Hanafin Austria, founder of MOMumental Moments®, for women rebuilding everything at once. It walks the four rooms of a full reinvention, the body, the family, the voice, and the work, with the first tool for each. Free. Subscribe and it lands in your inbox.';
@@ -53,7 +52,7 @@ export default function ReinventionMapPage() {
             <div className="issue"><span className="bracket" /><span className="eyebrow">Free guide · The PHASE™ · Four rooms, one reinvention</span></div>
             <h1>You are rebuilding everything at once.<br /><em>Here is the map.</em></h1>
             <p className="rmap-lede">{OPENER}</p>
-            <div className="cta-row"><a href={SUBSCRIBE_URL} className="pbtn pbtn-pink">Send me the map <span className="ar">→</span></a></div>
+            <ReportForm variant="cream" source="map-hero" buttonLabel="Send me the map →" />
             <div className="sig" style={{ marginTop: '14px' }}>Free every Tuesday after that. Just the letter and the tools, nothing else.</div>
           </div>
         </section>
@@ -90,7 +89,7 @@ export default function ReinventionMapPage() {
         <section className="close">
           <div className="wrap in">
             <div className="line">You are not falling apart. You are becoming MOMumental.</div>
-            <div className="cta-row"><a href={SUBSCRIBE_URL} className="pbtn pbtn-pink">Send me the map <span className="ar">→</span></a></div>
+            <ReportForm variant="cream" source="map-close" buttonLabel="Send me the map →" />
           </div>
         </section>
       </div>

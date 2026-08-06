@@ -6,9 +6,6 @@ import { MagazineMasthead } from '@/components/MagazineMasthead';
 
 // The Whole House · $228 bundle checks out directly through Stripe (not the library browse page).
 const WHOLE_HOUSE_URL = 'https://buy.stripe.com/6oU5kD1Pgcca8Yj1qVeEo0m';
-// Every report and map CTA captures the email through the Substack subscribe page
-// before the PDF is handed over.
-const SUBSCRIBE_URL = 'https://www.momumentalreinvention.com/subscribe';
 
 export const metadata: Metadata = buildMetadata({
   // buildMetadata appends " · The PHASE™" → no need to prefix it here
@@ -149,14 +146,9 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="rep-cta">
-                  <a
-                    className="pbtn pbtn-pink"
-                    href={SUBSCRIBE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <Link className="pbtn pbtn-pink" href="/report">
                     Send me the report <span className="ar">→</span>
-                  </a>
+                  </Link>
                   <Link className="pbtn pbtn-ghost" href="/report">
                     What is inside <span className="ar">→</span>
                   </Link>
