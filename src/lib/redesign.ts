@@ -20,7 +20,7 @@ export const REDESIGN: Record<string, Frag> = {
   --rule:   rgba(47,72,88,.2);
   --shadow: 0 2px 12px rgba(47,72,88,.09);
 
-  --serif: var(--font-instrument), Georgia, serif;
+  --serif: var(--font-fraunces), Georgia, serif;
   --sans:  var(--font-archivo), system-ui, -apple-system, sans-serif;
   --news:  var(--font-newsreader), Georgia, serif;
 
@@ -38,11 +38,11 @@ export const REDESIGN: Record<string, Frag> = {
   text-rendering: optimizeLegibility;}
 .phz-home img {max-width: 100%; display: block;}
 .phz-home a {color: var(--navy); text-decoration: none;}
-.phz-home h1, .phz-home h2, .phz-home h3 {font-family: var(--serif); font-weight: 400; margin: 0; text-wrap: pretty;}
+.phz-home h1, .phz-home h2, .phz-home h3 {font-family: var(--serif); font-weight: 600; margin: 0; text-wrap: pretty;}
 .phz-home em {font-style: italic;}
 .phz-home .wrap {max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter);}
-.phz-home .eyebrow {font: 600 11px/1 var(--sans);
-  letter-spacing: .18em;
+.phz-home .eyebrow {font: 600 12px/1 var(--sans);
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--navy);}
 .phz-home .eyebrow--mint {color: var(--mint);}
@@ -168,7 +168,7 @@ export const REDESIGN: Record<string, Frag> = {
 .phz-home .hero__quote {display: flex; align-items: center; gap: 12px; padding-top: 18px; border-top: 1px solid var(--navy-16);}
 .phz-home .hero__quote .ph {width: 44px; height: 44px; border-radius: 50%; flex: none; border: 1px solid var(--navy-28);}
 .phz-home .hero__quote p {font: 400 12.5px/1.5 var(--sans); color: var(--navy-72); margin: 0; max-width: 40ch;}
-.phz-home .floorplan__label {font: 500 10px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--navy-45); margin-bottom: 10px;}
+.phz-home .floorplan__label {font: 600 11.5px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--navy-60); margin-bottom: 12px;}
 .phz-home .floorplan__note {font: 400 11.5px/1.4 var(--sans); color: var(--navy-60); margin-top: 10px;}
 .phz-home .pull {font-family: var(--serif); font-size: clamp(20px, 3vw, 26px); line-height: 1.4; max-width: 74ch; margin: 0 auto; text-align: center;}
 .phz-home .cols4 {display: grid; grid-template-columns: repeat(4,1fr);}
@@ -430,7 +430,7 @@ export const REDESIGN: Record<string, Frag> = {
   --rule:   rgba(47,72,88,.2);
   --shadow: 0 2px 12px rgba(47,72,88,.09);
 
-  --serif: var(--font-instrument), Georgia, serif;
+  --serif: var(--font-fraunces), Georgia, serif;
   --sans:  var(--font-archivo), system-ui, -apple-system, sans-serif;
   --news:  var(--font-newsreader), Georgia, serif;
 
@@ -448,11 +448,11 @@ export const REDESIGN: Record<string, Frag> = {
   text-rendering: optimizeLegibility;}
 .phz-body img {max-width: 100%; display: block;}
 .phz-body a {color: var(--navy); text-decoration: none;}
-.phz-body h1, .phz-body h2, .phz-body h3 {font-family: var(--serif); font-weight: 400; margin: 0; text-wrap: pretty;}
+.phz-body h1, .phz-body h2, .phz-body h3 {font-family: var(--serif); font-weight: 600; margin: 0; text-wrap: pretty;}
 .phz-body em {font-style: italic;}
 .phz-body .wrap {max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter);}
-.phz-body .eyebrow {font: 600 11px/1 var(--sans);
-  letter-spacing: .18em;
+.phz-body .eyebrow {font: 600 12px/1 var(--sans);
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--navy);}
 .phz-body .eyebrow--mint {color: var(--mint);}
@@ -717,7 +717,7 @@ export const REDESIGN: Record<string, Frag> = {
   --rule:   rgba(47,72,88,.2);
   --shadow: 0 2px 12px rgba(47,72,88,.09);
 
-  --serif: var(--font-instrument), Georgia, serif;
+  --serif: var(--font-fraunces), Georgia, serif;
   --sans:  var(--font-archivo), system-ui, -apple-system, sans-serif;
   --news:  var(--font-newsreader), Georgia, serif;
 
@@ -735,11 +735,11 @@ export const REDESIGN: Record<string, Frag> = {
   text-rendering: optimizeLegibility;}
 .phz-family img {max-width: 100%; display: block;}
 .phz-family a {color: var(--navy); text-decoration: none;}
-.phz-family h1, .phz-family h2, .phz-family h3 {font-family: var(--serif); font-weight: 400; margin: 0; text-wrap: pretty;}
+.phz-family h1, .phz-family h2, .phz-family h3 {font-family: var(--serif); font-weight: 600; margin: 0; text-wrap: pretty;}
 .phz-family em {font-style: italic;}
 .phz-family .wrap {max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter);}
-.phz-family .eyebrow {font: 600 11px/1 var(--sans);
-  letter-spacing: .18em;
+.phz-family .eyebrow {font: 600 12px/1 var(--sans);
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--navy);}
 .phz-family .eyebrow--mint {color: var(--mint);}
@@ -1017,7 +1017,7 @@ export const REDESIGN: Record<string, Frag> = {
   --rule:   rgba(47,72,88,.2);
   --shadow: 0 2px 12px rgba(47,72,88,.09);
 
-  --serif: var(--font-instrument), Georgia, serif;
+  --serif: var(--font-fraunces), Georgia, serif;
   --sans:  var(--font-archivo), system-ui, -apple-system, sans-serif;
   --news:  var(--font-newsreader), Georgia, serif;
 
@@ -1035,11 +1035,11 @@ export const REDESIGN: Record<string, Frag> = {
   text-rendering: optimizeLegibility;}
 .phz-voice img {max-width: 100%; display: block;}
 .phz-voice a {color: var(--navy); text-decoration: none;}
-.phz-voice h1, .phz-voice h2, .phz-voice h3 {font-family: var(--serif); font-weight: 400; margin: 0; text-wrap: pretty;}
+.phz-voice h1, .phz-voice h2, .phz-voice h3 {font-family: var(--serif); font-weight: 600; margin: 0; text-wrap: pretty;}
 .phz-voice em {font-style: italic;}
 .phz-voice .wrap {max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter);}
-.phz-voice .eyebrow {font: 600 11px/1 var(--sans);
-  letter-spacing: .18em;
+.phz-voice .eyebrow {font: 600 12px/1 var(--sans);
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--navy);}
 .phz-voice .eyebrow--mint {color: var(--mint);}
@@ -1317,7 +1317,7 @@ export const REDESIGN: Record<string, Frag> = {
   --rule:   rgba(47,72,88,.2);
   --shadow: 0 2px 12px rgba(47,72,88,.09);
 
-  --serif: var(--font-instrument), Georgia, serif;
+  --serif: var(--font-fraunces), Georgia, serif;
   --sans:  var(--font-archivo), system-ui, -apple-system, sans-serif;
   --news:  var(--font-newsreader), Georgia, serif;
 
@@ -1335,11 +1335,11 @@ export const REDESIGN: Record<string, Frag> = {
   text-rendering: optimizeLegibility;}
 .phz-work img {max-width: 100%; display: block;}
 .phz-work a {color: var(--navy); text-decoration: none;}
-.phz-work h1, .phz-work h2, .phz-work h3 {font-family: var(--serif); font-weight: 400; margin: 0; text-wrap: pretty;}
+.phz-work h1, .phz-work h2, .phz-work h3 {font-family: var(--serif); font-weight: 600; margin: 0; text-wrap: pretty;}
 .phz-work em {font-style: italic;}
 .phz-work .wrap {max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter);}
-.phz-work .eyebrow {font: 600 11px/1 var(--sans);
-  letter-spacing: .18em;
+.phz-work .eyebrow {font: 600 12px/1 var(--sans);
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--navy);}
 .phz-work .eyebrow--mint {color: var(--mint);}
@@ -1614,7 +1614,7 @@ export const REDESIGN: Record<string, Frag> = {
   --rule:   rgba(47,72,88,.2);
   --shadow: 0 2px 12px rgba(47,72,88,.09);
 
-  --serif: var(--font-instrument), Georgia, serif;
+  --serif: var(--font-fraunces), Georgia, serif;
   --sans:  var(--font-archivo), system-ui, -apple-system, sans-serif;
   --news:  var(--font-newsreader), Georgia, serif;
 
@@ -1632,11 +1632,11 @@ export const REDESIGN: Record<string, Frag> = {
   text-rendering: optimizeLegibility;}
 .phz-report img {max-width: 100%; display: block;}
 .phz-report a {color: var(--navy); text-decoration: none;}
-.phz-report h1, .phz-report h2, .phz-report h3 {font-family: var(--serif); font-weight: 400; margin: 0; text-wrap: pretty;}
+.phz-report h1, .phz-report h2, .phz-report h3 {font-family: var(--serif); font-weight: 600; margin: 0; text-wrap: pretty;}
 .phz-report em {font-style: italic;}
 .phz-report .wrap {max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter);}
-.phz-report .eyebrow {font: 600 11px/1 var(--sans);
-  letter-spacing: .18em;
+.phz-report .eyebrow {font: 600 12px/1 var(--sans);
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--navy);}
 .phz-report .eyebrow--mint {color: var(--mint);}
@@ -1924,7 +1924,7 @@ export const REDESIGN: Record<string, Frag> = {
   --rule:   rgba(47,72,88,.2);
   --shadow: 0 2px 12px rgba(47,72,88,.09);
 
-  --serif: var(--font-instrument), Georgia, serif;
+  --serif: var(--font-fraunces), Georgia, serif;
   --sans:  var(--font-archivo), system-ui, -apple-system, sans-serif;
   --news:  var(--font-newsreader), Georgia, serif;
 
@@ -1942,11 +1942,11 @@ export const REDESIGN: Record<string, Frag> = {
   text-rendering: optimizeLegibility;}
 .phz-about img {max-width: 100%; display: block;}
 .phz-about a {color: var(--navy); text-decoration: none;}
-.phz-about h1, .phz-about h2, .phz-about h3 {font-family: var(--serif); font-weight: 400; margin: 0; text-wrap: pretty;}
+.phz-about h1, .phz-about h2, .phz-about h3 {font-family: var(--serif); font-weight: 600; margin: 0; text-wrap: pretty;}
 .phz-about em {font-style: italic;}
 .phz-about .wrap {max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter);}
-.phz-about .eyebrow {font: 600 11px/1 var(--sans);
-  letter-spacing: .18em;
+.phz-about .eyebrow {font: 600 12px/1 var(--sans);
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--navy);}
 .phz-about .eyebrow--mint {color: var(--mint);}
