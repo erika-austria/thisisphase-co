@@ -1,5 +1,12 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Geist, Geist_Mono } from 'next/font/google';
+import {
+  Cormorant_Garamond,
+  Geist,
+  Geist_Mono,
+  Instrument_Serif,
+  Archivo,
+  Newsreader,
+} from 'next/font/google';
 import { ROOT_METADATA } from '@/lib/seo';
 import { ORGANIZATION_SCHEMA, PERSON_SCHEMA, WEBSITE_SCHEMA } from '@/lib/schema';
 import { Nav } from '@/components/Nav';
@@ -29,11 +36,38 @@ const geistMono = Geist_Mono({
   display: 'swap',
 });
 
+// Redesign display + UI faces (The PHASE Redesign handoff, Aug 2026)
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
+  display: 'swap',
+});
+
+const archivo = Archivo({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-archivo',
+  display: 'swap',
+});
+
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['300', '400'],
+  style: ['normal', 'italic'],
+  variable: '--font-newsreader',
+  display: 'swap',
+});
+
 export const metadata: Metadata = ROOT_METADATA;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${geist.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${cormorant.variable} ${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${archivo.variable} ${newsreader.variable}`}
+    >
       <head>
         {/* JSON-LD · Organization, Person, WebSite */}
         <script

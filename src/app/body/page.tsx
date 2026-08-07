@@ -1,35 +1,21 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
-import { breadcrumbSchema, faqSchema, roomItemListSchema } from '@/lib/schema';
-import { getRoom } from '@/lib/rooms';
-import { RoomPage } from '@/components/RoomPage';
-
-const room = getRoom('body')!;
+import { REDESIGN } from '@/lib/redesign';
+import { RedesignForms } from '@/components/RedesignForms';
 
 export const metadata: Metadata = buildMetadata({
-  title: room.metaTitle,
-  description: room.metaDescription,
+  title: `The Body · Perimenopause · The PHASE™`,
+  description: `Room I · The Body. The map you should have been handed at 38. Test, do not guess. Five volumes on perimenopause, hormones, labs, and HRT.`,
   path: '/body',
-  ogImage: '/og/room-body.jpg',
 });
 
-export default function BodyRoomPage() {
+export default function Page() {
+  const f = REDESIGN['body'];
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thephase.co' },
-              { name: `The ${room.name} Room`, url: `https://thephase.co/body` },
-            ]),
-            roomItemListSchema(room),
-            faqSchema(room.faqs),
-          ]),
-        }}
-      />
-      <RoomPage room={room} />
-    </>
+    <div className={f.wrap}>
+      <style dangerouslySetInnerHTML={{ __html: f.css }} />
+      <div dangerouslySetInnerHTML={{ __html: f.html }} />
+      <RedesignForms />
+    </div>
   );
 }

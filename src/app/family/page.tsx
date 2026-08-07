@@ -1,35 +1,21 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
-import { breadcrumbSchema, faqSchema, roomItemListSchema } from '@/lib/schema';
-import { getRoom } from '@/lib/rooms';
-import { RoomPage } from '@/components/RoomPage';
-
-const room = getRoom('family')!;
+import { REDESIGN } from '@/lib/redesign';
+import { RedesignForms } from '@/components/RedesignForms';
 
 export const metadata: Metadata = buildMetadata({
-  title: room.metaTitle,
-  description: room.metaDescription,
+  title: `The Family · The Co-Parenting Power Method® · The PHASE™`,
+  description: `Room II · The Family. Twenty scripts already written, for the messages you dread sending. The playbook for the two-house rebuild.`,
   path: '/family',
-  ogImage: '/og/room-family.jpg',
 });
 
-export default function FamilyRoomPage() {
+export default function Page() {
+  const f = REDESIGN['family'];
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thephase.co' },
-              { name: `The ${room.name} Room`, url: `https://thephase.co/family` },
-            ]),
-            roomItemListSchema(room),
-            faqSchema(room.faqs),
-          ]),
-        }}
-      />
-      <RoomPage room={room} />
-    </>
+    <div className={f.wrap}>
+      <style dangerouslySetInnerHTML={{ __html: f.css }} />
+      <div dangerouslySetInnerHTML={{ __html: f.html }} />
+      <RedesignForms />
+    </div>
   );
 }
