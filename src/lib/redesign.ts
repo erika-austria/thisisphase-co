@@ -196,7 +196,7 @@ export const REDESIGN: Record<string, Frag> = {
 .phz-home .cols4 {grid-template-columns: 1fr 1fr;}
 .phz-home .col4:nth-child(4n) {border-right: 1px solid var(--rule);}
 .phz-home .col4:nth-child(2n) {border-right: 0;}
-.phz-home .split {grid-template-columns: 1fr;}
+.phz-home .split {grid-template-columns: 1fr !important;}
 .phz-home .library__checks {grid-template-columns: 1fr;}
 }
 @media (max-width: 520px) {
@@ -1790,6 +1790,7 @@ export const REDESIGN: Record<string, Frag> = {
 .phz-report .report-cols > div:nth-child(2n) {border-right: 0;}
 .phz-report .dl-grid {grid-template-columns: 1fr;}
 .phz-report .dl-grid > .cell:first-child {border-right: 0; border-bottom: 1px solid var(--navy-20);}
+.phz-report #letterblock {grid-template-columns: 1fr !important;}
 }
 @media (max-width: 520px) {
 .phz-report .report-cols {grid-template-columns: 1fr;}
