@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
 import { REDESIGN } from '@/lib/redesign';
+import { RedesignForms } from '@/components/RedesignForms';
 
 export const metadata: Metadata = buildMetadata({
   title: `The Family · The Co-Parenting Power Method® · The PHASE™`,
@@ -14,6 +15,7 @@ export default function Page() {
     <div className={f.wrap}>
       <style dangerouslySetInnerHTML={{ __html: f.css }} />
       <div dangerouslySetInnerHTML={{ __html: f.html }} />
+      <RedesignForms />
     </div>
   );
 }
