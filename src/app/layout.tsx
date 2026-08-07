@@ -1,5 +1,12 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Geist, Geist_Mono, Instrument_Serif, Archivo } from 'next/font/google';
+import {
+  Cormorant_Garamond,
+  Geist,
+  Geist_Mono,
+  Instrument_Serif,
+  Archivo,
+  Newsreader,
+} from 'next/font/google';
 import { ROOT_METADATA } from '@/lib/seo';
 import { ORGANIZATION_SCHEMA, PERSON_SCHEMA, WEBSITE_SCHEMA } from '@/lib/schema';
 import { Nav } from '@/components/Nav';
@@ -45,13 +52,21 @@ const archivo = Archivo({
   display: 'swap',
 });
 
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['300', '400'],
+  style: ['normal', 'italic'],
+  variable: '--font-newsreader',
+  display: 'swap',
+});
+
 export const metadata: Metadata = ROOT_METADATA;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${archivo.variable}`}
+      className={`${cormorant.variable} ${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${archivo.variable} ${newsreader.variable}`}
     >
       <head>
         {/* JSON-LD · Organization, Person, WebSite */}

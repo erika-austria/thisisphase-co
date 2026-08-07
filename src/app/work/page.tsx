@@ -1,35 +1,19 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
-import { breadcrumbSchema, faqSchema, roomItemListSchema } from '@/lib/schema';
-import { getRoom } from '@/lib/rooms';
-import { RoomPage } from '@/components/RoomPage';
-
-const room = getRoom('work')!;
+import { REDESIGN } from '@/lib/redesign';
 
 export const metadata: Metadata = buildMetadata({
-  title: room.metaTitle,
-  description: room.metaDescription,
+  title: `The Work · Building Through It · The PHASE™`,
+  description: `Room IV · The Work. Building Through It. Run your life the way an operator would. Seven tools.`,
   path: '/work',
-  ogImage: '/og/room-work.jpg',
 });
 
-export default function WorkRoomPage() {
+export default function Page() {
+  const f = REDESIGN['work'];
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            breadcrumbSchema([
-              { name: 'The PHASE', url: 'https://thephase.co' },
-              { name: `The ${room.name} Room`, url: `https://thephase.co/work` },
-            ]),
-            roomItemListSchema(room),
-            faqSchema(room.faqs),
-          ]),
-        }}
-      />
-      <RoomPage room={room} />
-    </>
+    <div className={f.wrap}>
+      <style dangerouslySetInnerHTML={{ __html: f.css }} />
+      <div dangerouslySetInnerHTML={{ __html: f.html }} />
+    </div>
   );
 }
