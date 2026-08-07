@@ -39,49 +39,94 @@ export default function HomePage() {
       />
 
       <div className="phase-home">
-        {/* Hero */}
-        <section className="hero" id="top">
-          <span className="ghost">P</span>
-          <div className="wrap inner">
-            <div className="issue">
-              <span className="bracket" />
-              <span className="eyebrow">thephase.co · Four rooms · One reinvention</span>
+        {/* Hero · floor plan (redesign · Aug 2026) */}
+        <section className="hero fp-hero" id="top">
+          <div className="wrap fp-grid">
+            <div className="fp-copy">
+              <div className="issue">
+                <span className="bracket" />
+                <span className="eyebrow">Four rooms · One reinvention</span>
+              </div>
+              <h1>
+                You are not in a phase.
+                <br />
+                You are in <em>The PHASE™.</em>
+              </h1>
+              <p className="subline">
+                The whole season of rebuilding everything. The body. The family. The voice. The work.
+                These are the tools I built while I was still in it.
+              </p>
+              <div className="cta-row">
+                <Link href="/report" className="pbtn pbtn-pink">
+                  Read the free report <span className="ar">→</span>
+                </Link>
+                <a
+                  href={WHOLE_HOUSE_URL}
+                  className="pbtn pbtn-ghost"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  The Library · $228 <span className="ar">→</span>
+                </a>
+              </div>
+              <div className="fp-quote">
+                <span className="fp-avatar" aria-hidden="true" />
+                <p>
+                  &ldquo;I did not write these from the other side. I wrote them from inside the
+                  wreckage.&rdquo; <b>Erika Hanafin Austria</b>
+                </p>
+              </div>
             </div>
-            <h1>
-              You are not in a phase.
-              <br />
-              You are in <em>The PHASE™.</em>
-            </h1>
-            <p className="subline">
-              The whole season of rebuilding everything. The body. The family. The voice. The work.
-              These are the tools I built while I was still in it.
-            </p>
-            <div className="sig">You are not falling apart. You are becoming MOMumental.</div>
-            <div className="cta-row">
-              <Link href="/report" className="pbtn pbtn-ghost">
-                Read the free report <span className="ar">→</span>
-              </Link>
-              <a
-                href={WHOLE_HOUSE_URL}
-                className="pbtn pbtn-pink"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                The PHASE™ Library · $228 <span className="ar">→</span>
-              </a>
+
+            <div className="fp-plan">
+              <div className="fp-plan-label">Enter where you&apos;re standing</div>
+              <div className="fp-rooms">
+                <Link href="/body" className="fp-room">
+                  <div className="fp-top">
+                    <span>The Body</span>
+                    <b>I</b>
+                  </div>
+                  <div>
+                    <div className="fp-t">Perimenopause</div>
+                    <div className="fp-d">The map you should have been handed at 38 · Vol. I–V</div>
+                  </div>
+                </Link>
+                <Link href="/family" className="fp-room">
+                  <div className="fp-top">
+                    <span>The Family</span>
+                    <b>II</b>
+                  </div>
+                  <div>
+                    <div className="fp-t">Co-Parenting Power Method®</div>
+                    <div className="fp-d">The two-house rebuild · 20 scripts</div>
+                  </div>
+                </Link>
+                <Link href="/voice" className="fp-room">
+                  <div className="fp-top">
+                    <span>The Voice</span>
+                    <b>III</b>
+                  </div>
+                  <div>
+                    <div className="fp-t">Self-Trust &amp; Confidence</div>
+                    <div className="fp-d">Coming back to your own knowing · Vol. IV</div>
+                  </div>
+                </Link>
+                <Link href="/work" className="fp-room">
+                  <div className="fp-top">
+                    <span>The Work</span>
+                    <b>IV</b>
+                  </div>
+                  <div>
+                    <div className="fp-t">Building Through It</div>
+                    <div className="fp-d">Run it like an operator would · 7 tools</div>
+                  </div>
+                </Link>
+              </div>
+              <div className="fp-note">
+                Start where it hurts today. The rest of the house is here when you are ready.
+              </div>
             </div>
           </div>
-        </section>
-
-        {/* Hero image band */}
-        <section className="band">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="ph-photo"
-            src="/hero-erika.jpg"
-            alt="A desk with a laptop, a planner, a pen, and a cup of coffee, the tools of the rebuild."
-          />
-          <span className="cap">The PHASE™ · Vol. I · No. 01</span>
         </section>
 
         {/* Reframe */}
