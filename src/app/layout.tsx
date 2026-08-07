@@ -6,6 +6,7 @@ import {
   Instrument_Serif,
   Archivo,
   Newsreader,
+  Fraunces,
 } from 'next/font/google';
 import { ROOT_METADATA } from '@/lib/seo';
 import { ORGANIZATION_SCHEMA, PERSON_SCHEMA, WEBSITE_SCHEMA } from '@/lib/schema';
@@ -60,13 +61,22 @@ const newsreader = Newsreader({
   display: 'swap',
 });
 
+// Bolder editorial display face for headers (Aug 2026 · replaces Instrument Serif)
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-fraunces',
+  display: 'swap',
+});
+
 export const metadata: Metadata = ROOT_METADATA;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${archivo.variable} ${newsreader.variable}`}
+      className={`${cormorant.variable} ${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${archivo.variable} ${newsreader.variable} ${fraunces.variable}`}
     >
       <head>
         {/* JSON-LD · Organization, Person, WebSite */}
